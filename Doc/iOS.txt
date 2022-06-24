@@ -1,0 +1,40 @@
+====================================================================================================
+For build:
+
+# Locales:
+    https://stackoverflow.com/questions/50923906/how-to-get-timezone-language-and-county-id-in-flutter-by-the-location-of-device
+====================================================================================================
+swipe to back the previous page:
+
+class CustomMaterialPageRoute<T> extends MaterialPageRoute<T> {
+  @protected
+  bool get hasScopedWillPopCallback {
+    return false;
+  }
+  CustomMaterialPageRoute({
+    @required WidgetBuilder builder,
+    RouteSettings settings,
+    bool maintainState = true,
+    bool fullscreenDialog = false,
+  }) : super(
+          builder: builder,
+          settings: settings,
+          maintainState: maintainState,
+          fullscreenDialog: fullscreenDialog,
+        );
+}
+
+link: https://stackoverflow.com/questions/45916658/how-to-deactivate-or-override-the-android-back-button-in-flutter/45918186
+====================================================================================================
+# has no Mac:
+
+https://flutlab.io/ide
+appetize.io   				simulator
+
+https://codemagic.io/		builder ios
+https://flutterci.com/
+
+https://www.developerlibs.com/2020/09/flutter-how-develop-distribute-ios-system-wihtout-mac.html
+https://weisser-zwerg.dev/posts/ios-system-without-mac/
+
+====================================================================================================

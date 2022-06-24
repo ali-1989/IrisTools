@@ -1,0 +1,21 @@
+===============================================================================================
+* for numbers:
+ - is same self number      [2.hashcode >> 2]
+----------------------------------------------------
+* for text:
+ - for two text with same chars is equal    ['a'.hashcode == 'a'.hashcode]
+----------------------------------------------------
+* for DateTime:
+ - is RAM references
+
+ + use [millisecondsSinceEpoch] is better
+----------------------------------------------------
+* for List/Map:
+ - is RAM references
+
+     int sum = 0;
+
+     for(final k in mealList){
+       sum += k.hashCode;
+     }
+===============================================================================================

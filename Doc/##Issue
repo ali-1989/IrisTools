@@ -1,0 +1,45 @@
+=======================================================================================================
+white screen:
+
+  prepare() async {
+    AppManager.widgetsBinding = WidgetsFlutterBinding.ensureInitialized(); //WidgetsBinding.instance!
+    SchedulerBinding.instance?.ensureVisualUpdate();
+    SchedulerBinding.instance?.window.scheduleFrame();
+    }
+=======================================================================================================
+* not Resuming system:
+
+- I fixed it by adding the WidgetsBindingObserver to the state class and then
+
+class VideoCallScreenState extends State<VideoCallScreen> with WidgetsBindingObserver
+     @override
+      void didChangeAppLifecycleState(AppLifecycleState state) {
+        super.didChangeAppLifecycleState(state);
+
+        if (state == AppLifecycleState.resumed) {
+          setState(() {});
+                Provider.of<VideoCallStateProvider>(context, listen: false).updateDraggableBottomMargin();
+        }
+      }
+}
+
+Link: https://github.com/flutter/flutter/issues/35900
+=======================================================================================================
+Ios:  (not tested)
+
+if(window.physicalSize.isEmpty) {
+    window.onMetricsChanged = () {
+        if (!window.physicalSize.isEmpty) {
+            window.onMetricsChanged = null;
+            runApp(getApp());
+        }
+    };
+}
+else
+    runApp(getApp());
+
+=======================================================================================================
+static class field not same
+
+https://stackoverflow.com/questions/45772318/flutter-dart-static-variables-lost-keep-getting-reinitialized?rq=1
+=======================================================================================================

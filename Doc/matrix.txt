@@ -1,0 +1,112 @@
+===========================================================================================================
+Transform(
+  transform: makeMatrix(),
+
+  child: new Container(
+    width: 50.0,
+    height: 50.0,
+    color: Colors.red,
+  ),
+),
+
+
+Matrix4 makeMatrix() {
+    Matrix4 matrix = Matrix4.translationValues(25.0, 0.0, 0.0);
+    matrix.rotateZ(pi/4);
+    return matrix;
+}
+===========================================================================================================
+Rotate:
+
+------------------------------------------------
+RotatedBox:
+
+RotatedBox(
+  quarterTurns: 1,
+  child: new Text("Lorem ipsum")
+)
+
+------------------------------------------------
+RotationTransition:
+
+RotationTransition(
+  turns: new AlwaysStoppedAnimation(15 / 360),
+  child: new Text("Lorem ipsum"),
+)
+------------------------------------------------
+Transform.rotate(angle: - math.pi / 4, child: Text("Text"),);
+
+Transform(
+  transform: Matrix4().rotate(),
+
+  child: new Container(
+    width: 50.0,
+    height: 50.0,
+    color: Colors.red,
+  ),
+),
+------------------------------------------------
+===========================================================================================================
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+===========================================================================================================
+MatrixGestureDetector:
+
+    [https://pub.dev/packages/matrix_gesture_detector]
+
+Widget transformContainer() {
+    Matrix4 matrix;
+    GlobalKey matrixDetectorKey = GlobalKey();
+
+    return MatrixGestureDetector(
+      key: matrixDetectorKey,
+      onMatrixUpdate: (m, tm, sm, rm) {
+        setState(() {
+          matrix = MatrixGestureDetector.compose(matrix, tm, sm, rm);
+        });
+      },
+      child: Transform(
+        transform: matrix,
+        child: Container(
+          padding: EdgeInsets.all(24.0),
+          width: 100.0,
+          height: 200.0,
+          color: Colors.teal,
+        ),
+      ),
+);
+--------------------------------------------------------------------------------
+MatrixGestureDetector(
+    onMatrixUpdate: (m, tm, sm, rm) {
+      setState(() {
+        //270 is the angle
+        m.rotate(m.getTranslation(), 270);
+        matrix4 = m;
+      });
+    },
+    child: Transform(
+      transform: matrix4,
+      child: Container(
+        padding: EdgeInsets.all(24.0),
+        width: 100,
+        height: 200,
+        color: Colors.teal,
+      ),
+    ),
+ ),
+--------------------------------------------------------------------------------
+===========================================================================================================
+Matrix4Transform:
+    [https://pub.dev/packages/matrix4_transform] matrix4_transform: ^1.1.6
+
+Container(
+   transform: Matrix4Transform()
+       .rotateDegrees(45, origin: Offset(25, 25))
+       .translate(x: 25)
+       .matrix4,
+   child: ...
+);
+--------------------------------------
+Matrix4 myMatrix = ...;
+var myTransform = Matrix4Transform.from(myMatrix);
+
+===========================================================================================================

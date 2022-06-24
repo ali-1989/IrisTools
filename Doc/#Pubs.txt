@@ -1,0 +1,875 @@
+=====================================================================================================
+Many useful views:
+
+https://github.com/fluttercommunity/community
+=====================================================================================================
+flutter_launcher_icons:                 {create and set system icon}
+
+    - flutter pub run flutter_launcher_icons:main
+=====================================================================================================
+flutter_rename_app:
+
+    https://pub.dev/packages/flutter_rename_app
+=====================================================================================================
+device ui simulator:
+
+    https://pub.dev/packages/device_simulator
+=====================================================================================================
+keep run system:
+
+    https://pub.dev/packages/background_fetch
+=====================================================================================================
+cupertino_back_gesture width:           {change width for gesture}
+
+https://pub.dev/packages/cupertino_back_gesture
+
+=====================================================================================================
+move_to_background: ^1.0.2   MoveToBackground.moveTaskToBack();
+=====================================================================================================
+#####################################################################################################
+=====================================================================================================
+# device_id:
+https://pub.dev/packages/platform_device_id     {android、ios、windows、linux、mac}
+https://pub.dev/packages/uuid
+
+
+# device_info:
+https://pub.dev/packages/device_info
+https://pub.dev/packages/client_information     {+Web}
+https://pub.dev/packages/package_info           {and/ios getVersion of system}
+
+
+# storage path:
+https://pub.dev/packages/storage_path
+https://pub.dev/packages/path_provider
+https://pub.dev/packages/path_provider_ex
+https://pub.dev/packages/path               {work: pathString, fileName, ext, ...}
+https://pub.dev/packages/ext_storage        {android dirs}
+https://pub.dev/packages/disk_space
+
+
+# local notifications:        {android/ios notification}
+https://pub.dev/packages/flutter_local_notifications
+https://pub.dev/packages/awesome_notifications
+
+
+# Animations
+https://pub.dev/packages/ezanimation                    *
+https://pub.dev/packages/delayed_display
+https://pub.dev/packages/flutter_mobile_carousel
+https://pub.dev/packages/animation_director
+https://pub.dev/packages/flutter_steps_animation
+https://pub.dev/packages/avatar_glow
+https://pub.dev/packages/animated_text_kit
+https://pub.dev/packages/animations
+https://pub.dev/packages/simple_animations
+https://pub.dev/packages/liquid_swipe
+
+
+# paper:
+https://pub.dev/packages/confetti
+flutter_trianglify
+
+
+# spin
+https://medium.com/@danaya/spinning-the-wheel-in-flutter-6bd129e9873c
+https://pub.dev/packages/flutter_spinwheel
+https://github.com/vintage/scratcher
+https://pub.dev/packages/customgauge        (dgr)
+
+
+# Wave
+https://pub.dev/packages/wave
+
+
+# Bounce
+https://pub.dev/packages/flutter_bounce
+https://pub.dev/packages/bouncing_widget
+
+
+# Button
+https://pub.dev/packages/argon_buttons_flutter
+https://pub.dev/packages/like_button
+https://pub.dev/packages/lite_rolling_switch
+https://pub.dev/packages/slider_button
+https://pub.dev/packages/slide_button
+https://pub.dev/packages/flutter_progressed_play_button
+https://pub.dev/packages/nepninja                           sign-up progress
+https://pub.dev/packages/fsuper
+https://pub.dev/packages/rounded_loading_button             *
+https://pub.dev/packages/flutter_reaction_button            icon happy/sad
+https://pub.dev/packages/progress_indicator_button
+https://pub.dev/packages/timer_button
+https://pub.dev/packages/control_button                     **
+https://pub.dev/packages/animated_progress_button
+https://pub.dev/packages/twinkle_button
+https://github.com/Eliathoran/loading_elevated_button
+
+
+#^ state
+https://pub.dev/packages/progress_state_button
+https://pub.dev/packages/flutter_progress_button
+
+
+#^ fab button
+https://pub.dev/packages/unicorndial
+https://pub.dev/packages/floating_action_bubble
+https://pub.dev/packages/hawk_fab_menu
+
+
+# button\slider menu
+https://pub.dev/packages/slider_side_menu
+https://pub.dev/packages/flutter_slidable_list_view
+https://pub.dev/packages/circular_menu
+https://pub.dev/packages/flutter_boom_menu
+https://pub.dev/packages/radial_menu
+
+
+#^ scroll button
+https://pub.dev/packages/flutter_slidable       *
+https://pub.dev/packages/flutter_sidekick
+
+
+#^ radio
+https://pub.dev/packages/grouped_buttons
+https://pub.dev/packages/fsuper
+
+
+# Switch
+https://github.com/boringdeveloper/FlutterSwitch
+https://github.com/cgustav/lite_rolling_switch
+
+
+# drawer
+https://pub.dev/packages/flutter_advanced_drawer
+https://pub.dev/packages/flip_drawer
+https://github.com/GP-Moon/bottom_drawer
+
+
+# form menu (like c#)
+https://pub.dev/packages/flutter_menu
+https://pub.dev/packages/dynamic_treeview
+
+
+# tree, graph
+https://pub.dev/packages/graphite
+https://pub.dev/packages/dynamic_treeview
+
+
+# Share:
+https://pub.dev/packages/receive_sharing_intent
+https://pub.dev/packages/esys_flutter_share
+https://pub.dev/packages/wc_flutter_share
+https://pub.dev/packages/share_files_and_screenshot_widgets
+
+
+# marquee
+https://pub.dev/packages/marquee_widget
+https://pub.dev/packages/marquee
+https://pub.dev/packages/fast_marquee           *
+https://pub.dev/packages/animated_text_kit      ***
+
+
+# Pin-input
+https://pub.dev/packages/pin_code_fields                * use
+https://pub.dev/packages/pinput
+https://pub.dev/packages/pin_input_text_field
+https://pub.dev/packages/code_field
+
+
+# sheet, panel
+https://pub.dev/packages/we_slide                   ***
+https://pub.dev/packages/sweetsheet                 *
+https://pub.dev/packages/flutter_sliding_up_panel
+https://pub.dev/packages/draggable_panel_flutter
+https://pub.dev/packages/sliding_up_panel
+
+
+# page-transition
+https://pub.dev/packages/route_transitions
+https://pub.dev/packages/page_transition
+
+
+# introduction, onBoard
+https://pub.dev/packages/intro_views_flutter
+https://pub.dev/packages/intro_slider
+https://pub.dev/packages/intro_screen_onboarding_flutter
+https://pub.dev/packages/nice_intro
+https://pub.dev/packages/app_intro
+https://pub.dev/packages/fancy_on_boarding
+https://pub.dev/packages/introduction_screen
+https://pub.dev/packages/liquid_swipe
+
+
+# Showcase
+https://pub.dev/packages/bubble_showcase
+https://pub.dev/packages/flutter_portal
+
+
+# Card
+https://pub.dev/packages/slimy_card
+https://pub.dev/packages/flip_card                          ** use
+https://github.com/RadhikaGoswamiDivineCoding/divine_card   **
+https://pub.dev/packages/expansion_card
+https://pub.dev/packages/folding_cell       *
+https://pub.dev/packages/expansion_tile_card
+https://pub.dev/packages/folding_cell
+https://pub.dev/packages/flutter_tindercard
+https://pub.dev/packages/sliding_card           *
+https://pub.dev/packages/expandable_card
+https://pub.dev/packages/flip
+https://pub.dev/packages/flip_panel             ** watch,clock
+
+
+# expand
+https://pub.dev/packages/expandable_group           **
+https://pub.dev/packages/expandable                 **  use
+https://pub.dev/packages/expand_widget              *
+https://pub.dev/packages/sticky_and_expandable_list
+https://pub.dev/packages/readmore
+https://pub.dev/packages/expandable_text
+https://pub.dev/packages/expandable_card
+https://pub.dev/packages/flutter_collapse
+
+
+# player
+new https://pub.dev/packages/video_viewer
+https://pub.dev/packages/video_player                   [ExoPlayer]
+https://pub.dev/packages/better_player                  HSL
+https://pub.dev/packages/video_viewer
+https://pub.dev/packages/chewie
+https://pub.dev/packages/flick_video_player
+https://pub.dev/packages/awsome_video_player
+https://pub.dev/packages/kidd_video_player
+https://pub.dev/packages/yoyo_player                    HSL
+https://pub.dev/packages/videos_player
+https://pub.dev/packages/native_video_view              [native]    *** slowLoad
+https://pub.dev/packages/fijkplayer                     [ijkPlayer] ** slowLoad
+https://pub.dev/packages/flutter_ijkplayer              [ijkPlayer]
+https://pub.dev/packages/az_player_plugin               [ExoPlayer] *
+https://pub.dev/packages/flutter_vlc_player             [vlc_player] *** Big & slowLoad
+https://pub.dev/packages/mini_video_player              [no wrap VideoPlayer]
+https://pub.dev/packages/kraken_video_player            [no wrap VideoPlayer]
+
+
+# Audio player
+https://pub.dev/packages/just_audio
+https://pub.dev/packages/flutter_ringtone_player
+https://pub.dev/packages/sounds
+https://pub.dev/packages/audio
+https://pub.dev/packages/chewie_audio
+https://pub.dev/packages/audio_video_progress_bar       [View]
+
+
+# audio record
+https://pub.dev/packages/flutter_sound              + stream, player
+https://pub.dev/packages/sounds
+https://pub.dev/packages/flutter_audio_recorder
+https://pub.dev/packages/record
+https://pub.dev/packages/record_mp3                 ^ native
+https://pub.dev/packages/audio_recorder
+https://pub.dev/packages/audio_streamer
+https://pub.dev/packages/audio_recorder_mc
+
+
+# rtc, stream, live
+https://pub.dev/packages/flutter_live
+https://pub.dev/packages/flutter_webrtc
+https://pub.dev/packages/twilio_programmable_video
+https://pub.dev/packages/audio_streamer
+https://pub.dev/packages/chunked_stream
+https://pub.dev/packages/audio_streams
+https://pub.dev/packages/flutter_mjpeg
+https://pub.dev/packages/remote_ip_camera
+https://pub.dev/packages/linkv_rtc                      *
+https://pub.dev/packages/linkv_rtm
+https://pub.dev/packages/webrtc_data_channel
+https://pub.dev/packages/rtmp_publisher
+https://pub.dev/packages/flutter_rtmp_publisher         *
+- https://agilie.com/en/blog/how-we-integrated-a-video-library-into-our-live-video-streaming-system
+- https://github.com/mutaphore/RTSP-Client-Server
+
+
+# youtube
+https://pub.dev/packages/flutter_youtube_view
+https://pub.dev/packages/youtube_explode_dart       *
+
+
+# thumbnail
+https://pub.dev/packages/video_thumbnail/install
+
+
+# speech, ttv
+https://pub.dev/packages/speech_recognition
+https://pub.dev/packages/tflite_audio               * text to voice
+https://pub.dev/packages/speech_to_text_plugins
+
+
+# 3D/2D:
+https://pub.dev/packages/stagexl
+
+
+
+# table, (json)
+https://pub.dev/packages/json_table
+
+
+# table, row, column
+https://pub.dev/packages/horizontal_data_table
+https://pub.dev/packages/row_collection
+
+
+# grid
+https://pub.dev/packages/syncfusion_flutter_datagrid
+
+
+# Chart
+https://pub.dev/packages/pie_chart
+
+
+# feedback
+https://pub.dev/packages/feedback
+
+
+# Search
+https://pub.dev/packages/fsearch                            ** use
+https://pub.dev/packages/search_choices                    **
+https://pub.dev/packages/auto_search
+https://github.com/alexrindone/flutter_textfield_search
+https://pub.dev/packages/selection_menu
+https://pub.dev/packages/easy_search
+https://pub.dev/packages/material_floating_search_bar
+https://pub.dev/packages/flutter_search_bar
+https://pub.dev/packages/search_app_bar
+https://pub.dev/packages/search_widget
+
+
+# ^ highlight, clickable, rich
+https://pub.dev/packages/substring_highlight
+https://pub.dev/packages/dynamic_text_highlighting
+https://pub.dev/packages/flutter_linkify
+https://pub.dev/packages/simple_rich_text
+https://pub.dev/packages/linkwell
+https://pub.dev/packages/extended_text
+
+
+# Toast,
+https://pub.dev/packages/flutter_easyloading
+https://pub.dev/packages/utopic_toast
+https://pub.dev/packages/dropdown_banner
+
+
+# Dialog, popup, alert
+https://pub.dev/packages/cool_alert                     ** (+flare, lottie)
+https://pub.dev/packages/sweetsheet                     **
+https://pub.dev/packages/flutter_awesome_alert_box      *
+https://pub.dev/packages/awesome_dialog                 * (+icon anim)
+https://pub.dev/packages/adaptive_dialog                *
+https://pub.dev/packages/flutter_animated_dialog        *  (in-out anim)
+https://pub.dev/packages/flutter_beautiful_popup            (colored full)
+https://github.com/xsahil03x/giffy_dialog               * (+image, gif)
+https://pub.dev/packages/ndialog
+https://pub.dev/packages/rflutter_alert                 - oldUsed
+https://pub.dev/packages/aesthetic_dialogs              (colored full)
+https://pub.dev/packages/sup
+
+
+    {#rflutter_alert: ^1.1.0              # https://pub.dev/packages/rflutter_alert
+   #cool_alert: ^1.0.3                  # [isEdited] https://pub.dev/packages/cool_alert
+   #flutter_awesome_alert_box: ^1.0.1   # https://pub.dev/packages/flutter_awesome_alert_box
+     }
+
+# popup-Menu
+https://pub.dev/packages/circular_menu
+https://pub.dev/packages/spear_menu
+
+
+# country, currency
+https://pub.dev/packages/country_currency_chooser
+
+
+# video edit
+https://pub.dev/packages/tapioca
+
+
+# Timer
+https://pub.dev/packages/simple_timer                   * use  (View widget)
+https://pub.dev/packages/mccounting_text
+https://github.com/DizoftTeam/simple_count_down
+
+
+# Shape, clip
+https://pub.dev/packages/shape_of_view
+https://pub.dev/packages/clippy_flutter
+https://pub.dev/packages/flutter_custom_clippers
+https://github.com/jhomlala/roundedletter
+
+
+# loading
+https://pub.dev/packages/loading_indicator
+https://pub.dev/packages/loading_animations         * use
+
+
+# carousel, swiper
+https://pub.dev/packages/carousel_slider            * use
+https://pub.dev/packages/flutter_swiper
+https://pub.dev/packages/gooey_carousel
+https://pub.dev/packages/flutter_multi_carousel
+https://pub.dev/packages/stacked_card_carousel
+https://pub.dev/packages/flutter_carousel_slider    * 3D box
+https://pub.dev/packages/horizontal_card_pager
+
+
+# PageView
+https://pub.dev/packages/flutter_swiper
+
+
+#^ page-indicator
+https://pub.dev/packages/smooth_page_indicator          ***
+https://pub.dev/packages/page_view_indicator
+
+
+# bottom-navBar
+https://pub.dev/packages/bottom_navy_bar
+https://pub.dev/packages/google_nav_bar                     *
+https://pub.dev/packages/cool_nav                           **
+https://pub.dev/packages/persistent_bottom_nav_bar          **
+https://pub.dev/packages/bubbled_navigation_bar             ** + bag
+https://pub.dev/packages/flip_box_bar_plus
+https://pub.dev/packages/jumping_bottom_nav_bar             ** + bag
+https://pub.dev/packages/jumping_bottom_nav_bar_flutter
+https://pub.dev/packages/ss_bottom_navbar                       + sheet
+https://pub.dev/packages/rolling_nav_bar                    *
+https://pub.dev/packages/extended_navbar_scaffold           ** + sheet
+https://pub.dev/packages/titled_navigation_bar
+https://pub.dev/packages/animated_bottom_navigation_bar
+https://pub.dev/packages/bottom_animation                   *
+https://pub.dev/packages/flutter_snake_navigationbar
+https://pub.dev/packages/tx_navibar
+https://pub.dev/packages/bmnav
+https://pub.dev/packages/convex_bottom_bar
+https://pub.dev/packages/sidenavbar
+https://pub.dev/packages/fluid_bottom_nav_bar
+https://pub.dev/packages/navigation_dot_bar
+https://pub.dev/packages/custom_navigation_bar
+https://pub.dev/packages/navigationbar_bro
+https://pub.dev/packages/flashy_tab_bar
+
+
+# Tab-bar
+https://pub.dev/packages/flutter_colorful_tab           **
+https://pub.dev/packages/cupertino_tabbar
+https://pub.dev/packages/shifting_tabbar                **
+https://pub.dev/packages/flutter_tab_bar_no_ripple      *
+https://pub.dev/packages/tabbar_magic_indicator
+https://pub.dev/packages/tabbar
+https://pub.dev/packages/mok_tabbar_view
+
+
+#^ tab-indicator
+https://pub.dev/packages/bubble_tab_indicator
+https://pub.dev/packages/flutter_point_tab_bar
+
+
+#^ stepper-indicator
+https://pub.dev/packages/im_stepper     **
+https://pub.dev/packages/steps_indicator
+https://pub.dev/packages/step_progress_indicator
+
+
+# parallax
+https://pub.dev/packages/scrollytell
+https://pub.dev/packages/parallax_image
+
+
+# ListView
+https://pub.dev/packages/list_treeview
+https://pub.dev/packages/multi_select_item
+https://pub.dev/packages/easy_listview
+https://pub.dev/packages/lazy_load_scrollview
+https://pub.dev/packages/inview_notifier_list
+https://pub.dev/packages/azlistview
+https://pub.dev/packages/flutter_staggered_animations
+
+https://pub.dev/packages/grouped_list
+https://pub.dev/packages/group_list_view
+https://pub.dev/packages/sticky_headers
+https://pub.dev/packages/sliver_grouped_list
+
+^ load & refresh
+https://pub.dev/packages/pull_to_refresh                ***
+https://pub.dev/packages/flutter_refresh_loadmore       ***
+https://pub.dev/packages/flutter_easyrefresh/           **
+https://pub.dev/packages/draggable_scrollable_lock_at_top_sheet
+https://pub.dev/packages/liquid_pull_to_refresh
+
+^only load
+https://pub.dev/packages/loadany         *
+
+
+https://pub.dev/packages/scroll_snap_list
+
+
+# tile, swipe, switch
+https://pub.dev/packages/flutter_swipe_action_cell
+https://pub.dev/packages/list_tile_more_customizable
+https://pub.dev/packages/flutter_expanded_tile
+https://pub.dev/packages/list_tile_switch
+https://pub.dev/packages/cupertino_list_tile
+
+
+# SeekBar, rangeBar, slider
+https://pub.dev/packages/flutter_xlider
+https://pub.dev/packages/flutter_circular_slider
+https://pub.dev/packages/horizontal_picker
+
+
+# Camera
+https://pub.dev/packages/image_picker           * use
+https://pub.dev/packages/image_pickers
+https://pub.dev/packages/image_picker_gallery_camera
+https://pub.dev/packages/camera_ignore_kitkat
+https://pub.dev/packages/picker
+https://pub.dev/packages/christian_picker_image
+
+
+# text editor:
+https://pub.dev/packages/flutter_summernote
+https://pub.dev/packages/notus
+
+
+# state management
+https://pub.dev/packages/get
+https://pub.dev/packages/momentum
+
+
+# route
+https://pub.dev/packages/beamer
+https://pub.dev/packages/fluro
+
+
+
+# file/media picker:
+https://pub.dev/packages/file_picker                **native
+https://pub.dev/packages/file_picker_cross          **
+https://pub.dev/packages/media_picker_builder
+https://pub.dev/packages/flutter_file_dialog
+https://pub.dev/packages/filesystem_picker          *
+https://pub.dev/packages/gx_file_picker             *native
+
+
+# icon picker
+https://pub.dev/packages/flutter_iconpicker
+https://pub.dev/packages/icon_picker
+
+
+# save dialog
+https://pub.dev/packages/file_saver
+
+
+# Permission:
+https://pub.dev/packages/permission_handler
+https://pub.dev/packages/easy_permission_validator
+
+
+# mime
+https://pub.dev/packages/open_file
+
+
+# net, webSocket
+https://pub.dev/packages/web_socket_channel             * use
+https://pub.dev/packages/dio                            * use
+https://pub.dev/packages/connectivity                   * use
+
+
+# event, observer
+https://pub.dev/packages/event_bus
+
+
+# whats new, update
+https://github.com/anderscheow/whats_new
+https://pub.dev/packages/flutter_whatsnew
+
+
+# duration_picker
+https://pub.dev/packages/flutter_duration_picker
+
+
+
+# DatePicker, calendar
+https://pub.dev/packages/jalali_calendar                    * use
+https://pub.dev/packages/persian_datetime_picker
+https://flutterawesome.com/a-persian-farsi-datepicker-for-flutter/
+https://pub.dev/packages/persian_datepicker
+https://pub.dev/packages/shamsi_date
+https://pub.dev/packages/flutter_datetime_picker     multi-lang
+https://pub.dev/packages/customizable_date_picker
+https://pub.dev/packages/hijri_picker
+https://pub.dev/packages/date_range_picker
+https://pub.dev/packages/table_calendar
+
+
+# zoom
+https://pub.dev/packages/flutter_zoom_box          **
+https://pub.dev/packages/photo_view                 ***
+https://pub.dev/packages/extended_image             ** +Edit
+https://pub.dev/packages/interactiveviewer_gallery
+
+
+# Chat
+https://pub.dev/packages/flutter_chat_bubble
+https://pub.dev/packages/bubble
+https://pub.dev/packages/chat_bubbles
+ https://pub.dev/packages/flutter_chat_bar
+https://pub.dev/packages/scroll_navigation
+
+
+# emoji
+https://pub.dev/packages/emoji_picker_flutter
+https://pub.dev/packages/flutter_emoji_suite
+https://pub.dev/packages/awesome_emojis
+https://pub.dev/packages/chat_pickers
+
+
+
+# Web view
+https://pub.dev/packages/webview_flutter
+https://pub.dev/packages/flutter_webview_plugin
+https://pub.dev/packages/flutter_inappwebview       ***
+https://pub.dev/packages/webview_flutter_plus
+https://pub.dev/packages/easy_web_view
+https://pub.dev/packages/flutter_web_view           [launchNative]
+https://pub.dev/packages/native_webview
+
+
+# Image view
+https://pub.dev/packages/ok_image                   ** loadWebImage
+https://pub.dev/packages/image
+https://pub.dev/packages/progressive_image          * loadWebImage, blur effect
+https://pub.dev/packages/photofilters
+https://pub.dev/packages/cached_network_image       *
+
+
+#^ Crop image:
+https://pub.dev/packages/image_crop_widget
+https://pub.dev/packages/simple_image_crop
+https://pub.dev/packages/image_cropper
+https://pub.dev/packages/edge_detection   {crop image rect}
+
+
+#^ resize,compress image:
+https://pub.dev/packages/flutter_image_compress         native *
+https://pub.dev/packages/pic                            *
+https://pub.dev/packages/image_native_resizer
+https://pub.dev/packages/flutter_image_utilities        native [resize]
+
+
+#^ edit image:
+https://pub.dev/packages/image_editor       {not with hand}  * use
+https://pub.dev/packages/image_editor_pro   {filter, text, emoji, paint}
+https://pub.dev/packages/extended_image
+
+
+#^ painter:
+https://pub.dev/packages/painter
+https://pub.dev/packages/painter2
+https://pub.dev/packages/flutter_draw
+https://pub.dev/packages/touchable
+https://github.com/ueman/feedback/tree/master/lib/src  ^ for education
+
+
+#^ remove background:
+https://pub.dev/packages/image_pixels
+
+
+#^ Image Filter:
+https://pub.dev/packages/photofilters
+
+
+# Image blur
+https://pub.dev/packages/blur
+https://pub.dev/packages/blurrycontainer        ***
+
+
+# Image vs String
+https://pub.dev/packages/identicon
+https://github.com/vintage/scratcher
+https://pub.dev/packages/enough_ascii_art
+https://pub.dev/packages/image_in_text
+https://pub.dev/packages/juxtapose
+
+
+# ^ hash, blur
+https://pub.dev/packages/blurhash_dart          **
+https://pub.dev/packages/blurhash               * native
+https://pub.dev/packages/flutter_blurhash
+https://github.com/hsch/blurhash-java
+
+
+# Link, file
+https://pub.dev/packages/uni_links
+
+
+# blobs
+https://pub.dev/packages/blobs
+https://github.com/lpongetti/bubble_chart
+
+
+# format, converter
+https://pub.dev/packages/numeral
+https://pub.dev/packages/jiffy              *use
+
+
+# compress
+https://pub.dev/packages/light_compressor   * video
+
+
+# Future, Isolate
+https://pub.dev/packages/maybe_slow_future
+https://pub.dev/packages/executorservices
+
+
+# Letter, Circle
+https://github.com/jhomlala/roundedletter
+
+
+# barcode, ocr
+https://pub.dev/packages/barcode
+https://pub.dev/packages/flutter_tencent_ocr
+https://pub.dev/packages/ocrkit
+
+
+# screenShot, capture
+https://pub.dev/packages/share_files_and_screenshot_widgets
+https://pub.dev/packages/native_screenshot
+https://pub.dev/packages/screenshot_share2
+https://github.com/agajo/screenshot_maker
+
+
+# record screen
+https://pub.dev/packages/flutter_screen_recording       ^native, and:21+  ios:10+
+https://pub.dev/packages/flutter_screen_recorder
+
+
+# border, dot, dash
+https://pub.dev/packages/dashed_container
+https://pub.dev/packages/dotted_decoration
+
+
+# graphic
+https://pub.dev/packages/clay_containers
+https://pub.dev/packages/matrix4_transform
+https://pub.dev/packages/image_pixels
+
+
+# button shortcut
+https://pub.dev/packages/system_shortcuts
+
+
+# selectable
+https://pub.dev/packages/selectable_container
+https://pub.dev/packages/smart_select               ** (switch, choice, ...) use
+https://pub.dev/packages/multiselect_formfield
+https://pub.dev/packages/search_choices             ** use
+https://pub.dev/packages/grouped_buttons
+https://pub.dev/packages/selection_menu             **
+https://pub.dev/packages/flutter_settings_screens
+https://pub.dev/packages/card_settings              *
+
+
+# game
+https://pub.dev/packages/pogo
+
+
+# database
+https://pub.dev/packages/hive                   **
+https://pub.dev/packages/database               ***
+https://pub.dev/packages/objectdb               **      objectdb: ^1.2.1
+https://pub.dev/packages/sqflite                ***     sqflite: 2.0.0+3
+
+
+# tag
+https://pub.dev/packages/flutter_tags           * use
+https://pub.dev/packages/flutter_tagging
+https://pub.dev/packages/material_tag_editor
+
+
+# PDF
+https://pub.dev/packages/pdf_render                     **[pageView] API 21+
+https://pub.dev/packages/advance_pdf_viewer             *
+https://pub.dev/packages/flutter_cached_pdfview         [native]
+https://pub.dev/packages/native_pdf_view                **[native]  API 21+
+
+
+# Locale,Language
+https://pub.dev/packages/easy_localization
+
+
+
+--------
+https://pub.dev/packages/horizontal_blocked_scroll_physics
+https://github.com/dartsidedev/whatsapp_unilink/blob/master/example/dart/whatsapp_unilink_example.dart
+https://pub.dev/packages/multiple_select
+
+https://pub.dev/packages/flutter_hooks
+
+https://pub.dev/packages/getwidget   manyWidget
+
+====================================================================================================================
+====================================================================================================================
+Web:
+
+https://pub.dev/packages/universal_html
+https://pub.dev/packages/file_picker_cross
+https://pub.dev/packages/responsive_ui
+https://pub.dev/packages/dialog
+https://pub.dev/packages/flutter_markdown
+
+====================================================================================================================
+"E:\SUPPORT\Sys Tools\Support\Java\jdk-14.0.1\bin\java" -jar G:\Programming\IdeaProjects\Platform\out\artifacts\Platform_jar\Platform.jar
+====================================================================================================================
+
+zoom_widget
+yaml
+xdg_directories
+win32
+watcher
+video_player-0.10.6
+usage
+timing-0.1.1+2
+string_scanner
+sse-3.2.1
+shrine_images-1.1.2
+signature-3.2.0
+shelf-0.7.5
+scratch_space-0.0.4+2
+screenshot-0.1.1
+ search_choices-1.0.17
+quiver-2.1.3
+scoped_model-1.0.1
+pub_semver-1.4.4
+protobuf-1.0.1
+process-3.0.13
+pool-1.4.0
+petitparser-2.4.0
+pedantic-1.9.0
+octo_image-0.2.1
+nested-0.0.4
+node_interop-1.0.3
+node_io-1.0.1+2
+mustache_template-1.0.0+1
+mockito-4.1.1
+matcher-0.12.6
+image-2.1.12
+image_gallery_saver-1.6.5
+glob-1.2.0
+flutter_colorpicker-0.3.4
+flutter_cache_manager-1.4.2
+flutter_blurhash-0.5.0
+fixnum-0.10.11
+e2e-0.4.0
+coverage-0.13.9
+clock-1.0.1
+bazel_worker-0.1.23+1
+boolean_selector-2.0.0
+analyzer-0.39.4

@@ -1,0 +1,196 @@
+================================================================================================================
+Listener:
+
+Listener(
+  onPointerUp: (_) {
+    FocusScopeNode currentFocus = FocusScope.of(context);
+    if (!currentFocus.hasPrimaryFocus && currentFocus.focusedChild != null) {
+      currentFocus.focusedChild.unfocus();
+    }
+  },
+  child:...
+)
+================================================================================================================
+GestureDetector:
+
+GestureDetector(
+    behavior: HitTestBehavior.translucent,
+    onTap: (){
+        AppThemes.applyTheme(t);
+    },
+  child:...
+)
+================================================================================================================
+IgnoredPointer , AbsorbPointer:
+
+Stack(
+  alignment: Alignment.center,
+  children: [
+     Container(color: Colors.red),
+     Container(width: 42, height: 42, color: Colors.blue),
+  ],
+)
+
+* By default tapping the blue square will send a click event on blue and red gets nothing.
+* if wrapping blue square into an AbsorbPointer that when tapping the blue square, no blue no red gets the click event.
+* If wrapping by IgnorePointer, the red square would receive click events when tapping the blue square.
+
+
+- AbsorbPointer send event to parent.
+- IgnorePointer send event to under box even if that not parent [like stack children]
+================================================================================================================
+Ink:
+
+- InkWell
+
+InkWell(
+    onTap:() => forgetPasswordBtn(state),
+    child:...
+)
+================================================================================================================
+Button:
+
+FlatButton(
+    onPressed: (){},
+)
+================================================================================================================
+AllowMultiple:
+
+class AllowMultipleGestureRecognizer extends TapGestureRecognizer {
+
+  @override
+  void rejectGesture(int pointer) {
+    acceptGesture(pointer);
+  }
+}
+
+https://gist.github.com/Nash0x7E2/08acca529096d93f3df0f60f9c034056
+
+*************************************************************************************************************
+*************************************************************************************************************
+
+GestureDetector:
+----------------
+
+Seek video:
+
+GestureDetector(
+  behavior: HitTestBehavior.translucent,
+  behavior: HitTestBehavior.opaque,
+  child: widget.child,
+
+  onHorizontalDragStart: (DragStartDetails details) {
+    if (!controller.value.initialized) {
+      return;
+    }
+    _controllerWasPlaying = controller.value.isPlaying;
+    if (_controllerWasPlaying) {
+      controller.pause();
+    }
+  },
+
+  onHorizontalDragUpdate: (DragUpdateDetails details) {
+    if (!controller.value.initialized) {
+      return;
+    }
+    seekToRelativePosition(details.globalPosition);
+  },
+
+  onHorizontalDragEnd: (DragEndDetails details) {
+    if (_controllerWasPlaying) {
+      controller.play();
+    }
+  },
+
+  onTapDown: (TapDownDetails details) {
+    if (!controller.value.initialized) {
+      return;
+    }
+    seekToRelativePosition(details.globalPosition);
+  },
+);
+}
+================================================================================================================
+
+GestureDetector(
+    behavior: HitTestBehavior.translucent,
+    onTap: () {
+        ...
+    },
+    child: Icon(Icons.bluetooth));
+ )
+
+
+
+ GestureDetector(
+     onTap: () => _openImage(context),
+     child: Container(
+       width: 340.0,
+       foregroundDecoration: new BoxDecoration(
+           color: Color.fromRGBO(155, 85, 250, 0.55)),
+       height: 240.0,
+       child: FadeInImage.assetNetwork(
+         placeholder: 'assets/dimlight.png',
+         image: post.imageUrl,
+         fit: BoxFit.cover,
+       ),
+     ),
+   ),
+*************************************************************************************************************
+*************************************************************************************************************
+
+
+
+
+
+
+*************************************************************************************************************
+if(event.logicalKey != null && event.logicalKey.keyId == KEY_ENTER){
+      final renderObject = context.findRenderObject();
+      if(renderObject is RenderBox){
+        // Get the currently focused node.
+        FocusNode focusedNode = node.enclosingScope.children.first.children.where((node) => node.hasFocus).first;
+
+        // Get a list of elements at the focused node's coordinates
+        BoxHitTestResult result = BoxHitTestResult();
+        renderObject.hitTest(result, position: focusedNode.rect.center);
+
+        // Call handleEvent on that pointer event.
+        result.path.forEach((entry){
+          print(entry.target.runtimeType);
+
+          if(entry.target is RenderSemanticsGestureHandler){
+            var target = entry.target as RenderSemanticsGestureHandler;
+            if(event is RawKeyDownEvent) target.onTap();
+          }
+        });
+
+      }
+      return true;
+    }
+
+    if(event is RawKeyDownEvent){
+      if(event.logicalKey == LogicalKeyboardKey.arrowUp){
+        node.focusInDirection(TraversalDirection.up);
+        return true;
+      }
+
+      if(event.logicalKey == LogicalKeyboardKey.arrowDown){
+        node.focusInDirection(TraversalDirection.down);
+        return true;
+      }
+
+      if(event.logicalKey == LogicalKeyboardKey.arrowLeft){
+        node.focusInDirection(TraversalDirection.left);
+        return true;
+      }
+
+      if(event.logicalKey == LogicalKeyboardKey.arrowRight){
+        node.focusInDirection(TraversalDirection.right);
+        return true;
+      }
+    }
+
+    return false;
+  }
+*************************************************************************************************************

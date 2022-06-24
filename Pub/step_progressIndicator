@@ -1,0 +1,27 @@
+=============================================================================================
+step_progress_indicator: ^1.0.1     https://pub.dev/packages/step_progress_indicator
+
+cell - cell - cell ...
+=============================================================================================
+Directionality(
+        textDirection: TextDirection.ltr,
+        child: StepProgressIndicator(
+          totalSteps: 100,
+          currentStep: 90,
+          direction: Axis.horizontal,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          stepMainAxisAlignment: MainAxisAlignment.spaceBetween,
+          size: 8,
+          unselectedSize: 6,
+          padding: 0,
+          selectedColor: AppThemes.themeData.primaryColor,
+          unselectedColor: AppThemes.currentTheme.inactiveTextColor,
+          roundedEdges: Radius.circular(10),
+          /*selectedGradientColor: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [Colors.yellowAccent, Colors.deepOrange],
+          ),*/
+        ),
+      ),
+=============================================================================================

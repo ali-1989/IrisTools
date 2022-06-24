@@ -1,0 +1,34 @@
+include: package:flutter_lints/flutter.yaml
+
+# after change this file, must reAnalysis dart.
+
+linter:
+  rules:
+    prefer_const_constructors: false # const in new instance
+    prefer_const_constructors_in_immutables: false
+    prefer_const_declarations: false  # const in class constructor
+    prefer_const_literals_to_create_immutables: false
+    # https://dart-lang.github.io/linter/lints/avoid_classes_with_only_static_members.html
+    avoid_classes_with_only_static_members: false
+    prefer_single_quotes: true
+    file_names: false
+    empty_catches: false
+    #library_names: false
+    #avoid_print: false
+
+
+analyzer:
+  errors:
+    prefer_single_quotes: error
+
+
+
+
+
+#------------------------------------------------------------
+# for single >  add [ignore: non_constant_identifier_names] in file header
+# for all >     add [non_constant_identifier_names: false] here
+#------------------------------------------------------------
+# https://dart.dev/tools/linter-rules
+# https://dart-lang.github.io/linter/lints/index.html
+# https://dart.dev/guides/language/analysis-options

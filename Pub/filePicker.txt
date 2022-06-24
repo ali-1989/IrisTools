@@ -1,0 +1,40 @@
+==============================================================================================
+Single file:
+
+FilePickerResult result = await FilePicker.platform.pickFiles();
+
+if(result != null) {
+   File file = File(result.files.single.path);
+} else {
+   // User canceled the picker
+}
+------------------------------------------------------------------------------------------------
+Multiple files:
+
+FilePickerResult result = await FilePicker.platform.pickFiles(allowMultiple: true);
+
+if(result != null) {
+   List<File> files = result.paths.map((path) => File(path)).toList();
+} else {
+   // User canceled the picker
+}
+Multiple files with extension filter
+
+==============================================================================================
+FilePickerResult result = await FilePicker.platform.pickFiles(
+          type: FileType.custom,
+          allowedExtensions: ['jpg', 'pdf', 'doc'],
+        );
+
+FilePickerResult result = await FilePicker.platform.pickFiles();
+
+if(result != null) {
+   PlatformFile file = result.files.first;
+
+   print(file.name);
+   print(file.bytes);
+   print(file.size);
+   print(file.extension);
+   print(file.path);
+}
+==============================================================================================

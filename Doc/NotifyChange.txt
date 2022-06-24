@@ -1,0 +1,143 @@
+====================================================================================================
+Link & Help:
+
+# Best for StreamController, RxDart, BLoC:
+    https://www.didierboelens.com/2018/08/reactive-programming-streams-bloc/
+    https://medium.com/flutter-community/reactive-programming-streams-bloc-6f0d2bd2d248
+
+====================================================================================================
+Notifiers:
+
+ValueListenable
+ValueListenableBuilder
+
+ValueNotifier
+ChangeNotifier
+====================================================================================================
+ValueListenableBuilder:         [Widget]
+
+
+ValueNotifier<double> updater = ValueNotifier(0.0);
+
+ValueListenableBuilder<double>(
+  valueListenable: updater,
+  builder: (context, value, child) {
+    return Positioned(
+        top: 0,
+        left: value,
+        child: SizedBox()
+    );
+  }
+),
+
+
+for update:
+    updater.value = w + 5;
+====================================================================================================
+ValueNotifier:      [class ValueNotifier<T> extends ChangeNotifier implements ValueListenable<T>]
+
+ValueNotifier vf = ValueNotifier(0);
+vf.addListener(() {... vf.value});
+vf.addListener(() {... vf.value});
+
+vf.value = 1;
+====================================================================================================
+
+
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+
+====================================================================================================
+ChangeNotifier:
+
+
+class CartModel extends ChangeNotifier {
+  final List<Item> _items = [];
+  UnmodifiableListView<Item> get items => UnmodifiableListView(_items);
+  int get totalPrice => _items.length * 42;
+
+  void add(Item item) {
+    _items.add(item);
+
+    notifyListeners();
+  }
+
+
+  void removeAll() {
+    _items.clear();
+
+    notifyListeners();
+  }
+}
+=============================================================================================================
+StreamController:
+
+class ParentWidget extends StatefulWidget {
+  @override
+  _ParentWidgetState createState() => _ParentWidgetState();
+}
+
+class _ParentWidgetState extends State<ParentWidget> {
+  final changeNotifier = new StreamController.broadcast();
+
+  @override
+  void dispose() {
+    changeNotifier.close();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return new Column(
+      children: <Widget>[
+        new AnotherWidget(
+          shouldTriggerChange: changeNotifier.stream,
+        ),
+        new RaisedButton(
+          child: new Text("data"),
+          onPressed: () => changeNotifier.sink.add(null),
+        )
+      ],
+    );
+  }
+}
+
+class AnotherWidget extends StatefulWidget {
+  final Stream shouldTriggerChange;
+
+  AnotherWidget({@required this.shouldTriggerChange});
+
+  @override
+  _AnotherWidgetState createState() => _AnotherWidgetState();
+}
+
+class _AnotherWidgetState extends State<AnotherWidget> {
+  StreamSubscription streamSubscription;
+
+  @override
+  initState() {
+    super.initState();
+    streamSubscription = widget.shouldTriggerChange.listen((_) => someMethod());
+  }
+
+  @override
+  didUpdateWidget(AnotherWidget old) {
+    super.didUpdateWidget(old);
+    // in case the stream instance changed, subscribe to the new one
+    if (widget.shouldTriggerChange != old.shouldTriggerChange) {
+      streamSubscription.cancel();
+      streamSubscription = widget.shouldTriggerChange.listen((_) => someMethod());
+    }
+  }
+
+  @override
+  dispose() {
+    super.dispose();
+    streamSubscription.cancel();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container();
+  }
+}
+=============================================================================================================

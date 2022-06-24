@@ -1,0 +1,84 @@
+===============================================================================================================
+FadeInImage.assetNetwork(placeholder: null, image: null, ),
+
+===============================================================================================================
+Image.network(Settings.generateUrl(ce['Path']),
+  width: 70,
+  height: 100,
+  fit: BoxFit.fill,
+  ),
+===============================================================================================================
+3Party:
+
+OKImage(
+    url: Settings.generateUrl(ce['Path']),
+    followRedirects: true,
+    width: 70,
+    height: 100,
+    loadingWidget: Settings.getLoadingProgressView(),
+    errorWidget: (e){},
+    retry: 3,
+    timeout: Duration(seconds: 20),
+    fit: BoxFit.fill,
+    ),
+===============================================================================================================
+child: SwitchView(
+  controller: imageSwitcher,
+  switchBuilder: (ctx, item){
+    switch(item){
+      case 'image':
+        return Image(
+          image: null,
+          width: 60,
+          height: 100,
+          fit: BoxFit.fill,
+        );
+    default:
+      return SizedBox(
+        width: 60,
+        height: 100,
+        child: ColoredBox(
+          color: AppThemes.currentTheme.accentColor.withAlpha(100),
+          child: Center(
+            child: Icon(Icons.broken_image, size: 50,),
+          ),
+        ),
+      );
+    }
+  },
+)
+===============================================================================================================
+Refresh(
+    controller: controller,
+    childBuilder: (ctx, c){
+
+      if(c.widgetValue() != null){
+        return GestureDetector(
+          onTap: (){
+            AppNavigator.pushNextPage(state.context,
+                ImageFullScreen(ce['CertificateId'].toString(), c.widgetValue()));
+          },
+          child: Hero(
+            tag: ce['CertificateId'].toString(),
+            child: Image.file(c.widgetValue(),
+              width: double.infinity,
+              height: double.infinity,
+              fit: BoxFit.fill,),
+          ),
+        );
+      }
+      else if(c.errorOccurred){
+        return ColoredBox(
+              color: Colors.black.withAlpha(100),
+              child: Center(child: Icon(Icons.broken_image, size: 60.0,))
+        );
+      }
+      else{
+        return  ColoredBox(
+            color: Colors.black.withAlpha(100),
+            child: Center(child: Settings.getLoadingProgressView()),
+        );
+      }
+    },
+    ),
+===============================================================================================================

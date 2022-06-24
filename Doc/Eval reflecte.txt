@@ -1,0 +1,30 @@
+====================================================================================================
+Link & Help:
+
+    https://stackoverflow.com/questions/13585082/how-do-i-execute-dynamically-like-eval-in-dart
+    https://iiro.dev/2019/08/15/how-to-eval-in-dart/
+    https://github.com/cowboyd/flutterscript
+====================================================================================================
+import 'dart:mirrors';
+
+class MyClass {
+  tappedNext() {
+    print('Next Function');
+  }
+
+  tappedPrevious() {
+    print('Previous Function');
+  }
+}
+
+
+void main() {
+  final clazz = MyClass();
+  final mirror = reflect(clazz);
+
+  final function = 'Next';
+
+  Symbol s = Symbol('tapped$function');
+  mirror.invoke(s, []).reflectee;
+}
+====================================================================================================

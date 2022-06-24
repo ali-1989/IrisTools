@@ -1,0 +1,275 @@
+====================================================================================================
+Link & Help:
+
+    - https://medium.com/flutter/slivers-demystified-6ff68ab0296f           **
+    - https://flutter.dev/docs/cookbook/lists/floating-system-bar
+    - https://medium.com/@diegoveloper/flutter-collapsing-toolbar-sliver-system-bar-14b858e87abe
+
+# collapse toolbar (silver):
+    https://www.filledstacks.com/snippet/collapsable-toolbar-in-flutter-using-slivers/
+
+# Silver + ImageBackground + TabBar:
+
+    https://medium.com/@diegoveloper/flutter-collapsing-toolbar-sliver-system-bar-14b858e87abe
+====================================================================================================
+Samples:
+
+CustomScrollView(
+    slivers: <Widget>[
+
+        /// system bar
+        SliverAppBar(
+            floating: false,
+            pinned: true,
+            expandedHeight: AppSizes.size(30),
+            centerTitle: true,
+            actions: <Widget>[
+                (ModalRoute.of(state.context)?.canPop ?? false)?
+                IconButton(
+                    onPressed: () => onBack(state),
+                    icon: (Platform.isAndroid) ?
+                    Icon(Icons.arrow_back, textDirection: AppThemes.getOppositeDirection(),) :
+                    Icon(Icons.arrow_back_ios, textDirection: AppThemes.getOppositeDirection(),),
+                )
+                        : SizedBox(height: 0, width: 0,),
+            ],
+            flexibleSpace:
+            FlexibleSpaceBar(
+                title: Text(AppManager.appLocalize.getCapitalize('register')),
+                collapseMode: CollapseMode.pin,
+                stretchModes: [StretchMode.fadeTitle],
+                background: Container(
+                    decoration: BoxDecoration(
+                        gradient: RadialGradient(center: Alignment.topLeft,radius: 1.3,
+                                colors: [AppThemes.currentTheme.primarySwatch[200],
+                                    AppThemes.currentTheme.primarySwatch[500],
+                                    AppThemes.currentTheme.primarySwatch[800],
+                        ])
+                    ),
+                ),
+            ),
+
+        ),
+
+
+        /// body
+        SliverList(
+            delegate: SliverChildBuilderDelegate(
+                        (context, index) => ListTile(title: Text('Item #$index')),
+                childCount: 20,
+            ),
+        )
+    ]
+),
+====================================================================================================
+CustomScrollView(
+  slivers: [
+    SliverList(
+      delegate: SliverChildListDelegate(
+          [
+            SizedBox(height: 20,),
+            Row(
+              children: [
+                Text('${tInMap('foodProgramScreen', 'writeNameOfMealPlan')}').subAlpha(),
+              ],
+            ),
+          ]
+      ),
+    ),
+
+    SliverReorderableList(
+      itemCount: foodProgram.mealList.length,
+      itemBuilder: (ctx, idx){
+        return genReOrderList(idx);
+      },
+      onReorder: (int oldIndex, int newIndex){
+      },
+    ),
+  ],
+);
+====================================================================================================
+SliverToBoxAdapter:
+
+SliverToBoxAdapter(
+  child: ReorderableListView(
+    shrinkWrap: true,
+    children: getReOrderList(),
+    onReorder: (int oldIndex, int newIndex){
+
+      if(newIndex >= foodProgram.mealList.length){
+        newIndex--;
+      }
+
+      var item = foodProgram.mealList.removeAt(oldIndex);
+      foodProgram.mealList.insert(newIndex, item);
+
+      multiController.updateMain();
+    },
+  ),
+)
+====================================================================================================
+Horizontal list in Sliver:
+
+
+Scaffold(
+  body: CustomScrollView(
+
+    slivers: <Widget>[
+      SliverPadding(
+        padding: EdgeInsets.all(16.0),
+        sliver: SliverList(
+          delegate: SliverChildListDelegate(
+            [
+              Card(
+                child: Text('data1'),
+              ),
+              Card(
+                child: Text('data2'),
+              ),
+              Card(
+                child: Text('data3'),
+              ),
+              Card(
+                child: Text('data4'),
+              ),
+            ],
+          ),
+        ),
+      ),
+
+      //----------- Horizontal
+      SliverToBoxAdapter(
+        child: Container(
+          height: 100.0,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: 10,
+            itemBuilder: (context, index) {
+              return Container(
+                width: 100.0,
+                child: Card(
+                  child: Text('data'),
+                ),
+              );
+            },
+          ),
+        ),
+      ),
+    ],
+  ),
+);
+====================================================================================================
+
+CustomScrollView(
+  reverse: false,
+  anchor: 0.0,
+
+  slivers: <Widget>[
+
+    ///------ top section
+    SliverPadding(
+      padding: EdgeInsets.all(8),
+      sliver: SliverToBoxAdapter(
+        child: SizedBox(
+          //height: 120,
+          child: ColoredBox(color: Colors.green,),
+        ),
+      ),
+    ),
+
+
+    ///------ body
+    SliverList(
+      delegate: SliverChildBuilderDelegate(
+            (context, index) => ListTile(title: Text('Item #$index')),
+        childCount: 20,
+      ),
+    )
+  ]
+);
+====================================================================================================
+* 2 list Delegate:
+
+
+SliverList(
+  delegate: SliverChildListDelegate([
+    SizedBox(),
+    SizedBox(),
+  ]),
+),
+-----------------------------
+SliverList(
+    delegate: SliverChildBuilderDelegate(
+                (context, index) => ListTile(title: Text('Item #$index')),
+        childCount: 20,
+    ),
+)
+====================================================================================================
+SliverPersistentHeader:
+
+
+SliverPersistentHeader( delegate: SliverAppBarDelegate()),
+
+
+class SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
+  final TabBar _tabBar;
+
+  SliverAppBarDelegate(this._tabBar);
+
+  @override
+  double get minExtent => _tabBar.preferredSize.height;
+
+  @override
+  double get maxExtent => _tabBar.preferredSize.height;
+
+  @override
+  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return Container(
+      color: Colors.white,
+      child: _tabBar,
+    );
+  }
+
+  @override
+  bool shouldRebuild(_SliverAppBarDelegate oldDelegate) {
+    return false;
+  }
+}
+====================================================================================================
+Stack(
+  children: [
+    ///___ Offstage
+    Offstage(child: getAppBarSilver(state),),
+]
+
+
+
+Widget getAppBarSilver(ManagerUsersScreenState state) {
+  return MeasureWidget(
+      onlyOnce: true,
+      onChange: (size) {
+        if(state.appBarHeight == null) {
+          state.appBarHeight = size.height;
+          state.update();
+        }
+      },
+
+      child: ...
+  );
+}
+
+
+return CustomScrollView(
+  anchor: 0.0,
+  controller: scrollController,
+  slivers: <Widget>[
+
+    SliverAppBar(
+      //pinned: true,
+      floating: true,
+      //snap: true,
+      leading: SizedBox(),
+      expandedHeight: state.appBarHeight?? 50,
+      flexibleSpace: FlexibleSpaceBar(background: getAppBarSilver(state)),
+    ),
+====================================================================================================

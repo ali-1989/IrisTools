@@ -1,0 +1,41 @@
+====================================================================================================
+innerFunction:
+
+
+void main() {
+  Function addTen = add(10);
+
+  print(addTen(5)); //15
+  print(add(10)(5)); //15
+}
+
+Function add(int a) {           // Function is out type
+    int innerFunction(b) {
+        return a + b;
+    }
+
+    return innerFunction;
+}
+====================================================================================================
+Function myFunction = () => print('hi');
+myFunction();
+
+Function myFunction2 = (val) {print('$val'); print('end');};
+myFunction2(10);
+
+void Function(Element element) myFunction3 = (element) { };
+myFunction3();
+
+// Function is out type
+Function myFunction4() {return ()=> print('hi');};
+myFunction4()();
+
+// [dynamic Function()] is out type
+dynamic Function() myFunction5() { return ()=> print('hi');};
+myFunction5()();
+
+// Function is out type
+Function Function(int x) myFunction = (x) { return ()=> print('x: ');};
+myFunction4()();
+
+====================================================================================================

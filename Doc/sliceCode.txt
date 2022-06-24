@@ -1,0 +1,16 @@
+========================================================================================
+ExpandablePanel(
+      theme: ExpandableThemeData(
+        iconPadding: EdgeInsets.zero,
+        headerAlignment: ExpandablePanelHeaderAlignment.center,
+        tapHeaderToExpand: true,
+        tapBodyToExpand: true,
+      ),
+      header: SizedBox(),
+      collapsed: Text('', softWrap: true, maxLines: 1, overflow: TextOverflow.ellipsis,),
+      expanded: Text(controller.model.description,
+        softWrap: true,
+        style: AppThemes.infoTextStyle(),
+      ),
+    )
+========================================================================================

@@ -1,0 +1,121 @@
+====================================================================================================
+Link & Help:
+
+    https://stackoverflow.com/questions/57131978/how-to-animate-alert-dialog-position-in-flutter
+    http://www.missionctrlgames.com/?p=168
+====================================================================================================
+Sample:
+
+Future<bool> showCloseDialog3(BuildContext context) async {
+  final opacityAnimation = Tween<double>(begin: 0.0, end: 1.0).chain(CurveTween(curve: Curves.easeIn));
+
+  var result = await showGeneralDialog(
+      context: context,
+      barrierDismissible: false,
+      barrierLabel: 'b1',
+      barrierColor: Colors.black.withOpacity(0.6),
+      transitionDuration: Duration(milliseconds: 400),
+      transitionBuilder: (ctx, anim1, anim2, child) => ScaleTransition(
+          child: child,
+          scale: opacityAnimation.animate(anim1),
+      ),
+      pageBuilder: (ctx, anim1, anim2) => WillPopScope(
+				onWillPop: () => Future<bool>.value(false),
+				child:Directionality(
+          textDirection: AppThemes.textDirection,
+          child: AlertDialog(
+              elevation: 5,
+              clipBehavior: Clip.none,
+              title: Text('آیا مطمئن هستید؟'),
+              content: new Text('Do you want to exit an App'),
+              actions: <Widget>[
+                new FlatButton(
+                  onPressed: () => Navigator.of(context).pop(false),
+                  child: new Text(
+                    'No',
+                    style: TextStyle(color: Colors.red),
+                  ),
+                ),
+                new FlatButton(
+                  onPressed: () => Navigator.of(context).pop(true),
+                  child: new Text('Yes'),
+                ),
+              ],
+            ),
+          ),
+			),
+  );
+
+  return result ?? false;
+}
+====================================================================================================
+Future<bool> showCloseDialog2(BuildContext context) async {
+  var result = await showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => Directionality(
+          textDirection: AppThemes.textDirection,
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
+            child: AlertDialog(
+              elevation: 0,
+              clipBehavior: Clip.none,
+              title: Text('آیا مطمئن هستید؟'),
+              content: new Text('Do you want to exit an App'),
+              actions: <Widget>[
+                new FlatButton(
+                  onPressed: () => Navigator.of(context).pop(false),
+                  child: new Text(
+                    'No',
+                    style: TextStyle(color: Colors.red),
+                  ),
+                ),
+                new FlatButton(
+                  onPressed: () => Navigator.of(context).pop(true),
+                  child: new Text('Yes'),
+                ),
+              ],
+            ),
+          )));
+
+  return result ?? false;
+}
+====================================================================================================
+Future<bool> showCloseDialog(BuildContext context) async {
+var result = await showDialog(
+  context: context,
+  barrierDismissible: false,
+  builder: (context) => Directionality(
+        textDirection: AppThemes.textDirection,
+        child: AlertDialog(
+          title: Text('آیا مطمئن هستید؟'),
+          content: new Text('Do you want to exit an App'),
+          actions: <Widget>[
+            new FlatButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: new Text(
+                'No',
+                style: TextStyle(color: Colors.red),
+              ),
+            ),
+            new FlatButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              child: new Text('Yes'),
+            ),
+          ],
+          /*actions: <Widget>[
+      new GestureDetector(
+        onTap: () => Navigator.of(context).pop(false),
+        child: Text("NO"),
+      ),
+      SizedBox(width: 20, height: 20),
+      new GestureDetector(
+        onTap: () => Navigator.of(context).pop(true),
+        child: Text("بله"),
+      ),
+    ]*/
+        ),
+      ));
+
+return result ?? false;
+====================================================================================================

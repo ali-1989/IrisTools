@@ -1,0 +1,159 @@
+=================================================================================================
+RefreshController _refreshController = RefreshController(initialRefresh: false);
+-------------------------------------------------
+void _onRefresh() async{
+    await Future....
+    // if failed,use refreshFailed()
+    _refreshController.refreshCompleted();
+  }
+-------------------------------------------------
+void _onLoading() async{
+    await Future....
+
+    // if failed,use loadFailed(),
+    // if no data return,use LoadNodata()
+
+    setState(() {});
+    _refreshController.loadComplete();
+  }
+-------------------------------------------------
+SmartRefresher(
+    enablePullDown: true,
+    enablePullUp: true,
+    header: WaterDropHeader(),
+    footer: CustomFooter(
+      builder: (BuildContext context,LoadStatus mode){
+        Widget body ;
+        if(mode==LoadStatus.idle){
+          body =  Text("pull up load");
+        }
+        else if(mode==LoadStatus.loading){
+          body =  CupertinoActivityIndicator();
+        }
+        else if(mode == LoadStatus.failed){
+          body = Text("Load Failed!Click retry!");
+        }
+        else if(mode == LoadStatus.canLoading){
+            body = Text("release to load more");
+        }
+        else{
+          body = Text("No more Data");
+        }
+        return Container(
+          height: 55.0,
+          child: Center(child:body),
+        );
+      },
+    ),
+    controller: _refreshController,
+    onRefresh: _onRefresh,
+    onLoading: _onLoading,
+    child: ListView.builder(
+      itemBuilder: (c, i) => Card(child: Center(child: Text(items[i]))),
+      itemExtent: 100.0,
+      itemCount: items.length,
+    ),
+  )
+=================================================================================================
+import 'package:pull_to_refresh/pull_to_refresh.dart' as pull;
+
+pull.RefreshConfiguration(
+      autoLoad: false,
+      enableBallisticRefresh: false,
+      enableBallisticLoad: false,
+      enableLoadingWhenFailed: true,
+      enableLoadingWhenNoData: false,
+      enableScrollWhenRefreshCompleted: false,
+      hideFooterWhenNotFull: true,
+      footerTriggerDistance: 15,
+      headerTriggerDistance: 80,
+      //maxOverScrollExtent: 20,
+      //maxUnderScrollExtent: 20,
+      child: pull.SmartRefresher(
+        controller: state.pullController,
+        scrollController: state.scrollController,
+        enablePullDown: state.hasMoreOnServer(),
+        enablePullUp: false,
+        enableTwoLevel: false,
+        primary: false,
+        scrollDirection: Axis.vertical,
+        //footer: pull.ClassicFooter(loadStyle: pull.LoadStyle.ShowWhenLoading,),
+        footer: pull.MaterialClassicHeader(),
+        header: pull.MaterialClassicHeader(),
+        onLoading: () {
+
+        },
+        onRefresh: () {
+          moreLoadUsers(state);
+        },
+        child: ListView.builder()
+=================================================================================================
+LoadStyle.ShowAlways
+LoadStyle.HideAlways
+LoadStyle.ShowWhenLoading
+    ClassicIndicator
+	WaterDropHeader
+	MaterialClassicHeader
+RefreshStyle.Behind
+RefreshStyle.Front
+RefreshStyle.Follow
+RefreshStyle.UnFollow
+
+=================================================================================================
+
+RefreshConfiguration(
+     headerBuilder: () => WaterDropHeader(),        // Configure the default header indicator. If you have the same header indicator for each page, you need to set this
+     footerBuilder:  () => ClassicFooter(),        // Configure default bottom indicator
+     headerTriggerDistance: 80.0,        // header trigger refresh trigger distance
+     springDescription:SpringDescription(stiffness: 170, damping: 16, mass: 1.9),         // custom spring back animate,the props meaning see the flutter api
+     maxOverScrollExtent :100, //The maximum dragging range of the head. Set this property if a rush out of the view area occurs
+     maxUnderScrollExtent:0, // Maximum dragging range at the bottom
+     enableScrollWhenRefreshCompleted: true, //This property is incompatible with PageView and TabBarView. If you need TabBarView to slide left and right, you need to set it to true.
+     enableLoadingWhenFailed : true, //In the case of load failure, users can still trigger more loads by gesture pull-up.
+     hideFooterWhenNotFull: false, // Disable pull-up to load more functionality when Viewport is less than one screen
+     enableBallisticLoad: true, // trigger load more by BallisticScrollActivity
+    child: MaterialApp(
+            ........
+        )
+    );
+=================================================================================================
+RefreshConfiguration(
+      footerTriggerDistance: 15,
+      dragSpeedRatio: 0.91,
+      headerBuilder: () => MaterialClassicHeader(),
+      footerBuilder: () => ClassicFooter(),
+      enableLoadingWhenNoData: false,
+      enableRefreshVibrate: false,
+      enableLoadMoreVibrate: false,
+      shouldFooterFollowWhenNotFull: (state) {
+        // If you want load more with noMoreData state ,may be you should return false
+        return false;
+      },
+      child: MaterialApp(
+        builder: (context, child) {
+          return ScrollConfiguration(
+            child: child,
+            behavior: RefreshScrollBehavior(),
+          );
+        },
+=================================================================================================
+
+**************************************************************************************************
+=================================================================================================
+ItemScrollController _scrollController = ItemScrollController();
+
+ScrollablePositionedList.builder(
+  itemScrollController: _scrollController,
+  itemCount: _myList.length,
+  itemBuilder: (context, index) {
+    return _myList[index];
+  },
+)
+
+_scrollController.scrollTo(index: 150, duration: Duration(seconds: 1));
+=================================================================================================
+Scrollable:
+
+    [https://stackoverflow.com/questions/49153087/flutter-scrolling-to-a-widget-in-listview]
+Scrollable.ensureVisible(dataKey.currentContext)
+=================================================================================================

@@ -1,0 +1,212 @@
+============================================================================================================
+Stateless Widget:
+
+- A stateless widget can only be drawn once when the Widget is loaded/built.
+  A stateless widget cannot be redrawn based on any events or user actions.(must rebuild)
+  We create a Stateless widget by extending our class from StatelessWidget.
+
+- StatelessWidgets are useful when the part of the user interface you are describing does not depend
+  on anything other than the initial configuration information in the widget.
+
+class DeveloperLibs extends StatelessWidget {
+   const DeveloperLibs ({ Key key }) : super(key: key);
+
+    @override
+    Widget build(BuildContext context) {
+      return Container(color: const Color(0xFF2DBD3A));
+    }
+}
+------------------------------------------------------------------------------------------------------
+Stateful Widget:
+
+The Stateful widget is mutable that's why it can be drawn multiple times within its lifetime.
+ It is useful when we dynamically update screen of system on user actions.
+ The build(...) method of state can be called multiple times during its lifetime
+ and every build may return new or different widgets.
+
+
+* When a Flutter framework builds a StatefulWidget,
+  it creates an object State. In this object, all the mutable state for that widget is held.
+  Some other Widgets will handle some inner data that will change during the Widget’s lifetime.
+
+* lifeCycle: https://www.developerlibs.com/2019/12/flutter-lifecycle-widgets.html
+
+
+class DeveloperLibsWidget extends StatefulWidget {
+     final parameter;
+
+     DeveloperLibsWidget({
+      Key key,
+      this.parameter,
+     }): super(key: key);
+
+     @override
+    _DeveloperLibsWidgetState createState() => _DeveloperLibsWidgetState();
+}
+
+class _DeveloperLibsWidgetState extends State<DeveloperLibsWidget > {
+     @override
+     void initState(){
+      super.initState();
+     }
+
+     @override
+     void didChangeDependencies(){
+      super.didChangeDependencies();
+     }
+
+     @override
+      void dispose(){
+       super.dispose();
+      }
+
+      @override
+      Widget build(BuildContext context){
+        return  return Container(color: const Color(0xFF2DBD3A));
+      }
+ }
+============================================================================================================
+Key:
+
+* if use a Key for StatefulWidget:
+    - if key change in any [rebuild parent/Refresh by parent]: (new Key())
+        * widget and state dispose and create a new.
+        * means: call [constructor() , createState() , createElement()] methods of StatefulWidget.
+                 and call [initState(), build()] methods of State.
+        * new Key == new Widget & State
+
+    - if key not change or is null:
+        * widget reBuild and state update.
+        * means: call [constructor()] methods of StatefulWidget.
+                 and call [didUpdateWidget(), build()] methods of State.
+
+
+
+* if use a Key for StatelessWidget:
+    - if key is null or key change in any [rebuild parent = Refresh by parent]:
+        * widget dispose and create a new.
+        * means: call [constructor() , build()] methods of StatelessWidget.
+
+    - if key not change:
+        * same of above.
+
+-----------
+* اگر برای یک ویجت از کلید استفاده کنیم و کلید هر بار تغییر کند یا جدید ایجاد شود، ویجت هر بار از نو ساخته می شود
+* اگر از کلید استفاده نشود یا کلید یک کلید ثابت باشد در هر رفرش  ابتدا متد  دیدآپدیت  صدا زده می شود و بعد متد  بیلد
+
+=====================================================================================================
+@override
+ProgressButtonState createState() {
+    var w = ProgressButtonState();
+    progressButtonController._progressButtonState = w;
+    return w;
+}
+=====================================================================================================
+@override
+StatefulElement createElement() {
+    return super.createElement();
+}
+=====================================================================================================
+* initState:
+
+@override
+void initState() {
+    super.initState();
+    ...
+}
+
+- called once before [build], is only in StatefulWidget.
+- this is call once o create state, no call on change rotation, ...
+============================================================================================================
+* build:
+
+@override
+Widget build(BuildContext context) {
+    return getScaffold(this);
+}
+
+- this is call any time, like: after initial, screen on/off, rotation, Navigator.push(),
+  rebuild by parent, ...
+- no call on back route to this from front Screen (Navigator.pop()).
+============================================================================================================
+* deactivate:
+
+@override
+Widget deactivate() {
+    super.deactivate();
+}
+
+- this is call when widget remove from tree but not dispose.
+============================================================================================================
+* didUpdateWidget:
+
+@override
+void didUpdateWidget(covariant SoundPlayerUI oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    ...
+}
+
+
+** Called whenever the widget configuration changes [when rebuild by parent].
+** Called whenever the widget configuration changes, [Note: widget , no state]
+   not create new state but call build.
+
+- The framework always calls [build] after calling [didUpdateWidget].
+- If the parent widget rebuilds and request that this location in the tree update
+  to display a new widget with the same (runtimeType and Widget.key),
+  the framework will update the widget property of this State object to refer to the new widget
+  and then call this method with the previous widget as an argument.
+
+- Override this method to respond when the widget changes (e.g., to start implicit animations).
+
+* if a State's build method depends on an object that can itself change state,
+  for example a ChangeNotifier or Stream,
+  or some other object to which one can subscribe to receive notifications, then be sure
+  to subscribe and unsubscribe properly in initState, didUpdateWidget, and dispose.
+=====================================================================================================
+* reassemble:         [only debugging mode]
+
+@override
+void reassemble() async {
+    super.reassemble();
+    ...
+}
+
+
+- Called whenever the application is reassembled during debugging, for example during hot reload.
+- This method should rerun any initialization logic that depends on global state,
+  for example, image loading from asset bundles (since the asset bundle may have changed).
+- This function will only be called during development. In release builds, the ext.flutter.reassemble hook is not available,
+  and so this code will never execute.
+
+- Implementers should not rely on any ordering for hot reload source update, reassemble,
+  and build methods after a hot reload has been initiated.
+  It is possible that a Timer (e.g. an Animation) or a debugging session attached to the isolate could trigger
+  a build with reloaded code before reassemble is called.
+  Code that expects preconditions to be set by reassemble after a hot reload must be resilient to being called out of order,
+  e.g. by fizzling instead of throwing. That said, once reassemble is called, build will be called after it at least once.
+
+- In addition to this method being invoked, it is guaranteed that the build method will be invoked when a reassemble is signaled.
+  Most widgets therefore do not need to do anything in the reassemble method.
+======================================================================================================
+* dispose:
+
+@override
+void dispose() {
+    super.dispose();
+}
+
+- called once on disposing.
+######################################################################################################
+
+
+
+keyword:
+
+
+covariant:
+- The covariant keyword was introduced in 1.22. It replaces the @checked annotation.
+- Fixing common type problems.
+
+[https://dart.dev/guides/language/sound-problems]
+========================================================================================================

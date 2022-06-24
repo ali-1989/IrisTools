@@ -1,0 +1,87 @@
+====================================================================================================
+FutureBuilder<dynamic>()
+StreamBuilder<dynamic>()
+ValueListenableBuilder:     builder: (context, int value, Widget child)
+
+typedef AsyncWidgetBuilder<T> = Widget Function(BuildContext context, AsyncSnapshot<T> snapshot);
+====================================================================================================
+return FutureBuilder(
+  future: fetchLocale(),                 // Return a Future<>
+
+  builder: (context, snapshot) {
+
+    switch (snapshot.connectionState) {
+      case ConnectionState.none:
+      case ConnectionState.waiting:
+        return CircularProgressIndicator();
+
+      case ConnectionState.done:            // on close/done future
+
+        if (snapshot.hasError) {
+          return Text('Error: ${snapshot.error}');
+        } else {
+          return MaterialApp();
+        }
+    }
+  },
+);
+====================================================================================================
+Sample:
+
+Widget getBySaveSetting(){
+	AppThemes.applyDefaultTheme();
+	GlobalKey futureKey = GlobalKey();
+	ConnectionState lastState = ConnectionState.none;
+	Widget lastWidget = Container();
+
+	return FutureBuilder<dynamic>(
+			key: futureKey,
+			initialData: false,
+			future: loadSettings,
+			builder: (context, snapshot) {
+				if(lastState == snapshot.connectionState)
+					return lastWidget;
+
+				lastState = snapshot.connectionState;
+
+				switch (snapshot.connectionState) {
+					case ConnectionState.none:
+					case ConnectionState.active:
+						break;
+					case ConnectionState.waiting:
+						lastWidget = Center(
+								child: Container(
+										width: 150,
+										height: 150,
+										child: CircularProgressIndicator()
+								)
+						);
+						break;
+					case ConnectionState.done:
+						if (snapshot.hasError) {
+							lastWidget = Text('Error: ${snapshot.error}',
+								style: TextStyle(color: Colors.red, fontSize: 25, fontWeight: FontWeight.bold),);
+						} else {
+							lastWidget = getByNewSettingManager();
+						}
+						break;
+				}
+
+				return lastWidget;
+			}
+			);
+}
+=============================================================================================================
+=============================================================================================================
+StreamBuilder:
+
+    https://medium.com/@sidky/using-streambuilder-in-flutter-dcc2d89c2eae
+    https://stackoverflow.com/questions/60487025/flutter-streambuilder-refresh
+------------------------------------------------------------------------------------
+return StreamBuilder<bool>(
+    initialData: false,
+    stream: AppThemes.themeChanger.stream,      // StreamController<bool> themeChanger = StreamController();
+    builder: (context, snapshot) {
+      return getMaterialApp();
+    });
+====================================================================================================

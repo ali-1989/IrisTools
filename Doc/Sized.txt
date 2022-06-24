@@ -1,0 +1,128 @@
+=========================================================================================================
+Help & Site:
+
+    https://mrflutter.com/sizing-widgets-relative-to-parent-screen-size-in-flutter/
+	https://www.youtube.com/watch?v=aVZ5rsA4Yx8      indian: Sizedbox()
+
+* همه ی ویجت های سایز ، روی فرزند خود اعمال محدودیت می کنند
+* A parent widget's constraints trump its child's constraints.
+* محدودیت های یک ابزارک والدین بر محدودیت های فرزند خود غلبه می کند .
+=========================================================================================================
+ConstrainedBox:    (محدودیت ها)
+
+* A widget that imposes additional constraints on its child.
+* set (min and max) size for child.
+
+
+ConstrainedBox()
+
+ConstrainedBox(constraints: BoxConstraints(minWidth = 0.0, maxWidth = double.infinity))
+ConstrainedBox(constraints: BoxConstraints.loose(size))
+-------------------------------------------------------------
+UnconstrainedBox:   (or Align())
+
+* no constraints on its child, allowing it to render at its "natural" size.
+* If the box cannot expand enough to accommodate the entire child, the child will be clipped.
+* این ویجت اجازه نمی دهد فرزندش بزرگتر از اندازه ی واقعیش (توسط والیدن بالاتر) ، بزرگ شود
+* ویجتی که هیچ محدودیتی برای کودک خود ایجاد نمی کند و به او اجازه می دهد در اندازه "طبیعی" خود ارائه کند.
+
+** In debug mode:
+	if the child overflows the container, a warning will be printed on the console, 
+	and black and yellow striped areas will appear where the overflow occurs.
+
+** in UnconstrainedBox Vs FittedBox, Winner is FittedBox
+-------------------------------------------------------------
+Align:
+
+* ویجتی که فرزند خود را در داخل خودش تراز می کند و به صورت اختیاری بر اساس اندازه کودک اندازه می گیرد.
+=========================================================================================================
+SizedBox:
+
+* resize child Exactly to this size. (not bigger , not smaller)
+* The child's size may be changed by the other parents.
+* این ابزارک فرزند خود را مجبور می کند تا دارای عرض و یا ارتفاع مشخصی باشد
+ (با فرض اینکه مقادیر توسط والدین این ابزارک مجاز باشد).
+ اگر عرض یا ارتفاع تهی باشد ، این ابزارک سعی می کند اندازه خود را متناسب با اندازه کودک در آن بعد اندازه دهد.
+ اگر اندازه کودک به اندازه والد آن بستگی دارد ، باید قد و عرض آن را در نظر گرفت.
+* اگر فرزند نداشته باشد
+ ، سعی می کند با توجه به محدودیت های والدین ، ​​اندازه خود را تا حد امکان به قد و عرض مشخص شده نزدیک کند.
+ اگر ارتفاع یا عرض صفر یا نامشخص باشد ، با آن صفر برخورد می شود.
+
+
+SizedBox()
+SizedBox.expand()
+SizedBox.fromSize()
+SizedBox.shrink()           # small to parent allows
+
+FractionallySizedBox()
+SizedOverflowBox()
+
+SizedBox(with: double.infinity, height: double.infinity)   <=>   SizedBox.expand()
+=========================================================================================================
+LimitedBox:
+
+* set (max) size for child.
+* The child's size may be changed by the other parents.
+
+LimitedBox()
+=========================================================================================================
+OverflowBox:
+
+* allowing the child to overflow the parent.
+* set (min and max) size for child.
+
+
+OverflowBox()
+
+
+OverflowBox(
+    alignment : Alignment.center,
+    minWidth,
+    maxWidth,
+    minHeight,
+    maxHeight,)
+=========================================================================================================
+FittedBox:
+
+* resize child to fit with this. own size match by parent.
+* in UnconstrainedBox Vs FittedBox, Winner is FittedBox. and resize UnconstrainedBox.
+
+FittedBox()
+
+
+FittedBox(
+	alignment: Alignment.center,
+	fit: BoxFit.contain)
+=========================================================================================================
+Positioned:
+
+
+Positioned()
+Positioned.directional()
+=========================================================================================================
+scale:
+
+Transform.scale()
+=========================================================================================================
+
+
+
+
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+********************************  Fraction & percent  ***************************************************
+
+FractionallySizedBox:
+
+* resize child exact to this
+
+
+FractionallySizedBox(
+          heightFactor: 1.0,
+		  widthFactor: 0.5,
+          child:,)
+-------------------------------------------------------------------------------------
+FractionalTranslation:
+
+
+=========================================================================================================

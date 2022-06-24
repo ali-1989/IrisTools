@@ -1,0 +1,58 @@
+====================================================================================================
+state.multiController.addMainStateListener(onMainStateChange);
+
+void onMainStateChange(dynamic data){
+    switch (state.multiController.mainState){
+      case MultiController.state$normal:
+        break;
+      case MultiController.state$error:
+        break;
+      case MultiController.state$loading:
+        break;
+      case MultiController.state$netDisconnect:
+        break;
+      case MultiController.state$serverNotResponse:
+        break;
+      case MultiController.state$emptyData:
+        break;
+    }
+  }
+====================================================================================================
+void changeCurrentViewState(UserManagementScreenState state, String newState){
+  state.currentViewState = newState;
+
+  switch (newState){
+    case Keys.state$loading:
+      break;
+    case Keys.state$error:
+      break;
+    case Keys.state$normal:
+      break;
+    case Keys.state$serverNotResponse:
+      break;
+    case Keys.state$errorCommunicatingServer:
+      break;
+    case Keys.state$needLogin:
+      break;
+  }
+}
+====================================================================================================
+void tryAgain(BackupScreenState state){
+  changeBackupFilesState(state, Keys.state$loading);
+  fetchBackupFiles(state);
+
+  state.update();
+}
+
+void tryAgain(UserManagementScreenState state){
+  changeCurrentViewState(state, Keys.state$loading);
+  state.update();
+
+  requestUsers(state);
+}
+====================================================================================================
+void tryLogin(UserManagementScreenState state){
+  AppNavigator.replaceCurrentRoute(state.context, LoginScreen(), name: LoginScreen.screenName);
+  AppNavigator.pushNextPage(state.context, LoginScreen(), name: LoginScreen.screenName);
+}
+====================================================================================================

@@ -1,0 +1,15 @@
+=================================================================================================
+typedef:
+
+* must start by caps letter
+
+
+typedef VoidCallback = void Function();
+typedef FrameCallback = void Function(Duration duration);
+typedef void FnName(param);
+=================================================================================================
+Samples:
+
+typedef void OnWidgetSizeChange(Size size);
+typedef RefreshBuilder<T> = Widget Function(BuildContext context, RefreshController controller);
+=================================================================================================

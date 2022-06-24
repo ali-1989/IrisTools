@@ -1,0 +1,22 @@
+================================================================================================
+var o = Overlay.of(context);
+  var e = OverlayEntry(
+      builder: (context){
+        return Positioned(
+          bottom: 0,
+          left: 0,
+          right: 0,
+          child: SizedBox(
+            width: 300,
+            height: 200,
+            child: Text('gg'),
+          ),
+        );
+      });
+
+  o?.insert(e);
+
+  Timer(Duration(seconds: 5), (){
+    e.remove();
+  });
+================================================================================================

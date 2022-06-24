@@ -1,0 +1,70 @@
+======================================================================================================
+Help & Site:
+
+    https://www.digitalocean.com/community/tutorials/dart-mixins
+    https://medium.com/flutter-community/dart-what-are-mixins-3a72344011f3
+======================================================================================================
+Samples:
+
+mixin Swim {
+  void swim() => print('Swimming');
+}
+
+mixin Bite {
+  void bite() => print('Chomp');
+}
+
+mixin Crawl {
+  void crawl() => print('Crawling');
+}
+
+abstract class Reptile with Swim, Crawl, Bite {
+  void hunt(food) {
+    print('${this.runtimeType} -------');
+    swim();
+    crawl();
+    bite();
+    print('Eat $food');
+  }
+}
+
+class Alligator extends Reptile {
+}
+
+class Crocodile extends Reptile {
+}
+
+class Fish with Swim, Bite {
+  void feed() {
+    print('Fish --------');
+    swim();
+    bite();
+  }
+}
+
+main() {
+  Crocodile().hunt('Zebra');
+  Alligator().hunt('Fish');
+  Fish().feed();
+}
+
+
+
+mixin Hunt on Reptile {
+  void hunt(food) {
+    print('${this.runtimeType} -------');
+    swim();
+    crawl();
+    bite();
+    print('Eat $food');
+  }
+}
+
+abstract class Reptile with Swim, Crawl, Bite {}
+
+class Alligator extends Reptile with Hunt {
+}
+
+class Crocodile extends Reptile with Hunt {
+}
+======================================================================================================

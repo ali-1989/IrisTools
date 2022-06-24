@@ -1,0 +1,230 @@
+========================================================================================================
+Link & Help:
+
+    https://dart.dev/tutorials/language/streams
+    https://dart.dev/tutorials/language/streams#process-stream-methods
+========================================================================================================
+async VS async*:
+
+* Marking a function as async or async* allows it to use await/yield keyword to use a Future.
+* The difference between both is that async* will always returns a Stream and offer some syntax
+  sugar to emit a value through yield keyword.
+
+
+Stream<int> foo() async* {
+  for (int i = 0; i < 42; i++) {
+    await Future.delayed(const Duration(seconds: 1));
+    yield i;
+  }
+}
+
+ await for (int i in countForOneMinute()) {
+    print(i); // prints 1 to 60, one integer per second
+  }
+
+
+- async  gives you a Future
+- async* gives you a Stream
+==========================================================================================================
+Two kinds of streams:
+
+* There are two kinds of streams.
+
+1) Single subscription streams:
+The most common kind of stream contains a sequence of events that are parts of a larger whole.
+ Events need to be delivered in the correct order and without missing any of them.
+ This is the kind of stream you get when you read a file or receive a web request.
+
+
+2) Broadcast streams:
+The other kind of stream is intended for individual messages that can be handled one at a time.
+ This kind of stream can be used for mouse events in a browser, for example.
+ You can start listening to such a stream at any time, and you get the events that are fired while you listen.
+ More than one listener can listen at the same time, and you can listen again later after
+ canceling a previous subscription.
+==========================================================================================================
+Sink , transform:
+
+var stream = Stream.fromIterable([1, 2, 3, 4, 5]);
+
+void main() {
+  final controller1 = new StreamController();
+  final controller2 = new StreamController();
+
+  controller1.addStream(stream);
+
+  final doubler = new StreamTransformer.fromHandlers(handleData: (data, sink) {
+      sink.add(data * 2);
+  });
+
+  controller1.stream.transform(doubler).pipe(controller2);
+  controller2.stream.listen((data) => print(data));
+
+}
+==========================================================================================================
+Google sample:
+
+Future<int> sum(Stream<int> stream) async {
+  var sum = 0;
+  await for (var value in stream) {
+    sum += value;
+  }
+  
+  return sum;
+}
+
+Stream<int> countStream(int to) async* {
+  for (int i = 1; i <= to; i++) {
+    yield i;
+  }
+}
+
+main() async {
+  var stream = countStream(10);
+  var sum = await sum(stream);
+  print(sum); // 55
+}
+
+------------------------------------------------ with try
+Future<int> sumStream(Stream<int> stream) async {
+  var sum = 0;
+  try {
+    await for (var value in stream) {
+      sum += value;
+    }
+  } catch (e) {
+    return -1;
+  }
+  
+  return sum;
+}
+
+Stream<int> countStream(int to) async* {
+  for (int i = 1; i <= to; i++) {
+    if (i == 4) {
+      throw new Exception('Intentional exception');
+    } else {
+      yield i;
+    }
+  }
+}
+
+main() async {
+  var stream = countStream(10);
+  var sum = await sumStream(stream);
+  print(sum); // -1
+}
+========================================================================================================
+Stream, subscription:
+
+Single-subscription and broadcast streams are intended to be used in different contexts and have
+different requirements. In many aspects they’re similar to TCP and UDP: single-subscription
+streams are stable with guaranteed properties (like TCP), whereas broadcast streams can lose
+events and listeners don’t have a tight connection to the source (like UDP).
+========================================================================================================
+StreamQueue:
+
+void main() async {
+  var queue = new StreamQueue(new Stream.fromIterable([1, 2, 3]));
+  var first = queue.next;
+  var second = queue.next;
+  var third = queue.next;
+  print(await Future.wait([first, second, third])); // => [1, 2, 3]
+}
+
+import "package:async/async.dart" show StreamQueue;
+========================================================================================================
+StreamTransformer:
+
+static StreamTransformer _toJsonTransformer = new StreamTransformer.fromHandlers(handleData: (data, sink) {
+			sink.add(json.decode(data));});
+========================================================================================================
+Sample:
+
+Future<void> process(int i) async {
+  print("start $i");
+  await new Future.delayed(const Duration(seconds: 1));
+  print("end $i");
+}
+
+main() async {
+  await for (final i in tenInts) {
+    await process(i);
+  }
+  tenInts.listen((i) async => await process(i));
+  print('hello');
+}
+
+Stream<int> get tenInts async* {
+  for (int i = 1; i <= 10; i++) yield i;
+}
+========================================================================================================
+========================================================================================================
+SynchronousFuture:
+
+    https://beltran.work/blog/testing-with-synchronousfuture-in-flutter/
+
+import 'package:flutter/foundation.dart' show SynchronousFuture;
+
+** this Future only call {.then()} immediate , and not sync process.
+-----------------------------------------------------------------
+
+SynchronousFuture<Uint8List> crop = ImageEditor.editImage(image: state.editOptions.imageBytes, imageEditorOption: option);
+  crop.then((value) {
+    state.editOptions.imageBytes = value;
+    SynchronousFuture<ui.Image> image = PicEditorState.bytesToImage(state.editOptions.imageBytes);
+
+    image.then((value){
+      state.editOptions._image = value;
+      state.update();
+    });
+  });
+========================================================================================================
+========================================================================================================
+ConnectionState:
+
+# see [DownloadStreamBuilder] on downloadManager.
+
+* used in FutureBuilder / StreamBuilder.
+
+# States:
+    ConnectionState.none
+    ConnectionState.waiting
+    ConnectionState.active
+    ConnectionState.done
+
+
+AsyncSnapshot<di>.withData(ConnectionState.none, downloadItem);
+------------------------------------------------------------
+ConnectionState.none:
+
+- initial
+------------------------------------------------------------
+ConnectionState.waiting:
+
+- start listen
+------------------------------------------------------------
+ConnectionState.active:
+
+- onProgress
+- onComplete
+- onError
+------------------------------------------------------------
+ConnectionState.done:
+
+- onStream close
+------------------------------------------------------------
+
+# if use in FutureBuilder:
+- ConnectionState.done returned when Future value returned.
+
+FutureBuilder<bool>(
+    future: canPlayTrack,
+    builder: (context, asyncData) {
+      var _canPlay = false;
+
+      if (asyncData.connectionState == ConnectionState.done)
+        _canPlay = asyncData.data && !_busyState;
+    }
+)
+========================================================================================================

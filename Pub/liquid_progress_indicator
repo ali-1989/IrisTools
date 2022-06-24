@@ -1,0 +1,33 @@
+=============================================================================================
+liquid_progress_indicator: ^0.4.0
+=============================================================================================
+LiquidCircularProgressIndicator(
+  value: 0.25,
+  valueColor: AlwaysStoppedAnimation(Colors.pink),
+  backgroundColor: Colors.white,
+  borderColor: Colors.red,
+  borderWidth: 5.0,
+  direction: Axis.horizontal, // The direction the liquid moves (Axis.vertical = bottom to top, Axis.horizontal = left to right). Defaults to Axis.vertical.
+  center: Text("Loading..."),
+)
+=============================================================================================
+SizedBox(
+    height: 25,
+    child: LiquidLinearProgressIndicator(
+      value: 0.6,
+      valueColor: AlwaysStoppedAnimation(AppThemes.themeData.primaryColor),
+      backgroundColor: AppThemes.currentTheme.inactiveTextColor,
+      borderColor: AppThemes.currentTheme.inactiveTextColor,
+      borderWidth: 0,
+      borderRadius: 12.0,
+      center: Text("Loading..."),
+    ),
+=============================================================================================
+LiquidCustomProgressIndicator(
+  value: 0.2,
+  valueColor: AlwaysStoppedAnimation(Colors.pink), // Defaults to the current Theme's accentColor.
+  backgroundColor: Colors.white, // Defaults to the current Theme's backgroundColor.
+  direction: Axis.vertical, // The direction the liquid moves (Axis.vertical = bottom to top, Axis.horizontal = left to right).
+  shapePath: _buildBoatPath(), // A Path object used to draw the shape of the progress indicator. The size of the progress indicator is created from the bounds of this path.
+)
+=============================================================================================

@@ -1,0 +1,92 @@
+====================================================================================================
+Theme & custom:
+
+    https://medium.com/flutter-community/flutter-sliders-demystified-4b3ea65879c
+
+# path:
+    https://medium.com/flutter-community/paths-in-flutter-a-visual-guide-6c906464dcd0
+====================================================================================================
+
+SliderTheme(
+      data: SliderTheme.of(context).copyWith(
+        trackHeight: 4.0,
+        trackShape: RectangularSliderTrackShape(),
+        thumbShape: RoundSliderThumbShape(enabledThumbRadius: 12.0),
+        overlayShape: RoundSliderOverlayShape(overlayRadius: 28.0),
+        thumbColor: Colors.redAccent,
+        overlayColor: Colors.red.withAlpha(32),
+        activeTrackColor: Colors.red[700],
+        inactiveTrackColor: Colors.red[100],
+
+      ),
+      child: Slider(
+        value: _value,
+        onChanged: (value) {
+          setState(() {      <<-- use refresh for this, setState is bad
+            _value = value;
+          });
+        },
+      ),
+    ),
+====================================================================================================
+SliderTheme(
+    data: SliderTheme.of(context).copyWith(
+      trackHeight: 4.0,
+      trackShape: RectangularSliderTrackShape(),
+      thumbShape: RoundSliderThumbShape(enabledThumbRadius: 12.0),
+      overlayShape: RoundSliderOverlayShape(overlayRadius: 25.0), // onTouch thumb shown
+      tickMarkShape: RoundSliderTickMarkShape(tickMarkRadius: 1.5),
+      valueIndicatorShape: PaddleSliderValueIndicatorShape(),
+      thumbColor: state.theme.primaryColor,
+      overlayColor: state.theme.primaryColor,
+      activeTrackColor: state.theme.primaryColor,
+      inactiveTrackColor: state.theme.primaryColor,
+      activeTickMarkColor: state.theme.accentColor,
+      inactiveTickMarkColor: state.theme.accentColor,
+      valueIndicatorColor: state.theme.primaryColor,
+      showValueIndicator: ShowValueIndicator.always,
+      valueIndicatorTextStyle: TextStyle(
+          color: Colors.white,
+        ),
+    ),
+    child: Slider(
+      min:-10.0,
+      max:10.0,
+      divisions: 20,
+      value: state.brightnessValue.toDouble(),
+      label: '${state.brightnessSilderValue.toInt()}',
+      onChanged: (value) {
+         setState(() {          <<-- use refresh for this
+           state.brightnessValue = value;
+            brightnessOA.setOnStartFunction((){showProgress(state);});
+         });
+      },
+
+      onChangeEnd: (value) {
+        brightnessOA.action(fn: (){changeBrightness(state);});
+      },
+    ),
+====================================================================================================
+SelfUpdater(
+  childBuilder:(ctx, c) {
+    return Slider(
+      min: -25.0,
+      max: 25.0,
+      //divisions: 51,
+      value: state.brightnessValue.toDouble(),
+
+      onChangeStart: (value) {
+          showProgress(state);
+        },
+
+        onChanged: (value){
+          state.brightnessValue = value;
+          c.update();
+        },
+
+        onChangeEnd: (value) {
+          changeBrightness(state);
+        },
+    );
+====================================================================================================
+

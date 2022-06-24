@@ -1,0 +1,34 @@
+=============================================================================================================
+help & site:
+
+    - https://codeburst.io/top-10-array-utility-methods-you-should-know-dart-feb2648ee3a2
+=============================================================================================================
+remove item:
+
+var list = [1, 2, 3, 4, 5];
+var toRemove = [];
+
+list.forEach( (e) {
+ if()
+   toRemove.add(e);
+});
+
+list.removeWhere( (e) => toRemove.contains(e));
+=============================================================================================================
+static void sort(List<PhotoData> list, {bool asc = true}){
+    list.sort((PhotoData p1, PhotoData p2){
+      final d1 = p1.utcDate;
+      final d2 = p2.utcDate;
+
+      if(d1 == null){
+        return asc? 1: 1;
+      }
+
+      if(d2 == null){
+        return asc? 1: 1;
+      }
+
+      return asc? d1.compareTo(d2) : d2.compareTo(d1);
+    });
+}
+=============================================================================================================

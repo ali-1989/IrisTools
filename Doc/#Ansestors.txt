@@ -1,0 +1,297 @@
+========================================================================================================
+Future.delayed(Duration(seconds: 2), (){
+      WidgetHelper.touchAncestorsToRoot(context, (elem) {
+        print('${elem.widget.toString()}');
+        print('----------------------------');
+        return true;
+      });
+    });
+========================================================================================================
+I/flutter (19214): RepaintBoundary
+I/flutter (19214): ----------------------------
+I/flutter (19214): IndexedSemantics(index: 3)
+I/flutter (19214): ----------------------------
+I/flutter (19214): NotificationListener<KeepAliveNotification>
+I/flutter (19214): ----------------------------
+I/flutter (19214): KeepAlive(keepAlive: false)
+I/flutter (19214): ----------------------------
+I/flutter (19214): AutomaticKeepAlive
+I/flutter (19214): ----------------------------
+I/flutter (19214): KeyedSubtree
+I/flutter (19214): ----------------------------
+I/flutter (19214): _SliverFillViewportRenderObjectWidget(delegate: SliverChildBuilderDelegate#f54ff())
+I/flutter (19214): ----------------------------
+I/flutter (19214): _SliverFractionalPadding
+I/flutter (19214): ----------------------------
+I/flutter (19214): SliverFillViewport
+I/flutter (19214): ----------------------------
+I/flutter (19214): Viewport(axisDirection: left, anchor: 0.0, offset: _PagePosition#d6c2b(offset: 1080.0, range: 0.0..Infinity, viewport: 360.0, ScrollableState, _ForceImplicitScrollPhysics -> NeverScrollableScrollPhysics -> ClampingScrollPhysics -> RangeMaintainingScrollPhysics, IdleScrollActivity#c3379, ScrollDirection.idle), cacheExtent: 0.0, cacheExtentStyle: CacheExtentStyle.viewport)
+I/flutter (19214): ----------------------------
+I/flutter (19214): IgnorePointer-[GlobalKey#83f90](ignoring: false, ignoringSemantics: false)
+I/flutter (19214): ----------------------------
+I/flutter (19214): Semantics(container: false, properties: SemanticsProperties, label: null, value: null, hint: null, hintOverrides: null)
+I/flutter (19214): ----------------------------
+I/flutter (19214): Listener(listeners: [down], behavior: opaque)
+I/flutter (19214): ----------------------------
+I/flutter (19214): _GestureSemantics
+I/flutter (19214): ----------------------------
+I/flutter (19214): RawGestureDetector-[LabeledGlobalKey<RawGestureDetectorState>#dc83a]
+I/flutter (19214): ----------------------------
+I/flutter (19214): Listener(listeners: [signal], behavior: deferToChild)
+I/flutter (19214): ----------------------------
+I/flutter (19214): _ScrollableScope
+I/flutter (19214): ----------------------------
+I/flutter (19214): _ScrollSemantics-[GlobalKey#117f0]
+I/flutter (19214): ----------------------------
+I/flutter (19214): RepaintBoundary
+I/flutter (19214): ----------------------------
+I/flutter (19214): CustomPaint
+I/flutter (19214): ----------------------------
+I/flutter (19214): RepaintBoundary
+I/flutter (19214): ----------------------------
+I/flutter (19214): NotificationListener<ScrollNotification>
+I/flutter (19214): ----------------------------
+I/flutter (19214): GlowingOverscrollIndicator(axisDirection: left, show: both sides, Color(0xffbdbdbd))
+I/flutter (19214): ----------------------------
+I/flutter (19214): Scrollable(axisDirection: left, physics: _ForceImplicitScrollPhysics -> NeverScrollableScrollPhysics, restorationId: null)
+I/flutter (19214): ----------------------------
+I/flutter (19214): NotificationListener<ScrollNotification>
+I/flutter (19214): ----------------------------
+I/flutter (19214): PageView
+I/flutter (19214): ----------------------------
+I/flutter (19214): _BodyBuilder
+I/flutter (19214): ----------------------------
+I/flutter (19214): MediaQuery(MediaQueryData(size: Size(360.0, 640.0), devicePixelRatio: 2.0, textScaleFactor: 1.0, platformBrightness: Brightness.light, padding: EdgeInsets.zero, viewPadding: EdgeInsets.zero, viewInsets: EdgeInsets.zero, alwaysUse24HourFormat: true, accessibleNavigation: false, highContrast: false, disableAnimations: false, invertColors: false, boldText: false, navigationMode: traditional))
+I/flutter (19214): ----------------------------
+I/flutter (19214): LayoutId-[<_ScaffoldSlot.body>](id: _ScaffoldSlot.body)
+I/flutter (19214): ----------------------------
+I/flutter (19214): CustomMultiChildLayout
+I/flutter (19214): ----------------------------
+I/flutter (19214): AnimatedBuilder(animation: AnimationController#4d9fa(⏭ 1.000; paused))
+I/flutter (19214): ----------------------------
+I/flutter (19214): DefaultTextStyle(debugLabel: (tall body1 2014).merge((blackMountainView bodyText2).merge(((blackMountainView bodyText2).merge((blackMountainView bodyText2).copyWith)).copyWith)), inherit: false, color: Color(0xff000000), family: Roboto, size: 12.4, weight: 400, baseline: alphabetic, height: 1.0x, decoration: MaterialColor(primary value: Color(0xff2196f3)) TextDecoration.none, softWrap: wrapping at box width, overflow: clip)
+I/flutter (19214): ----------------------------
+I/flutter (19214): AnimatedDefaultTextStyle(duration: 200ms, debugLabel: (tall body1 2014).merge((blackMountainView bodyText2).merge(((blackMountainView bodyText2).merge((blackMountainView bodyText2).copyWith)).copyWith)), inherit: false, color: Color(0xff000000), family: Roboto, size: 12.4, weight: 400, baseline: alphabetic, height: 1.0x, decoration: MaterialColor(primary value: Color(0xff2196f3)) TextDecoration.none, softWrap: wrapping at box width, overflow: clip)
+I/flutter (19214): ----------------------------
+I/flutter (19214): _InkFeatures-[GlobalKey#bca25 ink renderer]
+I/flutter (19214): ----------------------------
+I/flutter (19214): NotificationListener<LayoutChangedNotification>
+I/flutter (19214): ----------------------------
+I/flutter (19214): PhysicalModel(shape: rectangle, borderRadius: BorderRadius.zero, elevation: 0.0, color: Color(0xfffafafa), shadowColor: Color(0xf0000000))
+I/flutter (19214): ----------------------------
+I/flutter (19214): AnimatedPhysicalModel(duration: 200ms, shape: rectangle, borderRadius: BorderRadius.zero, elevation: 0.0, color: Color(0xfffafafa), animateColor: false, shadowColor: Color(0xf0000000), animateShadowColor: true)
+I/flutter (19214): ----------------------------
+I/flutter (19214): Material(type: canvas, color: Color(0xfffafafa))
+I/flutter (19214): ----------------------------
+I/flutter (19214): _ScaffoldScope
+I/flutter (19214): ----------------------------
+I/flutter (19214): Scaffold-[LabeledGlobalKey<ScaffoldState>#56bdb]
+I/flutter (19214): ----------------------------
+I/flutter (19214): Transform
+I/flutter (19214): ----------------------------
+I/flutter (19214): TweenAnimationBuilder<double>(duration: 320ms)
+I/flutter (19214): ----------------------------
+I/flutter (19214): Stack(alignment: AlignmentDirectional.topStart, fit: loose)
+I/flutter (19214): ----------------------------
+I/flutter (19214): DrawerStack
+I/flutter (19214): ----------------------------
+I/flutter (19214): Refresh
+I/flutter (19214): ----------------------------
+I/flutter (19214): WillPopScope
+I/flutter (19214): ----------------------------
+I/flutter (19214): RootScreen-[LabeledGlobalKey<RootScreenState>#cd529]
+I/flutter (19214): ----------------------------
+I/flutter (19214): Opacity(opacity: 1.0)
+I/flutter (19214): ----------------------------
+I/flutter (19214): Transform
+I/flutter (19214): ----------------------------
+I/flutter (19214): AnimatedBuilder(animation: AnimationController#dfbc4(⏭ 1.000; paused))
+I/flutter (19214): ----------------------------
+I/flutter (19214): FadeInUp
+I/flutter (19214): ----------------------------
+I/flutter (19214): StreamBuilder<String>
+I/flutter (19214): ----------------------------
+I/flutter (19214): RouteScreen
+I/flutter (19214): ----------------------------
+I/flutter (19214): Semantics(container: false, properties: SemanticsProperties, label: null, value: null, hint: null, hintOverrides: null)
+I/flutter (19214): ----------------------------
+I/flutter (19214): Builder
+I/flutter (19214): ----------------------------
+I/flutter (19214): RepaintBoundary-[GlobalKey#1dd31]
+I/flutter (19214): ----------------------------
+I/flutter (19214): IgnorePointer(ignoring: false)
+I/flutter (19214): ----------------------------
+I/flutter (19214): AnimatedBuilder(animation: ValueNotifier<bool>#aeaed(false))
+I/flutter (19214): ----------------------------
+I/flutter (19214): FadeTransition(opacity: AnimationController#f4f2e(⏭ 1.000; paused; for MaterialPageRoute<dynamic>(/))➩ProxyAnimation➩CurveTween(curve: Cubic(0.42, 0.00, 1.00, 1.00))➩1.0)
+I/flutter (19214): ----------------------------
+I/flutter (19214): FractionalTranslation
+I/flutter (19214): ----------------------------
+I/flutter (19214): SlideTransition(animation: AnimationController#f4f2e(⏭ 1.000; paused; for MaterialPageRoute<dynamic>(/))➩ProxyAnimation➩CurveTween(curve: Cubic(0.40, 0.00, 0.20, 1.00))➩Tween<Offset>(Offset(0.0, 0.3) → Offset(0.0, 0.0))➩Offset(0.0, 0.0))
+I/flutter (19214): ----------------------------
+I/flutter (19214): _FadeUpwardsPageTransition
+I/flutter (19214): ----------------------------
+I/flutter (19214): AnimatedBuilder(animation: Listenable.merge([AnimationController#f4f2e(⏭ 1.000; paused; for MaterialPageRoute<dynamic>(/))➩ProxyAnimation, kAlwaysDismissedAnimation➩ProxyAnimation➩ProxyAnimation]))
+I/flutter (19214): ----------------------------
+I/flutter (19214): RepaintBoundary
+I/flutter (19214): ----------------------------
+I/flutter (19214): _FocusMarker
+I/flutter (19214): ----------------------------
+I/flutter (19214): Semantics(container: false, properties: SemanticsProperties, label: null, value: null, hint: null, hintOverrides: null)
+I/flutter (19214): ----------------------------
+I/flutter (19214): FocusScope(canRequestFocus: null, focusNode: FocusScopeNode#b399d(_ModalScopeState<dynamic> Focus Scope [IN FOCUS PATH]))
+I/flutter (19214): ----------------------------
+I/flutter (19214): PrimaryScrollController(ScrollController#7a0cd(one client, offset 0.0))
+I/flutter (19214): ----------------------------
+I/flutter (19214): _ActionsMarker
+I/flutter (19214): ----------------------------
+I/flutter (19214): Actions(dispatcher: null, actions: {DismissIntent: _DismissModalAction#72939})
+I/flutter (19214): ----------------------------
+I/flutter (19214): Builder
+I/flutter (19214): ----------------------------
+I/flutter (19214): PageStorage
+I/flutter (19214): ----------------------------
+I/flutter (19214): Offstage(offstage: false)
+I/flutter (19214): ----------------------------
+I/flutter (19214): _ModalScopeStatus(active)
+I/flutter (19214): ----------------------------
+I/flutter (19214): UnmanagedRestorationScope
+I/flutter (19214): ----------------------------
+I/flutter (19214): RestorationScope
+I/flutter (19214): ----------------------------
+I/flutter (19214): AnimatedBuilder(animation: ValueNotifier<String?>#85d30(null))
+I/flutter (19214): ----------------------------
+I/flutter (19214): _ModalScope<dynamic>-[LabeledGlobalKey<_ModalScopeState<dynamic>>#2823b]
+I/flutter (19214): ----------------------------
+I/flutter (19214): Semantics(container: false, properties: SemanticsProperties, label: null, value: null, hint: null, sortKey: OrdinalSortKey#a4ee1(order: 0.0), hintOverrides: null)
+I/flutter (19214): ----------------------------
+I/flutter (19214): _EffectiveTickerMode(effective mode: enabled)
+I/flutter (19214): ----------------------------
+I/flutter (19214): TickerMode(requested mode: enabled)
+I/flutter (19214): ----------------------------
+I/flutter (19214): _OverlayEntryWidget-[LabeledGlobalKey<_OverlayEntryWidgetState>#b1100]
+I/flutter (19214): ----------------------------
+I/flutter (19214): _Theatre(skipCount: 0)
+I/flutter (19214): ----------------------------
+I/flutter (19214): Overlay-[LabeledGlobalKey<OverlayState>#9b756]
+I/flutter (19214): ----------------------------
+I/flutter (19214): UnmanagedRestorationScope
+I/flutter (19214): ----------------------------
+I/flutter (19214): _FocusMarker
+I/flutter (19214): ----------------------------
+I/flutter (19214): Semantics(container: false, properties: SemanticsProperties, label: null, value: null, hint: null, hintOverrides: null)
+I/flutter (19214): ----------------------------
+I/flutter (19214): FocusScope(AUTOFOCUS, canRequestFocus: null, focusNode: FocusScopeNode#5d3d3(Navigator Scope [IN FOCUS PATH]))
+I/flutter (19214): ----------------------------
+I/flutter (19214): AbsorbPointer(absorbing: false)
+I/flutter (19214): ----------------------------
+I/flutter (19214): Listener(listeners: [down, up, cancel], behavior: deferToChild)
+I/flutter (19214): ----------------------------
+I/flutter (19214): HeroControllerScope
+I/flutter (19214): ----------------------------
+I/flutter (19214): Navigator-[LabeledGlobalKey<NavigatorState>#10a6e]
+I/flutter (19214): ----------------------------
+I/flutter (19214): LayoutBuilder
+I/flutter (19214): ----------------------------
+I/flutter (19214): OrientationBuilder
+I/flutter (19214): ----------------------------
+I/flutter (19214): Builder
+I/flutter (19214): ----------------------------
+I/flutter (19214): IconTheme(color: Color(0xff000000))
+I/flutter (19214): ----------------------------
+I/flutter (19214): IconTheme(color: MaterialColor(primary value: Color(0xff9e9e9e)))
+I/flutter (19214): ----------------------------
+I/flutter (19214): _InheritedCupertinoTheme
+I/flutter (19214): ----------------------------
+I/flutter (19214): CupertinoTheme(brightness: light, primaryColor: MaterialColor(primary value: Color(0xff9e9e9e)), primaryContrastingColor: Color(0xff000000), scaffoldBackgroundColor: Color(0xfffafafa), actionTextStyle: TextStyle(inherit: false, color: MaterialColor(primary value: Color(0xff9e9e9e)), family: .SF Pro Text, size: 17.0, letterSpacing: -0.4, decoration: TextDecoration.none), navActionTextStyle: TextStyle(inherit: false, color: MaterialColor(primary value: Color(0xff9e9e9e)), family: .SF Pro Text, size: 17.0, letterSpacing: -0.4, decoration: TextDecoration.none))
+I/flutter (19214): ----------------------------
+I/flutter (19214): _InheritedTheme
+I/flutter (19214): ----------------------------
+I/flutter (19214): Theme(ThemeData#a1e7f)
+I/flutter (19214): ----------------------------
+I/flutter (19214): AnimatedTheme(duration: 200ms)
+I/flutter (19214): ----------------------------
+I/flutter (19214): _ScaffoldMessengerScope
+I/flutter (19214): ----------------------------
+I/flutter (19214): ScaffoldMessenger-[LabeledGlobalKey<ScaffoldMessengerState>#ad0fb]
+I/flutter (19214): ----------------------------
+I/flutter (19214): Builder
+I/flutter (19214): ----------------------------
+I/flutter (19214): DefaultTextStyle(debugLabel: fallback style; consider putting your text in a Material, inherit: true, color: Color(0xd0ff0000), family: monospace, size: 48.0, weight: 900, decoration: double Color(0xffffff00) TextDecoration.underline, softWrap: wrapping at box width, overflow: clip)
+I/flutter (19214): ----------------------------
+I/flutter (19214): Title(title: "Brandfit", color: Color(0xff757575))
+I/flutter (19214): ----------------------------
+I/flutter (19214): Directionality(textDirection: rtl)
+I/flutter (19214): ----------------------------
+I/flutter (19214): _LocalizationsScope-[GlobalKey#314eb]
+I/flutter (19214): ----------------------------
+I/flutter (19214): Semantics(container: false, properties: SemanticsProperties, label: null, value: null, hint: null, textDirection: rtl, hintOverrides: null)
+I/flutter (19214): ----------------------------
+I/flutter (19214): Localizations(locale: fa_IR, delegates: [IrisLocaleDelegate[IrisLocalizations], DefaultMaterialLocalizations.delegate(en_US), DefaultCupertinoLocalizations.delegate(en_US), GlobalMaterialLocalizations.delegate(78 locales), GlobalCupertinoLocalizations.delegate(77 locales), GlobalWidgetsLocalizations.delegate(all locales), DefaultMaterialLocalizations.delegate(en_US), DefaultCupertinoLocalizations.delegate(en_US), DefaultWidgetsLocalizations.delegate(en_US)])
+I/flutter (19214): ----------------------------
+I/flutter (19214): MediaQuery(MediaQueryData(size: Size(360.0, 640.0), devicePixelRatio: 2.0, textScaleFactor: 1.0, platformBrightness: Brightness.light, padding: EdgeInsets(0.0, 24.0, 0.0, 0.0), viewPadding: EdgeInsets(0.0, 24.0, 0.0, 0.0), viewInsets: EdgeInsets.zero, alwaysUse24HourFormat: true, accessibleNavigation: false, highContrast: false, disableAnimations: false, invertColors: false, boldText: false, navigationMode: traditional))
+I/flutter (19214): ----------------------------
+I/flutter (19214): _MediaQueryFromWindow
+I/flutter (19214): ----------------------------
+I/flutter (19214): _FocusMarker
+I/flutter (19214): ----------------------------
+I/flutter (19214): Focus(focusNode: FocusNode#51efd(FocusTraversalGroup [IN FOCUS PATH]))
+I/flutter (19214): ----------------------------
+I/flutter (19214): _FocusTraversalGroupMarker
+I/flutter (19214): ----------------------------
+I/flutter (19214): FocusTraversalGroup(policy: ReadingOrderTraversalPolicy#e4eb1)
+I/flutter (19214): ----------------------------
+I/flutter (19214): _ActionsMarker
+I/flutter (19214): ----------------------------
+I/flutter (19214): DefaultTextEditingActions(dispatcher: null, actions: {DoNothingAndStopPropagationTextIntent: _DoNothingAndStopPropagationTextAction#a0c73, ExtendSelectionDownTextIntent: _ExtendSelectionDownTextAction#d2a18, ExtendSelectionLeftByLineTextIntent: _ExtendSelectionLeftByLineTextAction#063dd, ExtendSelectionLeftByWordTextIntent: _ExtendSelectionLeftByWordTextAction#16b48, ExtendSelectionLeftByWordAndStopAtReversalTextIntent: _ExtendSelectionLeftByWordAndStopAtReversalTextAction#f4e3a, ExtendSelectionLeftTextIntent: _ExtendSelectionLeftTextAction#11192, ExtendSelectionRightByWordAndStopAtReversalTextIntent: _ExtendSelectionRightByWordAndStopAtReversalTextAction#c7a6b, ExtendSelectionRightByWordTextIntent: _ExtendSelectionRightByWordTextAction#a7954, ExtendSelectionRightByLineTextIntent: _ExtendSelectionRightByLineTextAction#b3560, ExtendSelectionRightTextIntent: _ExtendSelectionRightTextAction#e68ca, ExtendSelectionUpTextIntent: _ExtendSelectionUpTextAction#44546, ExpandSelectionLeftByLineTextIntent: _ExpandSelect
+I/flutter (19214): ----------------------------
+I/flutter (19214): _ActionsMarker
+I/flutter (19214): ----------------------------
+I/flutter (19214): Actions(dispatcher: null, actions: {DoNothingIntent: DoNothingAction#6f0a7, DoNothingAndStopPropagationIntent: DoNothingAction#1d9a2, RequestFocusIntent: RequestFocusAction#c4026, NextFocusIntent: NextFocusAction#4d9c8, PreviousFocusIntent: PreviousFocusAction#a10dc, DirectionalFocusIntent: DirectionalFocusAction#cbdcc, ScrollIntent: ScrollAction#aae38, PrioritizedIntents: PrioritizedAction#39f12})
+I/flutter (19214): ----------------------------
+I/flutter (19214): _ShortcutsMarker
+I/flutter (19214): ----------------------------
+I/flutter (19214): Semantics(container: false, properties: SemanticsProperties, label: null, value: null, hint: null, hintOverrides: null)
+I/flutter (19214): ----------------------------
+I/flutter (19214): _FocusMarker
+I/flutter (19214): ----------------------------
+I/flutter (19214): Focus(debugLabel: "Shortcuts")
+I/flutter (19214): ----------------------------
+I/flutter (19214): DefaultTextEditingShortcuts(shortcuts: <Default Text Editing Shortcuts>)
+I/flutter (19214): ----------------------------
+I/flutter (19214): _ShortcutsMarker
+I/flutter (19214): ----------------------------
+I/flutter (19214): Semantics(container: false, properties: SemanticsProperties, label: null, value: null, hint: null, hintOverrides: null)
+I/flutter (19214): ----------------------------
+I/flutter (19214): _FocusMarker
+I/flutter (19214): ----------------------------
+I/flutter (19214): Focus(debugLabel: "Shortcuts")
+I/flutter (19214): ----------------------------
+I/flutter (19214): Shortcuts(shortcuts: <Default WidgetsApp Shortcuts>)
+I/flutter (19214): ----------------------------
+I/flutter (19214): UnmanagedRestorationScope
+I/flutter (19214): ----------------------------
+I/flutter (19214): RestorationScope
+I/flutter (19214): ----------------------------
+I/flutter (19214): UnmanagedRestorationScope
+I/flutter (19214): ----------------------------
+I/flutter (19214): RootRestorationScope
+I/flutter (19214): ----------------------------
+I/flutter (19214): WidgetsApp-[GlobalObjectKey _MaterialAppState#80c9f]
+I/flutter (19214): ----------------------------
+I/flutter (19214): HeroControllerScope
+I/flutter (19214): ----------------------------
+I/flutter (19214): ScrollConfiguration(behavior: MaterialScrollBehavior)
+I/flutter (19214): ----------------------------
+I/flutter (19214): MaterialApp-[#dabbb]
+I/flutter (19214): ----------------------------
+I/flutter (19214): StreamBuilder<bool>
+I/flutter (19214): ----------------------------
+I/flutter (19214): ConstrainedBox(BoxConstraints(400.0<=w<=700.0, 400.0<=h<=Infinity))
+I/flutter (19214): ----------------------------
+I/flutter (19214): Center(alignment: Alignment.center)
+I/flutter (19214): ----------------------------
+I/flutter (19214): MyApp
+I/flutter (19214): ----------------------------
+I/flutter (19214): [root]
+I/flutter (19214): ----------------------------

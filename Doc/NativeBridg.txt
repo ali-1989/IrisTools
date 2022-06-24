@@ -1,0 +1,93 @@
+====================================================================================================
+Help & Site:
+
+    https://flutter.dev/docs/development/platform-integration/platform-channels
+    https://medium.com/47billion/creating-a-bridge-in-flutter-between-dart-and-native-code-in-java-or-objectivec-5f80fd0cd713
+    https://medium.com/@pahlevikun/bridging-between-dart-and-native-code-with-flutter-channel-for-communicate-each-other-7c736929ee42
+====================================================================================================
+Change states:
+
+- flutter create -i swift -a java flutter_to_native
+- flutter create -i swift -a kotlin flutter_to_native
+- flutter create -i objective-c -a kotlin flutter_to_native
+====================================================================================================
+in flutter:
+
+static MethodChannel javaPlatform;
+
+  static Future<dynamic> handleJavaMethod(MethodCall call) async {
+    switch (call.method) {
+      case "methodName":
+        return new Future.value("");
+    }
+  }
+
+  static void _init(){
+    javaPlatform = MethodChannel('flutter.native/AreJavaBridge');
+    javaPlatform.setMethodCallHandler(handleJavaMethod);
+  }
+
+  static Future<Object> invokeMethod(String methodName) async {
+    try
+    {
+      if(javaPlatform == null)
+        _init();
+
+      final String result = await javaPlatform.invokeMethod(methodName);
+      return result;
+    }
+    on PlatformException catch (e) {
+      return "Failed to Invoke $methodName: '${e.message}'.";
+    }
+  }
+
+  static Future<Object> invokeMethodByArgs(String methodName, List<dynamic> args) async {
+    try
+    {
+      if(javaPlatform == null)
+        _init();
+
+      final String result = await javaPlatform.invokeMethod(methodName, args);
+      return result;
+    }
+    on PlatformException catch (e) {
+      return "Failed to Invoke $methodName: '${e.message}'.";
+    }
+  }
+====================================================================================================
+in java:
+
+private static String CHANNEL = "flutter.native/AreJavaBridge";
+
+MethodChannel.MethodCallHandler handler = new MethodChannel.MethodCallHandler() {
+
+    @Override
+    public void onMethodCall(MethodCall call, MethodChannel.Result result) {
+
+        if (call.method.equals("test")) {//call.arguments
+            result.success("test bridge to java");
+        }
+    }
+}
+
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    GeneratedPluginRegistrant.registerWith(this);
+
+    new MethodChannel(getFlutterView(), CHANNEL).setMethodCallHandler(handler);
+}
+=====================================================================================================
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+=====================================================================================================
+final directory = await Directory.systemTemp.createTemp();
+
+  // Mock out the MethodChannel for the path_provider plugin.
+const MethodChannel('plugins.flutter.io/path_provider').setMockMethodCallHandler((MethodCall methodCall) async {
+    // If you're getting the apps documents directory, return the path to the
+    // temp directory on the test environment instead.
+
+	if (methodCall.method == 'getApplicationDocumentsDirectory') {
+      return directory.path;
+    }
+===================================================================================================

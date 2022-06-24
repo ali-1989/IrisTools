@@ -1,0 +1,69 @@
+===========================================================================================================
+Lottie.asset(
+      'assets/Tests/Shapes.json',
+      delegates: LottieDelegates(
+        text: (initialText) => '**$initialText**',
+        values: [
+          ValueDelegate.color(
+            const ['Shape Layer 1', 'Rectangle', 'Fill 1'],
+            value: Colors.red,
+          ),
+          ValueDelegate.opacity(
+            const ['Shape Layer 1', 'Rectangle'],
+            callback: (frameInfo) => (frameInfo.overallProgress * 100).round(),
+          ),
+          ValueDelegate.position(
+            const ['Shape Layer 1', 'Rectangle', '**'],
+            relative: Offset(100, 200),
+          ),
+        ],
+      ),
+===========================================================================================================
+Lottie.asset(
+              'assets/LottieLogo1.json',
+              controller: _controller,
+              onLoaded: (composition) {
+                // Configure the AnimationController with the duration of the
+                // Lottie file and start the animation.
+                _controller..duration = composition.duration
+                  ..forward();
+              },
+            ),
+===========================================================================================================
+Lottie.asset(
+    'anim/l1.json',
+    width: 200,
+    height: 200,
+    reverse: false,
+    animate: true,
+    fit: BoxFit.fill,
+    onLoaded: (s){
+        print('file name: ${s.name}');
+        print('++++++++++++++');
+        print('hasImages: ${s.hasImages}');
+        print('++++++++++++++');
+        print('characters: ${s.characters}');
+        print('fonts: ${s.fonts}');
+
+        for(var x in s.layers) {
+            print('${x.name}');
+            print('${x.composition}');
+            print('--------------');
+            print('${x.shapes}');
+            print('=================================');
+        }
+    },
+    delegates: LottieDelegates(
+        values: [
+            ValueDelegate.strokeColor(
+                ['heartStroke', '**'],
+                value: Colors.purple,
+            ),
+            ValueDelegate.color(
+                ['heartFill', 'Group 1', '**'],
+                value: Colors.purple,
+            ),
+        ],
+    ),
+),
+===========================================================================================================

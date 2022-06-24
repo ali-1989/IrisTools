@@ -1,0 +1,55 @@
+====================================================================================================
+*****************************   delay call a fn *********************************************
+====================================================================================================
+import 'package:flutter/scheduler.dart';
+
+
+3 options:
+
+1) WidgetsBinding.instance.addPostFrameCallback((ts) => fn(context));
+- if (SchedulerBinding.instance.schedulerPhase == SchedulerPhase.persistentCallbacks)
+          SchedulerBinding.instance.addPostFrameCallback((ts) => fn(context));
+2) Future.delayed(Duration.zero, () => fn(context));
+3) Timer.run(() => fn(context));
+---------------------------------------------------------------------------------------------
+Sample:
+
+@override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => executeAfterBuildComplete(context));
+  }
+
+
+@override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    WidgetsBinding.instance.addPostFrameCallback((_) => executeAfterBuildComplete(context));
+  }
+
+}
+====================================================================================================
+SchedulerBinding:
+
+if (SchedulerBinding.instance.schedulerPhase == SchedulerPhase.persistentCallbacks)
+        SchedulerBinding.instance.addPostFrameCallback((_) => yourFunction(context));
+====================================================================================================
+Future.delayed:
+
+Future.delayed(Duration.zero,() {
+  ... showDialog(context, ....)
+}
+
+() async {
+  await Future.delayed(Duration.zero);
+  ... showDialog(context, ...)
+}();
+====================================================================================================
+Timer.run:
+
+Timer.run( () {
+    // you have a valid context here
+    Navigator.of(context).pushNamed("login");
+  });
+====================================================================================================
+====================================================================================================

@@ -1,0 +1,55 @@
+====================================================================================================
+RegExp:
+
+    - https://www.educative.io/edpresso/regex-in-dart
+    - https://javascript.info/regexp-unicode
+
+** dotAll:      . <=> \n
+    search('foo.', 'foo\nBar',) : not match
+    search('foo.', 'foo\nBar', flags DotALL) : match
+
+** multiLine:   \n <=> $
+    search('foo$', 'foo\nBar', flags MULTILINE) : match
+
+* Dart has the same syntax and semantics as those in JavaScript.
+
+* in dart, for split(), replace(), contains() must use RegExp()
+------------------------------------------------------
+* characters that have special meaning in regular expressions are: (, ), [, ], {, }, *, +, ?, ., ^, $, | and \
+* use RegExp.escape()
+
+RegExp rex = RegExp('${RegExp.escape(state.searchText)}', caseSensitive: false, unicode: true);
+------------------------------------------------------
+Raw => r'':
+
+RegExp(r'\?')   <==>  RegExp('\\?')   : escape ? mark
+RegExp(r'\\')   <==>  RegExp('\\\\')   : escape \ mark
+====================================================================================================
+RegExp webSocket = new RegExp(
+			r"^WS{1,2}:\/\/\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}:56789",
+			caseSensitive: false,
+			multiLine: true,
+		);
+
+
+webSocket.allMatches("WS://127.0.0.1:56789");
+webSocket.firstMatch("WS://127.0.0.1:56789");
+webSocket.hasMatch("WS://127.0.0.1:56789");
+webSocket.stringMatch("WS://127.0.0.1:56789");
+====================================================================================================
+Hex colors:
+
+RegExp hexColor = RegExp(r'^#?([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$');
+
+hexColor.hasMatch('#3b5');     // true
+hexColor.hasMatch('#FF7723');  // true
+hexColor.hasMatch('#000000z'); // false
+====================================================================================================
+static String resolveUri(String uri) {
+    if(uri == null)
+        return null;
+
+    return uri.replaceAll(RegExp('/{2,}'), "/").replaceFirst(':\/', ':\/\/');
+    return uri.replaceAll(RegExp('(?<!:)(/{2,})'), "/");
+}
+====================================================================================================

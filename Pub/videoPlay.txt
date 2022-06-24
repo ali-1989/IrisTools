@@ -1,0 +1,255 @@
+=======================================================================================================
+VideoPlayer:
+
+Widget getVideoView(){
+    return AspectRatio(
+      aspectRatio: 16/10,//videoController.value.aspectRatio,
+      child: Stack(
+        children: [
+          Positioned.fill(
+            child: videoController.value.initialized ?
+              VideoPlayer(videoController)
+                : Center(
+                      child: PreWidgetsCenter.flutterLoadingWidget(),
+                    ),
+          ),
+
+          Positioned.fill(
+              child: Center(
+                child: videoController.value.initialized ?
+                GestureDetector(
+                  behavior: HitTestBehavior.translucent,
+                  onTap: (){
+                    videoController.value.isPlaying
+                        ? videoController.pause()
+                        : videoController.play();
+
+                    typeViewRefresher.update();
+                  },
+                    child: CircularIcon(
+                      size: 40,
+                      icon: videoController.value.isPlaying ? Icons.pause : Icons.play_arrow,
+                      bgColor: AppThemes.currentTheme.inactiveTextColor.withAlpha(200),
+                    )
+                )
+                : SizedBox(),
+              )
+          ),
+
+          Positioned(
+            top: 8, left: 6,
+              child: videoController.value.initialized ?
+              DecoratedBox(
+                decoration: BoxDecoration(
+                  color: AppThemes.currentTheme.inactiveTextColor.withAlpha(200),
+                  borderRadius: BorderRadius.circular(8.0)
+                ),
+                child: Padding(
+                  padding: EdgeInsets.all(6.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      TitleInfo(title: 'File name: ', info: FileHelper.getFileName(pickedFile.path)).onColor(),
+                      TitleInfo(title: 'File size: ', info: '${filesize(pickedFile.lengthSync(), 2)}').onColor(),
+                    ],
+                  ),
+                ),
+              ): SizedBox()
+          ),
+        ]
+      ),
+    );
+  }
+=======================================================================================================
+NativeVideoView:
+
+Widget getVideoView(){
+
+    return AspectRatio(
+      aspectRatio: videoController?.videoFile?.info?.aspectRatio ?? 16/10,
+      child: Stack(
+        children: [
+          Positioned.fill(
+            child: NativeVideoView(
+              keepAspectRatio: false,
+              showMediaController: true,
+              onCreated: (controller) {
+                videoController = controller;
+
+                controller.setVideoSource(
+                  pickedFile.path,
+                  sourceType: VideoSourceType.file,
+                );
+              },
+              onPrepared: (controller, info) {
+                typeViewRefresher.setItemAndUpdate('video');
+                //controller.play();
+              },
+              onError: (controller, what, extra, message) {
+                typeViewRefresher.setItemAndUpdate('video');
+              },
+              onCompletion: (controller) {},
+              onProgress: null,//(progress, duration) {},
+            )
+          ),
+
+          Positioned.fill(
+              child: Center(
+                child: GestureDetector(
+                  onTap: (){
+                      videoController.isPlaying().then((isPlay){
+                        if(isPlay)
+                          videoController.pause();
+                        else
+                          videoController.play();
+
+                        typeViewRefresher.update();
+                      });
+                  },
+                    child: CircularIcon(
+                      size: 40,
+                      icon: Icons.play_arrow,
+                      bgColor: AppThemes.currentTheme.inactiveTextColor.withAlpha(200),
+                    )
+                )
+              )
+          ),
+
+          /*Positioned(
+            top: 8, left: 6,
+              child: videoController.value.initialized ?
+              DecoratedBox(
+                decoration: BoxDecoration(
+                  color: AppThemes.currentTheme.inactiveTextColor.withAlpha(200),
+                  borderRadius: BorderRadius.circular(8.0)
+                ),
+                child: Padding(
+                  padding: EdgeInsets.all(6.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      TitleInfo(title: 'File name: ', info: FileHelper.getFileName(pickedFile.path)).onColor(),
+                      TitleInfo(title: 'File size: ', info: '${filesize(pickedFile.lengthSync(), 2)}').onColor(),
+                    ],
+                  ),
+                ),
+              ): SizedBox()
+          ),*/
+        ]
+      ),
+    );
+  }
+=======================================================================================================
+VlcPlayer:
+
+Widget getVideoView(){
+
+    return AspectRatio(
+      aspectRatio: videoController?.value?.aspectRatio ?? 16/10,
+      child: Stack(
+        children: [
+          Positioned.fill(
+            child: VlcPlayer(
+              controller: videoController,
+              aspectRatio: videoController?.value?.aspectRatio ?? 16/10,
+            )
+          ),
+
+          Positioned.fill(
+              child: Center(
+                child: GestureDetector(
+                  onTap: (){
+                      videoController.isPlaying().then((isPlay){
+                        if(isPlay)
+                          videoController.pause();
+                        else
+                          videoController.play();
+
+                        typeViewRefresher.update();
+                      });
+                  },
+                    child: CircularIcon(
+                      size: 40,
+                      icon: Icons.play_arrow,
+                      bgColor: AppThemes.currentTheme.inactiveTextColor.withAlpha(200),
+                    )
+                )
+              )
+          ),
+
+          /*Positioned(
+            top: 8, left: 6,
+              child: videoController.value.initialized ?
+              DecoratedBox(
+                decoration: BoxDecoration(
+                  color: AppThemes.currentTheme.inactiveTextColor.withAlpha(200),
+                  borderRadius: BorderRadius.circular(8.0)
+                ),
+                child: Padding(
+                  padding: EdgeInsets.all(6.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      TitleInfo(title: 'File name: ', info: FileHelper.getFileName(pickedFile.path)).onColor(),
+                      TitleInfo(title: 'File size: ', info: '${filesize(pickedFile.lengthSync(), 2)}').onColor(),
+                    ],
+                  ),
+                ),
+              ): SizedBox()
+          ),*/
+        ]
+      ),
+    );
+  }
+
+
+
+  if(MimeHelper.isVideoByMime(mime)){
+
+          videoController = VlcPlayerController.file(
+            pickedFile,
+            hwAcc: HwAcc.AUTO,
+            autoPlay: false,
+            autoInitialize: true,
+            options: VlcPlayerOptions(),
+          );
+
+          typeViewRefresher.setItemAndUpdate('video');
+
+--------------------------
+GestureDetector(
+  onTap: (){
+      videoController.isPlaying().then((isPlay){
+        if(isPlay)
+          videoController.pause();
+        else
+          videoController.play();
+
+        typeViewRefresher.update();
+      });
+=======================================================================================================
+InAppWebView:
+
+ <video id="video" src="file:////data/user/0/iris.ARE/cache/file_picker/1613145176607.mp4" width="90%" controls autoplay>
+
+
+String data = '<video id="video" src="file:///'+ pickedFile.path + '" width="100%" controls autoplay>';
+
+    return AspectRatio(
+      aspectRatio: 16/10,
+      child: Stack(
+        children: [
+          Positioned.fill(
+            child: InAppWebView(
+              initialData: InAppWebViewInitialData(data: data),
+              onWebViewCreated: (controller){
+                controller.getContentHeight().then((value) {
+                          print('he:  $value');
+                          });
+              },
+            )
+          ),
+=======================================================================================================

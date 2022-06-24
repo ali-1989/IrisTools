@@ -1,0 +1,91 @@
+===================================================================================================================
+Tips:
+
+    https://dev.to/mightytechno/flutter-row-widget-cheat-sheet-everything-you-need-to-know-ln2
+===================================================================================================================
+Flexible:
+
+    https://www.youtube.com/watch?v=Fnrn-6Zq-Kc
+===================================================================================================================
+* yellow strip:
+
+1.If you need to show all items in a horizontal row you must use LISTVIEW instead of Row
+2.If you want to move an item to next row you can use WRAP widget instead of row widget
+
+
+Row(
+  mainAxisSize: MainAxisSize.min,
+  mainAxisAlignment: MainAxisAlignment.start,
+  crossAxisAlignment: CrossAxisAlignment.center,
+
+  children: <Widget>[
+    widget.avatar ??
+        CircleAvatar(
+          minRadius: 10,
+        ),
+    SizedBox(width: widget.space,),
+    Expanded(child: Text('12345678987654321')),     <<-- Expanded remove strip, but loose
+    Flexible(child: Text('12345678987654321')),     <<-- Flexible remove strip, not loose
+    SizedBox(width: 4,)
+  ],
+),
+===================================================================================================================
+spacer:
+
+Row(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children: <>[
+        ColoredBox(),
+        spacer(flex:2),    <<==== custom-Space
+        ColoredBox(),
+    ]
+)
+===================================================================================================================
+IntrinsicHeight:
+IntrinsicWidth:
+
+* This class is relatively expensive. Avoid using it where possible.
+
+
+IntrinsicHeight(
+      child: Row(
+        children: <Widget>[
+          IconButton(
+            icon: Icon(Icons.arrow_back_ios),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+
+          Spacer(),
+
+          IconButton(
+            icon: Text(
+              "QR",
+              style: Theme.of(context).textTheme.title,
+            ),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+
+          VerticalDivider(                  <<== this view take infinite height
+            color: Theme.of(context).textTheme.headline.color,
+          ),
+
+          IconButton(
+            icon: Icon(Icons.share),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+        ],
+      ),
+    ),
+
+---------------------------------------------------
+new IntrinsicHeight(
+  child: new Row(
+    crossAxisAlignment: CrossAxisAlignment.stretch,
+    children: [
+      new Child1(),
+      new Child2(),
+      ....
+    ],
+  ),
+);
+===================================================================================================================

@@ -1,0 +1,56 @@
+====================================================================================================
+LinearGradient:
+
+Container(
+  decoration: BoxDecoration(
+        gradient: LinearGradient(
+            colors: [
+              hexToColor(themeColor1),
+              hexToColor(themeColor2),
+            ],
+            begin: const FractionalOffset(0.0, 0.0),
+            end: const FractionalOffset(1.0, 0.0),
+            stops: [0.0, 1.0],
+            tileMode: TileMode.clamp),
+      ),
+),
+====================================================================================================
+BoxDecoration(
+    gradient: RadialGradient(
+            colors: [
+                Colors.transparent,
+                Color(0x30000000),
+                Color(0x80000000),
+                Color(0xa0000000),
+            ],
+            stops: [0.0, 0.4, 0.8, 1.0],
+            tileMode: TileMode.clamp,
+        radius: 0.9,
+    ),
+),
+====================================================================================================
+====================================================================================================
+
+
+
+
+
+
+
+
+blur:
+
+    https://medium.com/fluttervn/how-to-make-blur-effect-in-flutter-using-backdropfilter-imagefilter-559ffd8ab73
+    https://stackoverflow.com/questions/43550853/how-do-i-do-the-frosted-glass-effect-in-flutter
+====================================================================================================
+BackdropFilter(
+  filter: ImageFilter.blur(sigmaX: _sigmaX, sigmaY: _sigmaY),
+  child: Container(
+    color: Colors.black.withOpacity(_opacity),
+  ),
+),
+====================================================================================================
+
+
+
+

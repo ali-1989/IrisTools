@@ -1,0 +1,39 @@
+=================================================================================================
+Help:
+
+    https://stackoverflow.com/questions/43658910/how-to-add-a-webview-in-flutter
+    * https://bestonlinehtmleditor.com/
+=================================================================================================
+Packages:
+
+https://pub.dev/packages/flutter_webview_plugin
+=================================================================================================
+https://inappwebview.dev/docs/in-system-webview/basic-usage/
+https://inappwebview.dev/docs/in-system-webview/in-system-webview-controller-methods/
+
+
+InAppWebView: Flutter Widget for adding an inline native WebView integrated into the flutter widget tree.
+ To use InAppWebView class on iOS you need to opt-in for the embedded views preview by adding a boolean
+ property to the system's Info.plist file, with the key io.flutter.embedded_views_preview and the value YES.
+
+ContextMenu: This class represents the WebView context menu.
+
+HeadlessInAppWebView: Class that represents a WebView in headless mode. It can be used to run a WebView
+ in background without attaching an InAppWebView to the widget tree.
+
+InAppBrowser: In-App Browser using native WebView.
+
+ChromeSafariBrowser: In-App Browser using Chrome Custom Tabs on Android / SFSafariViewController on iOS.
+
+InAppLocalhostServer: This class allows you to create a simple server on http://localhost:[port]/.
+ The default port value is 8080.
+
+CookieManager: This class implements a singleton object (shared instance) which manages the cookies used by
+ WebView instances.
+
+HttpAuthCredentialDatabase: This class implements a singleton object (shared instance) which manages
+ the shared HTTP auth credentials cache.
+
+WebStorageManager: This class implements a singleton object (shared instance) which manages the web
+  storage used by WebView instances.
+=================================================================================================

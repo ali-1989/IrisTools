@@ -1,0 +1,216 @@
+
+========================================================================================================================
+Tab tools:
+
+TabController           :manual
+DefaultTabController    :automatic
+========================================================================================================================
+DefaultTabController:
+
+DefaultTabController(
+        length: 3,
+        child: Scaffold(
+          appBar: AppBar(
+            bottom: TabBar(
+              tabs: [
+                Tab(icon: Icon(Icons.directions_car)),
+                Tab(icon: Icon(Icons.directions_transit)),
+                Tab(icon: Icon(Icons.directions_bike)),
+              ],
+            ),
+            title: Text('Tabs Demo'),
+          ),
+          body: TabBarView(
+            children: []
+            )
+   ),
+ )
+========================================================================================================================
+controller:
+
+TabController _tabController;
+
+Scaffold(
+      body: Container(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            TabBar(
+              unselectedLabelColor: Colors.black,
+              labelColor: Colors.red,
+              controller: _tabController,
+              indicatorSize: TabBarIndicatorSize.tab,
+              tabs: [
+                Tab( icon: Icon(Icons.people), ),
+                Tab(icon: Icon(Icons.person), )
+              ],
+
+            ),
+            Expanded(
+              child: TabBarView(
+                controller: _tabController,
+                children: [Text('people'), Text('Person')],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+========================================================================================================================
+ShiftingTabBar:
+
+TabController tabController;
+
+child: Column(
+        children: <Widget>[
+          ///--- tabs
+          SizedBox(
+            height: 60,
+            child: ShiftingTabBar(
+              controller: state.tabController,
+              color: AppThemes.currentTheme.accentColor,
+              labelStyle: AppThemes.currentTheme.baseTextStyle,
+              forceUpperCase: false,
+              tabs: [
+                ShiftingTab(icon: Icon(Icons.settings, color: AppThemes.currentTheme.textColor,),
+                  text: AppManager.appLocalize.get('settings'),),
+                ShiftingTab(icon: Icon(Icons.school, color: AppThemes.currentTheme.textColor),
+                    text: AppManager.appLocalize.get('myTeachingCourses')),
+                ShiftingTab(icon: Icon(Icons.add_alert, color: AppThemes.currentTheme.textColor),
+                  text: AppManager.appLocalize.get('newCourses'),),
+              ],
+
+            ),
+          ),
+
+          ///--- content
+          Expanded(
+            child: TabBarView(
+              controller: state.tabController,
+              children: <Widget>[
+                getSettingView(state),
+                getWorkView(state),
+              getProposalView(state),
+              ],
+            ),
+          ),
+        ],
+      )
+========================================================================================================================
+ColorfulTabBar:
+
+ColorfulTabBar(
+      unselectedLabelColor: Colors.black,
+      labelColor: Colors.red,
+      controller: state.tabController,
+      tabs: [
+        TabItem(color: AppThemes.currentTheme.primaryColor,
+          title: Wrap(direction: Axis.horizontal,
+            children: <Widget>[
+            Text('item1'),
+            Icon(Icons.people),
+          ],),
+        ),
+        TabItem(color: AppThemes.currentTheme.primaryColor,title: Icon(Icons.person), ),
+        TabItem(color: AppThemes.currentTheme.primaryColor,title: Icon(Icons.settings), ),
+      ],
+    ),
+========================================================================================================================
+
+
+
+
+
+
+
+
+
+
+========================================================================================================================
+sample:
+
+center tabs:
+
+Widget build(BuildContext context) {
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            'My Profile',
+          ),
+          centerTitle: true,
+          backgroundColor: Colors.grey[700].withOpacity(0.4),
+          elevation: 0,
+          // give the system bar rounded corners
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(20.0),
+              bottomRight: Radius.circular(20.0),
+            ),
+          ),
+          leading: Icon(
+            Icons.menu,
+          ),
+        ),
+        body: Column(
+          children: <Widget>[
+            // construct the profile details widget here
+            SizedBox(
+              height: 180,
+              child: Center(
+                child: Text(
+                  'Profile Details Goes here',
+                ),
+              ),
+            ),
+
+            // the tab bar with two items
+            SizedBox(
+              height: 50,
+              child: AppBar(
+                bottom: TabBar(
+                  tabs: [
+                    Tab(
+                      icon: Icon(Icons.directions_bike),
+                    ),
+                    Tab(
+                      icon: Icon(
+                        Icons.directions_car,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+
+            // create widgets for each tab bar here
+            Expanded(
+              child: TabBarView(
+                children: [
+                  // first tab bar view widget
+                  Container(
+                     color: Colors.red,
+                    child: Center(
+                      child: Text(
+                        'Bike',
+                      ),
+                    ),
+                  ),
+
+                  // second tab bar viiew widget
+                  Container(
+                     color: Colors.pink,
+                    child: Center(
+                      child: Text(
+                        'Car',
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );

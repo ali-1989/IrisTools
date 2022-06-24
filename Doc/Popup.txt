@@ -1,0 +1,149 @@
+===========================================================================================================
+PopupMenuItem
+PopupMenuDivider
+CheckedPopupMenuItem
+PopupMenuButton
+
+
+* Future<T> showMenu<T>()
+===========================================================================================================
+PopupMenuButton:
+
+GlobalKey<PopupMenuButtonState> optionPopMenuKey = GlobalKey();
+
+PopupMenuButton(
+  key: state.optionPopMenuKey,
+  onSelected: (v){
+    switch(v){
+    case 'delete':
+      deleteFile(state, contentModel);
+      break;
+    case 'copyLink':
+      ClipboardHelper.insert(contentModel.url);
+      break;
+    case 'saveToMemory':
+      saveToMemory(state, contentModel);
+      break;
+    case 'download':
+      startDownload(state, contentModel);
+      break;
+    }
+  },
+  itemBuilder: (ctx)=> getPopMenu(state, contentModel),
+
+  child: Icon(Icons.more_vert),
+)
+
+
+List<PopupMenuEntry> getPopMenu(ContentScreenState state, ContentModel model){
+  List<PopupMenuEntry> list = [];
+
+  PopupMenuItem save = PopupMenuItem(
+    value: 'saveToMemory',
+    child: Row(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Icon(Icons.camera_alt),
+        Text(AppManager.appLocalize.getCapitalize('saveToMemory')),
+      ]),
+  );
+
+  PopupMenuItem copyLink = PopupMenuItem(
+    value: 'copyLink',
+    child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Icon(Icons.camera_alt),
+          Text(AppManager.appLocalize.getCapitalize('saveToMemory')),
+        ]),
+  );
+
+  list.add(copyLink);
+
+  if(model.isDownloaded) {
+    list.add(delete);
+    list.add(save);
+  }
+  else
+    list.add(download);
+
+  return list;
+}
+===========================================================================================================
+showMenu:
+
+GestureDetector(
+  behavior: HitTestBehavior.translucent,
+  onTap: (){
+    //RenderBox overlay = Overlay.of(state.context).context.findRenderObject();
+    RenderBox overlay = state.context.findRenderObject();
+    showMenu(
+        context: state.context,
+        items: getPopMenu(state, contentModel),
+        position: RelativeRect.fromLTRB(100, state._tapPosition.dy-20, 100, 0),
+             or
+        position: RelativeRect.fromRect(
+                  state._tapPosition & Size.zero,    //or: & Size(40, 40)
+                  Offset.zero & overlay.size
+              ),
+    ).then((value){
+      if(value == null)
+        return;
+
+      switch(value){
+        case 'delete':
+          deleteFile(state, contentModel);
+          break;
+      }
+    });
+  },
+  child: Icon(Icons.more_vert),
+),
+
+
+
+
+List<PopupMenuEntry> getPopMenu(ContentScreenState state, ContentModel model){
+  List<PopupMenuEntry> list = [];
+
+  PopupMenuItem save = PopupMenuItem(
+    value: 'saveToMemory',
+    child: GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTap: (){Navigator.of(state.context).pop('saveToMemory');},
+      child: Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Icon(Icons.camera_alt),
+            Text(AppManager.appLocalize.getCapitalize('saveToMemory')),
+          ]),
+    ),
+  );
+
+  PopupMenuItem copyLink = PopupMenuItem(
+    value: 'copyLink',
+    child: GestureDetector(
+      onTap: (){Navigator.of(state.context).pop('copyLink');},
+      child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Icon(Icons.image),
+            Text(AppManager.appLocalize.getCapitalize('copyLink')),
+          ]),
+    ),
+  );
+
+  list.add(copyLink);
+
+  if(model.isDownloaded) {
+    list.add(delete);
+    list.add(save);
+  }
+  else
+    list.add(download);
+
+  return list;
+}
+===========================================================================================================

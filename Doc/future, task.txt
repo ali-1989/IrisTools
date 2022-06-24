@@ -1,0 +1,88 @@
+========================================================================================================
+priority of Future:
+
+Future.value().then();   == same priority ==      Future.sync(() => ).then();
+	    then
+Future(()=> ).then();    == same priority ==      Future.delayed(Duration(seconds: 0), () => ).then();
+
+--------------------------------------------------------
+scheduleMicrotask();
+
+https://web.archive.org/web/20170704074724/https://webdev.dartlang.org/articles/performance/event-loop
+=======================================================================================================
+ # there is 4 function:
+
+catchError()
+then()
+whenComplete()
+timeout()
+
+* order of use is very important, The output of each is sent to the next.
+* if first use [catchError] and next [then] ,when occur error, [catchError] fire and output return to then.
+  if first use [then] and next [catchError] ,when occur error, [then] fire and [catchError] not fire else an error occur in [then].
+* [whenComplete] fire eny way.is called when future completes, whether it does so with a [value or an error].
+* if use [timeout], [catchError & then & whenComplete] after duration.
+---------------------------------------------
+myFunc()
+  .then((value) {
+    ...
+  })
+  .catchError((e){});
+
+ + myFunc() return Future
+
+-----------------------------------------
+then(onValue(T value), {onError(AsyncError e)})
+
+* 'onError' is optinal and handle error generated within then() or before.
+----------------------------------------
+whenComplete:
+
+whenComplete() is the equivalent of ‘finally’ section in try-catch.
+----------------------------------------
+
+Future<int> parseAndRead(data) {
+  File file = new File(filename);
+
+  return file.readAsString().then((contents) {
+    return parseFileData(contents);
+  });
+}
+
+-------------------------------------------
+catchError:
+
+Future<void> someApi() {
+  return Future(() {
+    throw FirstError();
+  })
+  .catchError((error, stackTrace) {
+    return Future.error(SecondError());
+  });
+}
+-------------------------------------------
+Future.sync(dynamic computation()):
+
+* Creates a future containing the result of immediately calling computation.
+=======================================================================================================
+
+
+
+
+
+
+Completer:
+=======================================================================================================
+Future<Results> costlyQuery() {
+  var completer = new Completer();
+
+  database.query("SELECT * FROM giant_table", (results) {
+    completer.complete(results);
+  }, (error) {
+    completer.completeException(error);
+  });
+
+
+  return completer.future;
+}
+=======================================================================================================

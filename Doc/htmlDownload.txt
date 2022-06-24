@@ -1,0 +1,18 @@
+import 'dart:html' as html;
+import 'dart:js' as js;
+
+	final bytes = utf8.encode(text);
+	final blob = html.Blob([bytes]);
+	final urltemp = html.Url.createObjectUrlFromBlob(blob);
+	final anchor = html.document.createElement('a') as html.AnchorElement;
+	anchor.href = urltemp;
+	anchor.style.display = 'none';
+	anchor.download = 'lic.txt';
+	html.document.body!.children.add(anchor);
+
+	// download
+	anchor.click();
+
+	// cleanup
+	html.document.body!.children.remove(anchor);
+	html.Url.revokeObjectUrl(urltemp);

@@ -1,0 +1,21 @@
+==================================================================================================
+Android 5.1 (API level 22)
+Android 5.0 (API level 21)
+Android 4.4W (API level 20)
+Android 4.4 (API level 19)      Rasoul
+Android 4.3 (API level 18)
+Android 4.2 (API level 17)
+Android 4.1 (API level 16)
+Android 4.0 (API level 15)
+==================================================================================================
+Dart 2.12
+
+# null safety
+
+https://medium.com/dartlang/announcing-dart-2-12-499a6e689c87
+==================================================================================================
+Flatter 2
+
+https://developers.googleblog.com/2021/03/announcing-flutter-2.html
+https://medium.com/flutter/whats-new-in-flutter-2-0-fe8e95ecc65
+==================================================================================================

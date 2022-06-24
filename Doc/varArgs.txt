@@ -1,0 +1,51 @@
+=============================================================================================================
+testFunction([0, 1, 2, 3, 4, 5, 6]);
+testFunction();
+testFunction([0, 1, 2]);
+
+void testFunction([List<dynamic> args = const[]])
+{
+  if(args == null) {
+    return;
+  }
+
+  for(dynamic arg in args)
+  {
+    print(arg);
+  }
+}
+=============================================================================================================
+typedef T VarArgsCallback<T>(List<dynamic> args, Map<String, dynamic> kwargs);
+
+class VarArgsFunction<T> {
+  final VarArgsCallback<T> callback;
+  static var _offset = 'Symbol("'.length;
+
+  VarArgsFunction(this.callback);
+
+  T call() => callback([], {});
+
+  @override
+  dynamic noSuchMethod(Invocation inv) {
+    return callback(
+      inv.positionalArguments,
+      inv.namedArguments.map(
+        (_k, v) {
+          var k = _k.toString();
+          return MapEntry(k.substring(_offset, k.length - 2), v);
+        },
+      ),
+    );
+  }
+}
+
+main() {
+    dynamic myFunc = VarArgsFunction((args, kwargs) {
+      print('Got args: $args, namedArgs: $kwargs');
+    });
+
+    myFunc(1, 2, x: true, y: false);
+
+    // Got args: [1, 2], namedArgs: {x: true, y: false}
+}
+=============================================================================================================

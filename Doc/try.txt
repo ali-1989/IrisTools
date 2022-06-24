@@ -1,0 +1,57 @@
+========================================================================================================================
+Structure:
+
+try{
+		....
+}
+on Exception catch(ex){
+    print('Exception in , $ex');
+}
+
+on Exception{
+    print('Exception in,');
+}
+
+on FormatException catch (e, stackTr){
+    print('Exception in,');
+}
+
+catch (e){
+    print('Error in , $e.errMsg()');
+}
+
+finally {
+
+}
+========================================================================================================================
+class myException implements Exception {
+   ...
+}
+========================================================================================================================
+Exceptions:
+
+# DeferredLoadException
+    Thrown when a deferred library fails to load.
+
+# FormatException
+    Exception thrown when a string or some other data does not have an expected format and cannot be parsed or processed.
+
+# IntegerDivisionByZeroException
+    Thrown when a number is divided by zero.
+
+# IOException
+    Base class for all Inupt-Output related exceptions.
+
+# IsolateSpawnException
+    Thrown when an isolate cannot be created.
+
+# Timeout
+    Thrown when a scheduled timeout happens while waiting for an async result.
+========================================================================================================================
+FlutterError:
+
+FlutterError.reportError(FlutterErrorDetails(exception: exception, stack: stack,
+          context: ErrorDescription('while notifying listeners for $runtimeType'),
+          informationCollector: collector,
+        ));
+========================================================================================================================

@@ -1,0 +1,144 @@
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$ See button.txt
+==========================================================================================================
+Material(
+  clipBehavior: Clip.antiAlias,
+  borderRadius: BorderRadius.circular(10),          <<-- same stadium
+  color: Theme.of(state.context).backgroundColor,   <<-- backgroundColor
+
+  child: InkWell(
+    onTap: (){},
+      splashColor: Colors.white,            <<-- splashColor on tap
+      child: Icon(Icons.crop,))
+),
+
+---------------------------------------------------------------
+Material(
+  clipBehavior: Clip.antiAlias,
+  shape: StadiumBorder(),
+  type: MaterialType.transparency,
+
+  child: IconButton(
+    icon: Icon(
+        Icons.arrow_back_ios,
+        color: settings.textColor,),
+    splashColor: settings.cellColor,                <<-- splashColor on tap
+    onPressed: (){}),
+),
+==========================================================================================================
+Material(
+  clipBehavior: Clip.antiAlias,
+  type: MaterialType.circle,                        <<--  circle
+  color: Theme.of(state.context).backgroundColor,   <<-- backgroundColor
+
+  child: InkWell(
+    onTap: (){},
+      splashColor: Colors.white,                    <<-- splashColor on tap
+      child: Icon(Icons.crop,))
+),
+==========================================================================================================
+# circle/stadium without background:
+
+Material(
+  clipBehavior: Clip.antiAlias,
+  borderRadius: BorderRadius.circular(10),
+  type: MaterialType.transparency,
+  color: Colors.white,                              <<-- backgroundColor
+
+),
+
+Material(
+  clipBehavior: Clip.antiAlias,
+  shape: CircleBorder() | StadiumBorder(),
+  type: MaterialType.transparency,
+  color: Theme.of(state.context).backgroundColor,
+
+),
+==========================================================================================================
+Button:
+
+Material(
+  clipBehavior: Clip.antiAlias,
+  type: MaterialType.circle,
+  color: Colors.transparent,
+
+  child: IconButton(
+    iconSize: 20,
+    onPressed: (){},
+    splashColor: Colors.white,              <<- splashColor on tap
+    icon: Icon(Icons.clear, color: theme.appBarTheme.iconTheme.color,),
+  ),
+),
+==========================================================================================================
+
+
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+FloatActionBtn:
+
+Positioned(
+        bottom: 20,
+        right: 20,
+        child: Material(
+          color: AppThemes.highLight(AppThemes.currentTheme.differentColor),
+          clipBehavior: Clip.antiAlias,
+          shape: CircleBorder(),
+          child: IconButton(
+            constraints: BoxConstraints.tight(Size(40,40)),
+            splashColor: AppThemes.currentTheme.differentColor,
+            alignment: Alignment.center,
+            padding: EdgeInsets.all(0.0),
+            icon: Icon(Icons.add,),
+            onPressed: (){
+              openAddPanel(state);
+            },
+          ),
+        ),
+      ),
+
+
+SizedBox(
+  height: 8,
+  child: Transform.translate(
+    offset: Offset(0, 0),
+    child: OverflowBox(
+      minHeight: 38,
+      maxHeight: 38,
+      child: Row(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: <Widget>[
+
+          Material(
+            clipBehavior: Clip.antiAlias,
+            color: AppThemes.currentTheme.differentColor,
+            type: MaterialType.circle,
+            child: IconButton(
+              icon: Icon(Icons.apps, size: 24,),
+              alignment: Alignment.center,
+              padding: EdgeInsets.all(0.0),
+              splashColor: AppThemes.currentTheme.accentColor,
+              onPressed: (){
+                showEditPanel(state, id);
+              },
+            ),
+          ),
+        ],
+      ),
+    ),
+  ),
+),
+------------------------------------------------------------------------------------------------------------
+IconInfo(
+    icon: Material(
+        clipBehavior: Clip.antiAlias,
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: (){print('ppp');},
+          splashColor: Colors.red,
+            child: Icon(Icons.apps),
+        )
+    ),
+    strutStyle: AppThemes.strutStyle,
+    info: cas['Title'],
+    infoStyle: AppThemes.currentBaseTextStyle().copyWith(fontWeight: FontWeight.bold),
+  ),

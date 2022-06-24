@@ -1,0 +1,5 @@
+=======================================================================================================
+server by isolate:
+	https://itnext.io/write-concurrent-programs-using-isolate-and-future-in-dart-da3fd9395db1
+	https://github.com/dart-archive/isolate/blob/master/example/http_server.dart
+=======================================================================================================

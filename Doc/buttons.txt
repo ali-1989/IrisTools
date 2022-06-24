@@ -1,0 +1,204 @@
+=============================================================================================================
+$$ And See [materialInk.txt]
+=============================================================================================================
+# Circle icon button:
+
+1)
+DecoratedBox(
+  decoration: ShapeDecoration(
+    shape: CircleBorder(),
+    color: AppThemes.currentTheme.btnBackColor,
+  ),
+  child: GestureDetector(
+    behavior: HitTestBehavior.translucent,
+    onTap: (){Tools.openPdfByBrowser(contentModel.url);},
+    child: Padding(
+      padding: EdgeInsets.all(4.0),
+      child: Icon(Icons.download_rounded, size: 32,).onColor(),
+    ),
+  ),
+),
+-----------------------------
+2)
+
+Material(
+    clipBehavior: Clip.antiAlias,
+    color: AppThemes.relativeColorSameAppBar(),
+    shape: CircleBorder(),
+
+    child: IconButton(
+      constraints: BoxConstraints.tight(Size(40, 40)),
+      splashColor: AppThemes.currentTheme.differentColor,
+      icon: Icon(Icons.add, color: AppThemes.getUnNearColor(Colors.white, AppThemes.relativeColorSameAppBar(), Colors.black),),
+      onPressed: (){
+        openAddPanel(state);
+      },
+    ),
+  ),
+-----------------------------
+3)
+
+Material(
+    clipBehavior: Clip.antiAlias,
+    color: AppThemes.currentTheme.differentColor,
+    type: MaterialType.circle,
+
+    child: IconButton(
+      alignment: Alignment.center,
+      padding: EdgeInsets.all(0.0),                      //remove unNeed space
+      splashColor: AppThemes.currentTheme.accentColor,
+      icon: Icon(Icons.edit, size: 24,).onColor(),
+      onPressed: (){
+        showEditPanel(state, cc.id);
+      },
+    ),
+  ),
+-----------------------------
+========================================================================================================================
+OutlineButton
+
+-------------------------------------------------------
+OutlineButton(
+    shape: StadiumBorder(),
+    textColor: Colors.blue,
+    child: Text('Button Text'),
+    borderSide: BorderSide(
+        color: AppThemes.currentBaseTextStyle().color,
+         style: BorderStyle.solid,
+        width: 1),
+    onPressed: () {},
+)
+-------------------------------------------------------
+OutlineButton(
+  child: new Text("Button text"),
+  onPressed: null,
+  shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0))
+)
+==========================================================================================================
+RaisedButton same:
+
+ClipRRect(
+  borderRadius: BorderRadius.circular(40),
+  child: RaisedButton(
+    child: Text("Button"),
+    onPressed: () {},
+  ),
+),
+-------------------------------------------------------
+===========================================================================================================
+FlatButton(
+  child: Text('Button'),
+  textColor: MyColor.white,
+  shape: RoundedRectangleBorder(
+    side: BorderSide(
+        color: Colors.blue,
+        width: 1,
+        style: BorderStyle.solid
+    ),
+  borderRadius: BorderRadius.circular(50)),
+)
+===========================================================================================================
+By Row:
+
+Row(
+    textDirection: TextDirection.ltr,     <<-- for Rtl
+    children: <Widget>[
+      Text(AppManager.appLocalize.get('add')),
+      SizedBox(width: 4,),
+      Icon(Icons.add)
+  ],),
+=====================================================================================================
+
+
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+
+ToggleButtons:
+   https://medium.com/flutter-community/flutter-widget-in-focus-togglebuttons-know-it-all-b0f0c23f4518
+
+
+Map<String, bool> typeSelected = {};
+typeSelected.addAll({'matter': true, 'complement': false, 'herbalTea': false});
+
+
+SelfRefresh(
+
+or
+
+MultiRefresh(
+  id: 'ToggleButtons',
+  controller: state.multiController,
+  builder: (ctx, ctr, data) {
+    return LayoutBuilder(
+      builder: (ctx, layout){
+        var color = AppThemes.currentTheme.textColorRelateBy(AppThemes.themeData.backgroundColor);
+        var selectedColor = AppThemes.currentTheme.intelliWhiteRelateBy(AppThemes.themeData.indicatorColor);
+        return ToggleButtons(
+          constraints: BoxConstraints.expand(width: calcToggleWid(state, layout), height: 50),
+          color: color,
+          selectedColor: selectedColor,
+          borderColor: AppThemes.themeData.textTheme.bodyText2?.color,
+          selectedBorderColor: AppThemes.themeData.textTheme.bodyText2?.color,
+          fillColor: AppThemes.themeData.indicatorColor,
+          splashColor: AppThemes.themeData.accentColor,
+          highlightColor: AppThemes.themeData.accentColor,
+          disabledColor: AppThemes.themeData.disabledColor,
+          disabledBorderColor: AppThemes.themeData.disabledColor,
+          borderWidth: 1,
+          //renderBorder: true,
+          children: [
+            Text(state.t("matter")!),
+            Text(state.t("complement")!),
+            Text(state.t("herbalTea")!),
+          ],
+          isSelected: Tools.getTogglesSelected(state.typeSelected),
+          onPressed: (idx){
+            Tools.setToggleStateByIndex(state.typeSelected, idx);
+            /*for (int indexBtn = 0; indexBtn < state.typeSelected.length; indexBtn++) {
+              if (indexBtn == idx) {
+                state.typeSelected[indexBtn] = true;
+              }
+              else {
+                state.typeSelected[indexBtn] = false;
+              }
+            }*/
+
+            state.multiController.update('ToggleButtons');
+          },
+        );
+      },
+    );
+  }
+),
+
+
+double calcToggleWid(AddFoodMaterialScreenState state, BoxConstraints constraints){
+  var len = state.typeSelected.length;
+
+  if(constraints.hasBoundedWidth) {
+    return (constraints.maxWidth / len) - (len*2);
+  }
+
+  return (AppSizes.getScreenWidth(state.context)) / len - (len*2);
+}
+==================================================================================================================
+Material:
+
+Material(
+  color: AppThemes.highLight(AppThemes.currentTheme.differentColor),
+  clipBehavior: Clip.antiAlias,
+  shape: CircleBorder(),
+  child: IconButton(
+    constraints: BoxConstraints.tight(Size(40,40)),
+    splashColor: AppThemes.currentTheme.differentColor,
+    alignment: Alignment.center,
+    padding: EdgeInsets.all(0.0),
+    icon: Icon(Icons.add,),
+    onPressed: (){
+      openAddPanel(state);
+    },
+  ),
+),
+-------------------------------------------------------------------
+
+===================================================================================================================

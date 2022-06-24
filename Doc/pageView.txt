@@ -1,0 +1,120 @@
+=============================================================================================
+deep view:
+
+    https://medium.com/flutter-community/a-deep-dive-into-pageview-in-flutter-with-custom-transitions-581d9ea6dded
+=============================================================================================
+Physics:
+
+PageScrollPhysics()
+BouncingScrollPhysics()
+NeverScrollableScrollPhysics()
+--------------------------------------
+# Custom physic, disable one direction scrolling:
+
+    https://stackoverflow.com/questions/55502868/flutter-pageview-disable-left-or-right-side-scrolling/55504170
+=============================================================================================
+allowImplicitScrolling: false:
+
+* if false: jump to another page fast (without full animation)
+=============================================================================================
+jumpToPage()  vs animationTo():
+
+* jumpToPage: jump to another page fast (without create between pages)
+=============================================================================================
+sample:
+
+PageController pageViewController = PageController(initialPage: Settings.rootPageIndex, keepPage: true);
+
+
+PageView.builder(
+    itemBuilder: (ctx, idx) {
+      return generatePages(ctx, idx, state);
+    },
+
+    reverse: false,
+    controller: state.pageViewController,
+    scrollDirection: Axis.horizontal,
+    pageSnapping: false,
+    dragStartBehavior: DragStartBehavior.start,
+    physics: NeverScrollableScrollPhysics(), //PageScrollPhysics,
+  );
+=============================================================================================
+
+void connectTabToPageView(TabController tabCtr, PageController pageCtr, int initPage,{bool jumpToPage = false}){
+  bool canWorkTab = true;
+  bool canWorkPage = true;
+  int currentPage = initPage;
+  double pageOldValue = 0;
+
+  void tabListener() {
+    if(!canWorkTab)
+      return;
+
+    canWorkPage = false;
+
+    if(jumpToPage){
+      if (Converter.getFractionAsInt(tabCtr.animation.value) == 0) {
+          pageCtr.jumpToPage(tabCtr.animation.value.round());
+          canWorkPage = true;
+        }
+    }
+    else {
+      var step = pageCtr.position.viewportDimension * tabCtr.animation.value;
+      pageCtr.animateTo(step, curve: Curves.ease, duration: Duration(milliseconds: 30)).then((value) {
+        if (Converter.getFractionAsInt(tabCtr.animation.value) == 0)
+          canWorkPage = true;
+      });
+    }
+  }
+
+
+  /// offset = page * viewportDimension
+  void pageListener() {
+    if(!canWorkPage)
+      return;
+
+    if(Converter.getFractionAsInt(pageCtr.page.abs()) == 0) {//pageCtr.page.roundToDouble() == pageCtr.page
+      tabCtr.index = pageCtr.page.round();
+      currentPage = tabCtr.index;
+      pageOldValue = pageCtr.page;
+      canWorkTab = true;
+
+      if(tabCtr.animation.value != pageCtr.page) {
+        tabCtr.offset = 0;
+      }
+    }
+    else {
+      canWorkTab = false;
+      double val = Converter.getFraction(pageCtr.page, 3);
+
+      if(pageOldValue > pageCtr.page) {
+        val = (val == 1.0)? -1 : -(1 - val);
+      }
+
+      if(currentPage != pageCtr.page.floor()) {
+        if (val < 0) {
+          if(currentPage != pageCtr.page.floor() +1) {
+            tabCtr.index = pageCtr.page.floor();
+            currentPage = tabCtr.index;
+          }
+        }
+        else {
+          tabCtr.index = pageCtr.page.floor();
+          currentPage = tabCtr.index;
+        }
+      }
+
+      tabCtr.offset = val;
+      pageOldValue = pageCtr.page;
+    }
+  }
+
+  tabCtr.animation.addListener(tabListener);
+  pageCtr.addListener(pageListener);
+
+  /*else if(pageOldValue == pageCtr.page) {
+        val = (pageCtr.position.axisDirection == AxisDirection.left) ? -val : val;
+        print('val : ${val}      axis: ${pageCtr.position.axisDirection}');
+      }*/
+}
+=============================================================================================

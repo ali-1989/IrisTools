@@ -1,0 +1,52 @@
+=====================================================================================================
+Help & Site:
+
+    https://medium.com/flutter-community/flutter-listview-and-scrollphysics-a-detailed-look-7f0912df2754
+    https://medium.com/flutterworld/flutter-problem-listview-vs-column-singlechildscrollview-43fdde0fa355
+
+=====================================================================================================
+cacheExtent:
+
+cacheExtent is the size of the area (pixel) that is drawn before being in the visible part of the screen.
+
+default: 250.0,
+=====================================================================================================
+new ListView.separated(
+      itemCount: _notes.length,
+      separatorBuilder: (BuildContext context, int index) => Divider(),
+      itemBuilder: (BuildContext context, int index) {
+        return ListTile(
+          title: Text(_notes[index].title),
+        );
+      },
+      padding: const EdgeInsets.all(10.0),
+    );
+=====================================================================================================
+SingleChildScrollView:
+
+SingleChildScrollView(
+ physics: ClampingScrollPhysics() | NeverScrollableScrollPhysics()
+=====================================================================================================
+=====================================================================================================
+=====================================================================================================
+Tip:
+
+@override
+  Widget build(BuildContext context) {
+
+    _scrollController = new ScrollController(initialScrollOffset: _offset);
+
+
+return new ListView.builder(
+    controller: _scrollController,
+    itemCount: docs.length,
+    itemExtent: 150.0,
+    itemBuilder: (BuildContext context, int index) {
+
+      if (_scrollController.offset > 100) { // 100 is arbitrary
+        _offset = _scrollController.offset;
+      }
+      return new SomeCard(doc: docs);
+    },
+  );
+=====================================================================================================

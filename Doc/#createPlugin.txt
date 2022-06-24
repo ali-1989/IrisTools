@@ -1,0 +1,6 @@
+================================================================================================
+* Plugin is a Package than has native code [android/ios]
+================================================================================================
+https://flutter.dev/docs/development/packages-and-plugins/using-packages
+https://flutter.dev/docs/development/packages-and-plugins/developing-packages
+================================================================================================

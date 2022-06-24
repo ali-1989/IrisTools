@@ -1,0 +1,100 @@
+==================================================================================================
+==================================================================================================
+Radio:
+
+* radio has no label, must insert a Text()
+* if (groupValue == value) ,then is selected
+
+ Radio<String>(
+    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+    groupValue: _currentOption,
+    value: "ByUserId",
+    onChanged: (val) {
+      _currentOption = val;
+      ctr.update();
+    },
+  ),
+
+-----------------------------------------
+Radio(
+  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+  groupValue: state.chatFontFamily,
+  value: i.value,
+  onChanged: (val) {
+    state.chatFontFamily = val! as String;
+    state.fontFamilyRefresher.update();
+  },
+).onColor<String>(),
+==================================================================================================
+RadioListTile:
+
+
+==================================================================================================
+******************************  Checkbox  *********************************************
+==================================================================================================
+Checkbox:
+
+Checkbox(
+    value: checkBoxValue,
+    activeColor: Colors.green,
+    onChanged:(bool newValue){
+    setState(() {
+        checkBoxValue = newValue;
+    });
+  ),
+==================================================================================================
+CheckboxListTile:
+
+CheckboxListTile(
+    title: Text("title text"),
+    value: checkedValue,
+    onChanged: (newValue) {
+         setState(() {
+           checkedValue = newValue;
+         });
+       },
+    controlAffinity: ListTileControlAffinity.leading,  //  <-- leading Checkbox
+  )
+==================================================================================================
+
+
+
+
+
+
+
+==================================================================================================
+******************************  DropdownButton  *********************************************
+==================================================================================================
+DropdownButton:
+
+Iterable<DropdownMenuItem> dropItems;
+
+Padding(
+  padding: EdgeInsets.all(5),
+  child: SelfRefresh(
+      //controller: state.baseFamilyRefresher,
+      childBuilder: (ctx, ctr){
+        return Theme(
+          data: AppThemes.tDropdownTheme(state.context),
+          child: Container(
+            width: 140,
+            padding: EdgeInsets.symmetric(horizontal: 4, vertical: 0),
+            decoration: AppThemes.tDropdownDecoration(),
+
+            child: DropdownButton<String>(
+              items: dropItems.toList(),
+              value: ctr.getOrDefault('BaseFamily', dropItems.first.value),
+              underline: SizedBox(),
+              isExpanded: true,
+              onChanged: (String? v){
+                ctr.set('BaseFamily', v);
+                ctr.update();
+              },
+            ),
+          ),
+        );
+      }
+  ),
+),
+==================================================================================================

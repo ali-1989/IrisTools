@@ -1,0 +1,65 @@
+==============================================================================================================
+
+Navigator(
+  initialRoute: ...,
+  onGenerateRoute: ...,
+  observers: [
+    HeroController(),       <===
+  ],
+)
+==============================================================================================================
+GestureDetector(
+  behavior: HitTestBehavior.translucent,
+  onTap: (){
+    AppNavigator.pushNextPage(state.context,
+        ImageFullScreen(
+            ce['CertificateId'].toString(),
+            ctr.widgetValue(),
+        ),
+        name: "HeroCertificateView"
+    );
+  },
+
+  child: Hero(
+    tag: ce['CertificateId'].toString(),
+    child: Image.file(
+      ctr.widgetValue(),
+      width: double.infinity,
+      height: double.infinity,
+      fit: BoxFit.fill,),
+  ),
+);
+
+----------------------------------------------------------
+class ImageFullScreen extends StatelessWidget {
+  final String tag;
+  final File imageFile;
+
+  ImageFullScreen(this.tag, this.imageFile, {Key key}): super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+
+          child: Hero(
+            tag: tag,
+            child: Image.file(
+              imageFile,
+              fit: BoxFit.fill,
+              filterQuality: FilterQuality.high,
+            ),
+          ),
+        ),
+        onTap: () {
+          Navigator.pop(context);
+        },
+      ),
+    );
+  }
+}
+==============================================================================================================

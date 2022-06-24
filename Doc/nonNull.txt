@@ -1,0 +1,99 @@
+===============================================================================================================
+Link & Site:
+
+    - https://stackoverflow.com/questions/60068435/what-is-null-safety-in-dart
+===============================================================================================================
+
+String s;
+print(s);   ==> print null
+===============================================================================================================
+
+map["foo"] = "Hello";
+String foo = map["foo"]  ??  throw new NullPointerException();
+
+map["foo"] = "Hello";
+String foo = map["foo"]!!;  // I'm sure it's not null, I've just assigned it
+===============================================================================================================
+Dart version 2.2+
+
+void main() {
+  int? e = 5;
+  int v = e!; // v is non-nullable; would throw an error if e were null
+
+  String? word;
+  print(word!); // throws runtime error if word is null
+
+  print(null!); // throws runtime error
+}
+===============================================================================================================
+class Point<T extends num> {
+  T x, y; 		// <-- These are non-nullable.
+  Point(this.x, this.y);
+}
+
+new Point<int>();	 // Fine.
+new Point<int?>();	 // Error! Constraint is non-nullable.
+
+class Point2<T extends num?> {
+  T x, y; // <-- These may or may not be nullable.
+  Point2(this.x, this.y);
+}
+
+new Point2<int>(); // Fine.
+new Point2<int?>(); // Also fine.
+===============================================================================================================
+Dart version 2.3+
+
+late final int x;
+
+x = 5; // allowed
+x = 6; // forbidden
+===============================================================================================================
+
+final neverList = <Never>[
+	// Any value but 'Never' here will be an error.
+  5, // error
+  null, // error
+  Never, // not a value (compile-time error)
+];
+
+
+	// Can contain null: [null]
+final nullList = <Null>[
+  // Any value but Null will be an error.
+  5, // error
+  null, // allowed
+
+  Never, // not a value (compile-time error)
+  Null, // not a value (compile-time error)
+];
+===============================================================================================================
+
+obj ??= value
+
+is similar to
+
+((x) => x == null ? obj = value : x)(obj);
+------------------------------------------------
+obj?.method()
+
+is similar to
+
+((x) => x == null ? null : x.method())(obj)
+------------------------------------------------
+List lowerNumbers = [1, 2, 3, 4, 5];
+List upperNumbers = [6, 7, 8, 9, 10];
+List numbers = […lowerNumbers?…upperNumbers];
+
+which is the equivalent to
+
+List numbers = [];
+numbers.addAll(lowerNumbers);
+if(upperNumbers != null){
+ numbers.addAll(upperNumbers);
+}
+===============================================================================================================
+
+e1?.[e2]    // null if e1 is null; otherwise it’s e1[e2]
+            // Avoids the ambiguity in the following code: { e1 ? [e2] : e3 }
+===============================================================================================================

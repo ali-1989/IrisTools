@@ -1,0 +1,28 @@
+==============================================================================================================
+importance:
+
+*) on Register check mobile & username before next
+*) edit restore page for country code
+
+*) beautiful dialogs
+*) edit image by canvas
+*) draw on image
+*) compute widget size without offstage
+*) badge on icon
+*) connect tabBar controller to page controller
+
+
+
+
+not importance:
+
+*) add font from local
+*) add fontScreen to select Bold option
+*) Possible get static of actions (like: witch theme is more select) امار
+*) drawer menu same Metro
+*) https://github.com/kherel/animated_theme_switcher/blob/master/lib/src/theme_switching_area.dart
+*) E:\PROGING\Tools\+Flutter\Sdk\Stable\.pub-cache\hosted\pub.dartlang.org\get_time_ago-1.0.5\lib\messages
+==============================================================================================================
+
+
+==============================================================================================================

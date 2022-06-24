@@ -1,0 +1,113 @@
+=============================================================================================================
+Help & Site:
+
+    https://medium.com/@maffan/screen-navigation-in-flutter-apps-with-data-handling-67b09cc04a75
+=============================================================================================================
+Nav2 in flutter:
+	https://www.raywenderlich.com/19457817-flutter-navigator-2-0-and-deep-links
+	https://medium.com/geekculture/a-simpler-guide-to-flutter-navigator-2-0-part-i-70623cedc93b
+    https://medium.com/flutter/learning-flutters-new-navigation-and-routing-system-7c9068155ade
+
+=============================================================================================================
+
+https://techblog.geekyants.com/navigation-20-routing-on-flutter-web
+https://docs.flutter.dev/development/ui/navigation/url-strategies
+
+url_strategy: ^0.2.0
+=============================================================================================================
+MaterialApp.router()
+
+* It creates a material system that uses the router instead of Navigator.
+* It requires two things, routerDelegate and routerInformationParser.
+=====================================================================================================
+route observer, route aware:
+
+    https://medium.com/flutter-community/how-to-track-screen-transitions-in-flutter-with-routeobserver-733984a90dea
+=====================================================================================================
+class RouteGenerator {
+  static const main_home= "/main";
+
+
+  static Route<dynamic> generatorRoute(RouteSettings settings) {
+  final args = settings.arguments;
+
+  switch (settings.name) {
+
+  case main_home:
+    return MaterialPageRoute(builder: (_) => MainHome());
+    break;
+
+  }
+ }
+}
+
+MaterialApp( onGenerateRoute: ->RouteGenerator.generatorRoute)
+=====================================================================================================
+remove all route:
+
+Navigator.of(state.context).popUntil(ModalRoute.withName('/'));
+Navigator.of(state.context).popUntil((route) => route.settings.name == "/");
+Navigator.of(state.context).popUntil((route) => route is HomeScreen);
+
+or
+
+Navigator.of(state.context).pushAndRemoveUntil(
+						MaterialPageRoute(builder: (buildContext) {return R1Screen();}),
+						(route) => false);
+
+
+SchedulerBinding.instance.addPostFrameCallback((_) async {
+              Navigator.of(context).pushNamedAndRemoveUntil('/login',
+                                  (Route<dynamic> route) => false);
+                            });
+
+Navigator.pushAndRemoveUntil(state.context,
+					MaterialPageRoute(builder: (BuildContext context) => HomeScreen()),
+							(Route<dynamic> route) => false);
+=====================================================================================================
+check current route:
+
+Navigator.popUntil(context, (route) {
+  if (route.settings.name == newRouteName) {
+    isNewRouteSameAsCurrent = true;
+  }
+  return true;
+});
+==========================================================================================================
+************************    WidgetsBindingObserver    ***********************************************
+==========================================================================================================
+Link & Help:
+
+  - https://stackoverflow.com/questions/45916658/how-to-deactivate-or-override-the-android-back-button-in-flutter/45918186
+====================================================================================================
+WidgetsBindingObserver:
+
+class BackButtonOverrideDemoWidgetState extends State<BackButtonOverrideDemoWidget> with WidgetsBindingObserver{
+  bool isBackButtonActivated = false;
+
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  //-------------------------Function That Triggers when you hit the back key
+
+  @override
+  didPopRoute(){
+    bool override;
+    if(isBackButtonActivated)
+      override = false;
+    else
+      override = true;
+    return new Future<bool>.value(override);
+  }
+}
+====================================================================================================

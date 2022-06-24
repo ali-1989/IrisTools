@@ -1,0 +1,91 @@
+============================================================================================
+# Centering a button:
+
+    https://stackoverflow.com/questions/46637197/position-widget-in-stack-with-percent
+============================================================================================
+ Stack(
+    children: [
+      Align(
+        alignment: AlignmentDirectional.centerStart,
+          //textDirection: AppThemes.textDirection,
+          child: ElevatedButton(
+            style: ButtonStyle(
+                padding: MaterialStateProperty.all(EdgeInsets.symmetric(horizontal: 16, vertical: 14))
+            ),
+            child: Text(AppManager.appLocalize.get('defaultSettings')!),
+            onPressed: (){
+              state.baseFontSize = FontThemeObject.rawFontSize;
+              state.chatFontSize = FontThemeObject.rawFontSize + 1;
+              state.baseFontFamily = FontThemeObject.rawFontFamily;
+              state.chatFontFamily = FontThemeObject.rawFontFamily;
+
+              AppThemes.fontTheme.userBaseFontSize = state.baseFontSize;
+              AppThemes.fontTheme.userChatsFontSize = state.chatFontSize;
+              AppThemes.fontTheme.userBaseFontFamily = state.baseFontFamily;
+              AppThemes.fontTheme.userChatsFontFamily = state.chatFontFamily;
+
+              AppThemes.applyTheme(AppThemes.currentTheme);
+              state.update();
+              AppManager.reBuildMaterial();
+              AppThemes.saveFontThemeData();
+            },
+          )
+      ),
+
+      Positioned.fill(
+        child: Center(
+          child: ElevatedButton(
+          style: ButtonStyle(
+              padding: MaterialStateProperty.all(EdgeInsets.symmetric(horizontal: 16, vertical: 14))
+          ),
+          child: Text(AppManager.appLocalize.get('apply')!),
+          onPressed: (){
+            AppThemes.fontTheme.userBaseFontSize = state.baseFontSize;
+            AppThemes.fontTheme.userChatsFontSize = state.chatFontSize;
+
+            AppThemes.fontTheme.userBaseFontFamily = state.baseFontFamily;
+            AppThemes.fontTheme.userChatsFontFamily = state.chatFontFamily;
+
+            AppThemes.applyTheme(AppThemes.currentTheme);
+            state.update();
+            AppManager.reBuildMaterial();
+            AppThemes.saveFontThemeData();
+            SheetCenter.showSnack$successOperation(state.context);
+          },
+        ),
+        ),
+      )
+    ],
+  ),
+============================================================================================
+Row(
+    children: [
+      Expanded(
+        child: Stack(
+          fit: StackFit.passthrough,
+          children: [
+            Align(
+              alignment: Alignment.center,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                ],
+              ),
+            ),
+
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Icon(IconList.editMIcon).intelliPrimary().wrapMaterial(
+                materialColor: AppThemes.currentTheme.primaryColor.withAlpha(70),
+                padding: EdgeInsets.all(7),
+                onTap: (){
+                  editUser(state, user);
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    ],
+  ),
+============================================================================================

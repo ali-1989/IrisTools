@@ -1,0 +1,429 @@
+import 'package:brandfit_trainer/system/appNavigator.dart';
+import 'package:brandfit_trainer/system/appSizes.dart';
+import 'package:brandfit_trainer/system/httpCenter.dart';
+import 'package:brandfit_trainer/system/preWidgets.dart';
+import 'package:brandfit_trainer/system/session.dart';
+import 'package:brandfit_trainer/system/stateBase.dart';
+import 'package:brandfit_trainer/models/viewModels/communicationErrorView.dart';
+import 'package:brandfit_trainer/models/viewModels/mustLoginView.dart';
+import 'package:brandfit_trainer/models/viewModels/serverResponseWrongView.dart';
+import 'package:flutter/material.dart';
+import 'package:iris_tools/widgets/stateManagers/multiRefresh.dart';
+
+
+class SampleScreen extends StatefulWidget {
+  static const screenName = 'SampleScreen';
+
+  SampleScreen({Key? key,}) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() {
+    return SampleScreenState();
+  }
+}
+///========================================================================================================
+class SampleScreenState extends StateBase<SampleScreen> {
+    MultiController multiController = MultiController();
+    AddFoodProgramScreenCtr controller = AddFoodProgramScreenCtr();
+
+
+    @override
+    void initState() {
+      super.initState();
+
+      controller.onInitState(this);
+    }
+
+    @override
+    Widget build(BuildContext context) {
+      rotateToPortrait();
+
+      controller.onBuild();
+      return getScaffold();
+    }
+
+    @override
+    void dispose() {
+      controller.onDispose();
+      multiController.dispose();
+      super.dispose();
+    }
+
+    Widget getScaffold() {
+        return WillPopScope(
+          onWillPop: () => onWillBack(this),
+          child: SizedBox(
+            width: AppSizes.getScreenWidth(context),
+            height: AppSizes.getScreenHeight(context),
+            child: Scaffold(
+               appBar: AppBar(title: Text(tC('')!),),
+               body: SafeArea(
+                 child: getMainBuilder(),
+               )
+           ),
+        );
+    }
+
+  getMainBuilder() {
+    return MultiRefresh(
+    id: Keys.refreshId$main,
+    isMain: true,
+    controller: multiController,
+    builder: (context, ctr, data) {
+      return Stack(
+        fit: StackFit.expand,
+        children: [
+          Builder(
+            builder: (context) {
+              switch(ctr.mainState){
+                case MultiController.state$loading:
+                  return PreWidgets.flutterLoadingWidget$Center();
+                case MultiController.state$netDisconnect:
+                  return CommunicationErrorView(this, tryAgain: controller.tryAgain,);
+                case MultiController.state$serverNotResponse:
+                  return ServerResponseWrongView(this, tryAgain: controller.tryAgain);
+                default:
+                  return getBody();
+              }
+            },
+          ),
+
+          MultiRefresh(
+            id: '${Keys.refreshId$overlay}1',
+            group: Keys.refreshId$overlay,
+            controller: multiController,
+            builder: (context, ctr, data) {
+              return Align(
+                alignment: Alignment.topCenter,
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 12,
+                    ),
+                    getTopOverlay(),
+                  ],
+                ),
+              );
+            },
+          ),
+        ],
+      );
+    }
+    );
+  }
+
+
+    Widget getBody(){
+        return MultiRefresh(
+        id: Keys.refreshId$body,
+        isBody: true,
+        controller: multiController,
+        builder: (context, ctr, data) {
+          return ;
+          );
+        });
+    }
+
+}
+///========================================================================================================
+Widget getTopOverlay(){
+  if(state.sumCaloriesFlag == 1){
+    return TopInfoView(
+      Text('${state.tMapFor('FoodManagerPage', 'notCaloriesValueOk')}',
+        textAlign: TextAlign.center,)
+          .color(Colors.black)
+          .fsR(1)
+          .bold(weight: FontWeight.w800),
+    );
+  }
+
+  if(state.sumCaloriesFlag == 2){
+    // Flash, Pulse (zoom), Swing(alaKolang), Bounce(up then down)
+    return Bounce(
+        animate: false,
+        manualTrigger: true,
+        controller: (ctr){
+          state.multiController.setObject('errorOverlayAnim', ctr);
+        },
+        child: TopErrorView(
+          Text('${state.tMapFor('FoodManagerPage', 'notCaloriesValueOk')}',
+            textAlign: TextAlign.center,)
+              .color(Colors.white)
+              .fsR(1)
+              .bold(weight: FontWeight.w800),
+        )
+    );
+  }
+
+  return SizedBox();
+}
+///========================================================================================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import 'package:brandfit_common_version/system/appSizes.dart';
+import 'package:brandfit_manager/system/httpCenter.dart';
+import 'package:brandfit_manager/system/stateBase.dart';
+import 'package:flutter/material.dart';
+
+
+class SampleScreen extends StatefulWidget {
+  static const screenName = 'SampleScreen';
+
+  SampleScreen({Key? key,}) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() {
+    return SampleScreenState();
+  }
+}
+///========================================================================================================
+class SampleScreenState extends StateBase<SampleScreen> {
+  ItemResponse? requestObj;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    rotateToPortrait();
+
+    return getScaffold();
+  }
+
+  @override
+  void dispose() {
+    HttpCenter.cancelAndClose(requestObj);
+
+    super.dispose();
+  }
+  ///-----------------------------------------------------------------------------------------------------
+  Widget getScaffold() {
+    return WillPopScope(
+      onWillPop: () => onWillBack(this),
+      child: SizedBox(
+        width: AppSizes.getScreenWidth(context),
+        height: AppSizes.getScreenHeight(context),
+        child: Scaffold(
+          key: scaffoldKey,
+          appBar: AppBar(
+            title: Text(''),
+          ),
+          body: SafeArea(
+              child: getBody()
+          ),
+        ),
+      ),
+    );
+  }
+  ///-----------------------------------------------------------------------------------------------------
+  getBody() {
+    return Container(
+    );
+  }
+}
+///========================================================================================================
+
+
+
+
+
+
+
+
+
+
+
+*** very Short
+
+import 'package:brandfit_common_version/system/appSizes.dart';
+import 'package:brandfit_manager/system/httpCenter.dart';
+import 'package:brandfit_manager/system/stateBase.dart';
+import 'package:flutter/material.dart';
+
+class SampleScreen extends StatefulWidget {
+  static const screenName = 'SampleScreen';
+
+  SampleScreen({Key? key,}) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() {
+    return SampleScreenState();
+  }
+}
+///========================================================================================================
+class SampleScreenState extends StateBase<SampleScreen> {
+  ItemResponse? requestObj;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    rotateToPortrait();
+
+    return WillPopScope(
+      onWillPop: () => onWillBack(this),
+      child: SizedBox(
+        width: AppSizes.getScreenWidth(context),
+        height: AppSizes.getScreenHeight(context),
+        child: Scaffold(
+          key: scaffoldKey,
+          appBar: AppBar(),
+          body: SafeArea(
+              child: Center()
+          ),
+        ),
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    HttpCenter.cancelAndClose(requestObj);
+
+    super.dispose();
+  }
+///-----------------------------------------------------------------------------------------------------
+}
+///========================================================================================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*** ViewPage
+
+import 'package:brandfit_common_version/system/appSizes.dart';
+import 'package:brandfit_manager/system/stateBase.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+
+
+class SampleScreen extends StatefulWidget {
+  static const screenName = 'SampleScreen';
+
+  SampleScreen({Key? key,}) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() {
+    return SampleScreenState();
+  }
+}
+///========================================================================================================
+class SampleScreenState extends StateBase<SampleScreen> {
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: AppSizes.getScreenWidth(context),
+      height: AppSizes.getScreenHeight(context),
+      child: getBody(),
+    );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+  ///-----------------------------------------------------------------------------------------------------
+  Widget getBody(){
+    return Center();
+  }
+}
+///========================================================================================================
+
+
+
+
+
+
+
+
+
+
+
+---------------------------------------------------------------------------------------------------------
+ConstrainedBox(
+      constraints: BoxConstraints.expand(),
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+            image: DecorationImage(image: AssetImage('assets/images/dashboard_back.jpg'),
+                fit: BoxFit.fill,
+                colorFilter: ColorFilter.mode(AppThemes.currentTheme.primaryColor, BlendMode.color)
+            )
+        ),
+        child: Center(),
+      )
+  );
+---------------------------------------------------------------------------------------------------------
+getAppbar() {
+    return AppBar(
+      title: ,
+      actions: <Widget>[
+        (ModalRoute.of(context)?.canPop ?? false)?
+        IconButton(
+          onPressed: () => onBackButton(this),
+          icon: (System.isAndroid()) ?
+          Icon(Icons.arrow_back, textDirection: AppThemes.getOppositeDirection(),) :
+          Icon(Icons.arrow_back_ios, textDirection: AppThemes.getOppositeDirection(),),
+        )
+            : SizedBox(),
+      ],
+    );
+  }
+---------------------------------------------------------------------------------------------------------

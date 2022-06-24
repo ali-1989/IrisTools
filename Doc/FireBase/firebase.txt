@@ -1,0 +1,55 @@
+==========================================================================================
+Future prepareFirebase() async {
+    await Firebase.initializeApp(
+      name: 'FamilyBabk',
+      options: const FirebaseOptions(
+        projectId: 'familybabk',
+        apiKey: 'AIzaSyC-S73E9kFo7T1S5ef1pnD8r7NAyvoO_9o',
+        appId: '1:902841366302:android:59da585a69bd55dfacfb0f',
+        messagingSenderId: '0',
+      ),
+    );
+  }
+==========================================================================================
+auth:
+
+https://firebase.google.com/docs/auth/android/anonymous-auth
+https://firebase.flutter.dev/docs/auth/usage/
+---------------------------------------------------
+import 'package:firebase_auth/firebase_auth.dart';
+
+Future<void> signInAnonymously() async {
+    FirebaseAuth mAuth = FirebaseAuth.instance;
+    User? fUser = mAuth.currentUser;
+
+    if(fUser == null) {
+      UserCredential? fUserCrd = await mAuth.signInAnonymously();
+      fUser = mAuth.currentUser;
+      //prin('@@ is null: ${fUser == null}');
+    }
+  }
+==========================================================================================
+Database:
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+Future<bool> addNewUser() async {
+    final db = FirebaseFirestore.instance.collection('users');
+    return db.doc('u21').set({'id': 21, 'name': 'ali'})
+        .then((value) {return true;})
+        .timeout(const Duration(seconds: 8)).catchError((e) {return false;});
+  }
+==========================================================================================
+file:
+
+try {
+  result = await FirebaseStorage.instance.ref(dirBackups).listAll().timeout(Duration(seconds: 10));
+}
+catch (e){
+  return;
+}
+-----------------------------------------------------------
+data = await ref.getData().timeout(Duration(seconds: 90));
+data = await ref.getDownloadURL().timeout(Duration(seconds: 8));
+-----------------------------------------------------------
+==========================================================================================

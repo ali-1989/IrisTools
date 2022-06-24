@@ -1,0 +1,18 @@
+==============================================================================================================
+Help:
+
+    https://medium.com/@german_saprykin/opengl-with-texture-widget-f919743d25d9
+    https://stackoverflow.com/questions/49576011/texture-widgets-render-opengl-example
+    https://flutter.dev/docs/development/platform-integration/platform-views
+    https://hackernoon.com/rendering-external-texture-an-flutter-optimization-by-alibaba-c5ed143af747
+
+==============================================================================================================
+Native Embedding View:
+
+AndroidView()  Sdk 20+ (4.4W)
+UiKitView()    iOS 11+
+==============================================================================================================
+ReRender: (All Version, OpenGL+)
+
+Texture()
+==============================================================================================================

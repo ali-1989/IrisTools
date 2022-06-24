@@ -1,0 +1,6 @@
+===============================================================================================
+Help:
+
+    https://stackoverflow.com/questions/57182634/to-read-and-write-file-in-flutter-web
+    https://medium.com/flutter-community/flutter-web-getting-started-with-responsive-design-231511ef15d3
+===============================================================================================

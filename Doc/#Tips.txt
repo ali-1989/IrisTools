@@ -1,0 +1,798 @@
+===============================================================================================
+####################################       Tips     ###########################################
+===============================================================================================
+Dart/Flutter versions features:
+
+# Dart 2.3:
+    https://medium.com/flutter-community/whats-new-in-dart-2-3-1a7050e2408d
+======================================================================================================
+many samples:
+
+    https://github.com/diegoveloper/flutter-samples
+    https://medium.com/flutter-community/flutter-communication-between-widgets-f5590230df1e
+===============================================================================================
+bytes, Uint8List:
+
+    https://medium.com/flutter-community/working-with-bytes-in-dart-6ece83455721
+===============================================================================================
+null-safety:
+
+    https://medium.com/flutterdevs/null-safety-in-dart-be09568ea8b8
+    https://dart.dev/null-safety/understanding-null-safety
+    https://stackoverflow.com/questions/60068435/what-is-null-safety-in-dart
+    https://codewithandrea.com/videos/dart-null-safety-ultimate-guide-non-nullable-types/
+    https://medium.com/dartlang/announcing-dart-2-12-499a6e689c87
+
+If you’re sure that an expression with a nullable type isn’t null, you can add ! to make Dart treat it as non-nullable:
+int? aNullableInt = 2;
+int value = aNullableInt!; // `aNullableInt!` is an int.
+// This throws if aNullableInt is null.
+===============================================================================================
+Lint, Linter:
+
+    https://medium.com/podiihq/setting-up-lint-rules-in-dart-flutter-1ebbed0418a6
+===============================================================================================
+class and constructors:
+
+    https://medium.com/flutter-community/deconstructing-dart-constructors-e3b553f583ef
+===============================================================================================
+Debugging:
+
+    https://flutter.dev/docs/testing/code-debugging
+----------------------------------------------------------
+@override // call toStringShallow()
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+
+    properties.add(StringProperty('name', 'cert'));
+  }
+===============================================================================================
+Multi Locals:
+
+    https://medium.com/saugo360/managing-locale-in-flutter-7693a9d4d6ac
+===============================================================================================
+architecture:
+
+    https://medium.com/flutter-community/flutter-web-getting-started-with-responsive-design-231511ef15d3
+    https://pusher.com/tutorials/clean-architecture-introduction
+====================================================================================================
+Reflect class:
+
+    https://stackoverflow.com/questions/59827412/flutter-dart-reflectable-package-how-to-get-class-fields-type-instantiat
+    https://stackoverflow.com/questions/54570359/getting-value-of-public-static-field-property-of-a-class-by-its-name-as-string
+
+* In flutter reflection is not supported because of tree shaking.
+ Tree shaking is the process of removing unused code from your system package (apk, ipa) in order to reduce the package size.
+===============================================================================================
+const key:
+
+    https://medium.com/flutter-community/deconstructing-dart-constructors-e3b553f583ef
+
+* In AOT environment (Flutter release builds) all constant objects are evaluated and canonicalize
+ at compile time, then serialized into snapshot. When you start your application the snapshot
+ is loaded into memory and all constants come into existence. They are not loaded lazily.
+ They are never garbage collected.
+===============================================================================================
+Isolate & async:
+
+    https://www.didierboelens.com/2019/01/futures-isolates-event-loop/
+    https://buildflutter.com/flutter-threading-isolates-future-async-and-await/
+    https://flutter.dev/docs/cookbook/networking/background-parsing#4-move-this-work-to-a-separate-isolate
+    https://medium.com/flutter-community/flutter-dart-async-concurrency-demystify-1cc739aaae57
+===============================================================================================
+** App Icon:
+
+Add to pubspec.yaml
+
+dependencies:
+    flutter:
+        sdk: flutter
+    cupertino_icons: xxx
+
+    flutter_launcher_icons: ^0.7.4
+
+# Save the file and run 'flutter pub get' on terminal.
+# Create a folder in the root of the project and place your system icon inside this folder.
+# Now, add to pubspec.yaml (last line)
+
+flutter_icons:
+    android: true or "launcher_icon"
+    ios: true
+    image_path: "dep/icon.png"
+
+# Save the file and run 'flutter pub get' on terminal
+# run 'flutter pub run flutter_launcher_icons:main -f pubspec.yaml'
+======================================================================================================
+Change states:
+
+- flutter create -i swift -a java flutter_to_native
+- flutter create -i swift -a kotlin flutter_to_native
+- flutter create -i objective-c -a kotlin flutter_to_native
+======================================================================================================
+on device Boot start:
+
+    https://stackoverflow.com/questions/53715839/autostart-on-boot-completed-for-flutter-application-based-on-android-example-not
+======================================================================================================
+Splash screen:
+
+    https://flutter.dev/docs/development/ui/assets-and-images#updating-the-launch-screen
+    https://medium.com/flutterpub/lunching-other-screen-after-delay-in-flutter-c9ebf4d7406e
+add load-splash image:
+    https://www.developerlibs.com/2018/07/flutter-how-to-fix-white-screen-on-system.html
+
+======================================================================================================
+orientation manage:
+
+    https://stackoverflow.com/questions/50322054/flutter-how-to-set-and-lock-screen-orientation-on-demand
+====================================================================================================
+create Widgets:  (BuildContext)
+
+Builder/WidgetBuilder :     builder: (context)
+LayoutBuilder :             builder: (context, constraint)
+OrientationBuilder:         builder: (context, orientation)
+
+StreamBuilder<dynamic>:
+FutureBuilder<dynamic>:
+ValueListenableBuilder:     builder: (context, int value, Widget child)
+
+
+typedef AsyncWidgetBuilder<T> = Widget Function(BuildContext context, AsyncSnapshot<T> snapshot);
+
+
+MediaQuery(data: MediaQueryData.fromWindow(ui.window),)
+-------------------------------------------------------------
+Builder:
+
+child: Builder(
+      builder: (BuildContext context) {
+        return new MediaQuery(
+          data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0,),
+          child: child,
+        );
+      },
+    ),
+-------------------------------------------------------------
+LayoutBuilder:
+
+child: LayoutBuilder(
+    builder: (context, constraint) {
+
+    }
+  )
+-------------------------------------------------------------
+ValueListenableBuilder:
+
+ValueNotifier<int> _counter = ValueNotifier<int>(0);
+
+ValueListenableBuilder(
+      valueListenable: _counter,
+      builder: (BuildContext context, int value, Widget child) {
+        return Row();
+      },
+)
+
+======================================================================================================
+# rebuild system change theme/locale:
+
+    https://hillelcoren.com/2018/08/15/flutter-how-to-rebuild-the-entire-system-to-change-the-theme-or-locale/
+
+
+AppBuilder(builder: (context) {
+    return MaterialApp(
+      ...
+    );
+
+AppBuilder.of(context).rebuild();
+======================================================================================================
+Color:
+
+theme.indicatorColor
+theme.buttonColor
+======================================================================================================
+Chip:
+
+Chip(
+  avatar: CircleAvatar(backgroundColor: Colors.blue.shade900, child: Text('AH')),
+  label: Text('Hamilton'),
+),
+-------------------------------
+RawChip:
+
+====================================================================================================
+time offset:
+
+Note: that JavaScript, Python and C return the difference between UTC and local time.
+      Dart, Java, C# and Ruby return the difference between local time and UTC.
+-----------------------------------------------------
+date format:
+
+var date = 'Mon, 11 Aug 2014 12:53 pm PDT';
+DateFormat formatter = new DateFormat("EEE, dd MMM yyyy hh:mm a zzz");
+date = date.replaceFirst(' pm', ' PM').replaceFirst(' am', ' AM');
+print(formatter.parse(date));
+====================================================================================================
+Dialogs:
+
+    https://stackoverflow.com/questions/53844052/how-to-make-an-alertdialog-in-flutter
+    https://medium.com/@suragch/making-an-alertdialog-in-flutter-544bc703f758
+
+--------------------------------------------------
+* If you make the callback null, then the button will be disabled.
+onPressed: null
+--------------------------------------------------
+====================================================================================================
+Font, Theme:
+
+    https://www.didierboelens.com/2020/05/material-textstyle-texttheme/
+
+# ThemeChange:
+    https://stackoverflow.com/questions/49164592/flutter-how-to-change-the-materialapp-theme-at-runtime
+    https://medium.com/@bimsina/changing-theme-at-run-time-flutter-d634c307de8a
+    https://medium.com/@frmineoapps/flutter-how-to-change-the-apps-theme-dynamically-using-streams-77df0c7b0c16
+
+
+backgroundColor: Theme.of(context).backgroundColor,
+-----------------------------------------------------------
+ListTileTheme()
+
+====================================================================================================
+SnackBar:
+
+Scaffold.of(context).showSnackBar(new SnackBar(
+      content: new Text('Missing Value'),
+    ));
+
+====================================================================================================
+Random:
+
+double randomBorderRadius() {
+  return Random().nextDouble() * 64;
+}
+--------------------------------------------------------
+Color randomColor() {
+  return Color(0xFFFFFFFF & Random().nextInt(0xFFFFFFFF));
+}
+--------------------------------------------------------
+Color getRandomColor() {
+    Random _random = Random();
+    return Color.fromARGB(
+      _random.nextInt(256),
+      _random.nextInt(256),
+      _random.nextInt(256),
+      _random.nextInt(256),);
+ }
+====================================================================================================
+change order of list:
+
+widgetIds = [widgetIds.last, ...widgetIds.getRange(0, 2)];
+====================================================================================================
+Rtl:
+
+BidiFormatter.RTL().wrapWithUnicode('xyz');
+BidiFormatter.RTL().wrapWithSpan('xyz');
+====================================================================================================
+Future:
+
+
+Future<int> parseAndRead(filename) {
+
+  File file = new File(filename);
+
+  return file.readAsString().then((contents) {
+    return parseFileData(contents);
+  });
+}
+====================================================================================================
+InheritedWidget:
+
+class MyInheritedWidget extends InheritedWidget {
+
+MyInheritedWidget({
+      Key key,
+      @required Widget child,
+      this.data,
+   }): super(key: key, child: child);
+
+   final data;
+
+   static MyInheritedWidget of(BuildContext context) {
+      return context.inheritFromWidgetOfExactType(MyInheritedWidget);
+   }
+
+   @override
+   bool updateShouldNotify(MyInheritedWidget oldWidget) => data != oldWidget.data;
+}
+====================================================================================================
+Offstage:
+
+ * Creates a widget that visually hides its child.
+ * Offstage can be used to measure the dimensions of a widget without bringing it on screen (yet)
+====================================================================================================
+ScrollView (ListView / GridView):
+
+    https://www.didierboelens.com/2019/05/is-a-widget-inside-a-scrollable-visible/
+====================================================================================================
+sticky headers in List view:
+
+    https://www.filledstacks.com/snippet/custom-sticky-headers-in-flutter/
+====================================================================================================
+location service:
+
+    https://www.filledstacks.com/snippet/build-a-flutter-location-service/
+====================================================================================================
+movable widgets:
+
+    https://www.filledstacks.com/snippet/widget-tricks-create-movable-stack-widgets/
+====================================================================================================
+slide options:
+
+    https://www.filledstacks.com/snippet/flutter-slide-options-for-user-profile/
+====================================================================================================
+box border with text: (self-create)
+
+    https://stackoverflow.com/questions/57978545/flutter-how-to-create-border-with-text-embedded
+====================================================================================================
+animated icon:
+
+    https://www.youtube.com/watch?v=WWm3TZ_eS6k
+====================================================================================================
+Flexible:
+
+    https://www.youtube.com/watch?v=Fnrn-6Zq-Kc
+====================================================================================================
+Use http:
+
+# android:
+    https://medium.com/@son.rommer/fix-cleartext-traffic-error-in-android-9-pie-2f4e9e2235e6
+
+------------------------------------------------------
+# iOS:
+    <key>NSAppTransportSecurity</key>
+    <dict>
+        <key>NSAllowsArbitraryLoads</key><true/>
+    </dict>
+====================================================================================================
+Shape & border:
+
+** DecoratedBox shouldn't clip child.
+  * use:
+    - ClipRRect( clipBehavior: Clip.antiAlias, borderRadius: BorderRadius.circular(5), ...)
+    - Container( clipBehavior: Clip.antiAlias, ...)
+
+
+$ [enum]
+
+# Shape of > BoxShape:
+
+    BoxShape.circle
+    BoxShape.rectangle
+----------------------------
+$ [class]
+
+> BoxDecoration:
+
+# border:                    of > BoxBorder > ShapeBorder:
+    BorderDirectional()
+    Border()
+
+    Border.fromBorderSide(BorderSide())
+    Border.all(), borderRadius: BorderRadius.circular(10.0) | BorderRadius.all(Radius.elliptical(10, 20)),
+    Border.symmetric()
+
+
+====================
+> ShapeDecoration()
+
+# Shape:                 of > OutlinedBorder > ShapeBorder:
+    CircleBorder()
+    StadiumBorder()
+    RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(30.0)))
+    ContinuousRectangleBorder()
+    BeveledRectangleBorder()
+
+  TextField:
+    OutlineInputBorder()
+    UnderlineInputBorder()
+
+---------------------------------------------
+DecoratedBox(
+      decoration: ShapeDecoration(
+          shape: StadiumBorder()
+      ),
+
+DecoratedBox(
+      decoration: BoxDecoration(
+          shape: BoxShape.circle
+      ),
+
+decoration: ShapeDecoration(
+    shape: RoundedRectangleBorder(side: BorderSide(color: Color(0xFF2A8068)),
+        borderRadius: BorderRadius.all(Radius.circular(20))
+    ),
+    color: Color(0xFF2A8068),
+  ),
+---------------------------------------------
+RaisedButton( shape: StadiumBorder(),)
+Material( shape: StadiumBorder(),)
+
++++++++++++++++++++++++++++++++++++++++++++++
+Circle color:
+
+1)
+ClipPath(
+    clipBehavior: Clip.antiAlias,
+    clipper: ShapeBorderClipper(
+      shape: CircleBorder()
+    ),
+    child: SizedBox(
+      width: 20,
+      height: 20,
+      child: ColoredBox(color: kv.value.primaryColor,),
+    ),
+  ),
+------------------------
+2)
+
+SizedBox(
+    width: 20,
+    height: 20,
+    child: DecoratedBox(
+      decoration: BoxDecoration(
+        color: kv.value.primaryColor,
+        shape: BoxShape.circle,
+      ),
+    ),
+  ),
+------------------------
+3)
+
+class CirclePainter extends CustomPainter {
+  final _paint = Paint()
+    ..color = Colors.red
+    ..strokeWidth = 2
+    ..style = PaintingStyle.fill;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    canvas.drawOval(
+      Rect.fromLTWH(0, 0, size.width, size.height),
+      _paint,
+    );
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) => false;
+}
+
+SizedBox(
+  width: 20,
+  height: 20,
+  child: CustomPaint(
+    painter: CirclePainter(),
+  ),
+====================================================================================================
+Clip:
+
+ClipOval
+ClipPath
+ClipRect
+ClipRRect
+
+ClipPath(
+      clipBehavior: widget.clipBehavior,
+      clipper: ShapeBorderClipper(shape: shape, textDirection: Directionality.of(context)),
+      child: w,
+    );
+====================================================================================================
+of:
+
+ThemeData theme = Theme.of(context);
+ButtonThemeData buttonTheme = ButtonTheme.of(context);
+DefaultTextStyle.of(context).style.fontFamily;
+
+TextDirection td = Directionality.of(context);
+
+Scaffold.of(context, nullOk: true);
+FocusScope.of(context).unfocus();
+Focus.of(context);
+Navigator.of(context).pop();
+ModalRoute.of(context);
+MediaQuery.of(context).size;
+DefaultAssetBundle.of(context).loadString(assetsPath);
+Overlay.of(context)..insert(entry);
+
+AppLocalizations.of(context).get('login'),
+MaterialLocalizations.of(context).dialogLabel,
+====================================================================================================
+has Material:
+
+Material
+Scaffold
+Card
+Dialog
+Drawer
+====================================================================================================
+Focus:
+
+Focus(
+  child: TextFormField(...),
+  onFocusChange: (hasFocus) {
+    if(hasFocus) {
+      // do stuff
+    }
+  },
+)
+-----------------------------------------------------------------------------------------------
+Listener(
+  onPointerUp: (_) {
+    FocusScopeNode currentFocus = FocusScope.of(context);
+    if (!currentFocus.hasPrimaryFocus && currentFocus.focusedChild != null) {
+      currentFocus.focusedChild.unfocus();
+    }
+  },
+  child:...
+-----------------------------------------------------------------------------------------------
+
+final _focusNode = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+    _focusNode.addListener(() {
+      print("Has focus: ${_focusNode.hasFocus}");
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(focusNode: _focusNode);
+  }
+
+  @override
+  void dispose() {
+    _focusNode.dispose();
+    super.dispose();
+  }
+====================================================================================================
+CircleAvatar:
+
+CircleAvatar(
+    child: (state.avatarFileImg != null)? null : Transform.translate( offset: Offset(4, -4), child: Icon(Icons.account_circle)),
+    backgroundImage: (state.avatarFileImg != null)? state.avatarFileImg: null,
+    foregroundColor: AppThemes.currentTheme.textColor,
+    backgroundColor: AppThemes.highLight(AppThemes.currentTheme.primaryColor),),
+    ),
+====================================================================================================
+ToggleButtons:
+
+ToggleButtons(
+  children: <Widget>[
+    Icon(Icons.ac_unit),
+    Icon(Icons.call),
+    Icon(Icons.cake),
+  ],
+  onPressed: (int index) {
+    setState(() {
+      isSelected[index] = !isSelected[index];
+    });
+  },
+  isSelected: isSelected,
+),
+====================================================================================================
+Banner:
+
+ClipRect(
+      child: Banner(
+        message: "hello",
+        location: BannerLocation.topEnd,
+        color: Colors.red,
+        child: Container(
+          color: Colors.yellow,
+          height: 100,
+          child: Center(
+            child: Text("Hello, banner!"),
+          ),
+        ),
+      ),
+    ),
+====================================================================================================
+Useful widget:
+
+InteractiveViewer()
+Flexible(),
+ElevatedButton()
+ScaffoldMessenger.of(context).showSnackBar(SnackBar());
+
+IndexedStack()
+PhysicalModel()
+Radio()
+SelectableText()
+Stepper()
+ExpansionPanelList()
+Visibility()
+DraggableScrollableSheet()                    https://www.youtube.com/watch?v=Hgw819mL_78
+ShaderMask()                                  https://www.youtube.com/watch?v=7sUL66pTQ7Q
+InteractiveViewer()  (zoom view)              https://www.youtube.com/watch?v=zrn7V3bMJvg
+IgnorePointer                                 https://www.youtube.com/watch?v=qV9pqHWxYgI
+CircularProgressIndicator()
+LinearProgressIndicator()                     https://www.youtube.com/watch?v=O-rhXZLtpv0
+AboutDialog()
+
+
+====================================================================================================
+Icon data:
+
+Icons
+CupertinoIcons
+CommunityMaterialIcons      import 'package:community_material_icon/community_material_icon.dart';
+FontAwesomeIcons            import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+FontAwesomeIcons              FaIcon(FontAwesomeIcons.gamepad)
+====================================================================================================
+ListTile:
+
+    https://suragch.medium.com/a-complete-guide-to-flutters-listtile-597a20a3d449
+
+
+ListTile()
+ListTile.divideTiles()
+
+- contentPadding
+
+ListTileTheme(
+  style: ListTileStyle.drawer,
+  iconColor: AppThemes.currentBaseTextStyle().color,
+  child: ListView(
+     children: <Widget>[
+     ListTile(title: Text(AppManager.appLocalize.getCapitalize('home')),)
+     ListTile(title: Text(AppManager.appLocalize.getCapitalize('home')),)
+     ]
+  )
+)
+----------------------------------------------------
+ListView(
+  children: ListTile.divideTiles(
+    context: context,
+    tiles: [
+      // your widgets
+    ]
+  ).toList(),
+)
+
+
+or
+
+ListView.separated(
+
+  separatorBuilder: (context, index) {
+    return Divider();
+  },
+);
+----------------------------------------------------
+============================================================================================================
+Key:
+
+GlobalKeys:
+    - GlobalKey()               => LabeledGlobalKey
+    - LabeledGlobalKey()
+    - GlobalObjectKey(Object value)
+
+
+LocalKeys:
+    - UniqueKey()
+    - PageStorageKeys(T value)
+    - ObjectKey(Object value)
+    - ValueKey(T value)
+
+
+    https://medium.com/flutter/keys-what-are-they-good-for-13cb51742e7d
+    https://medium.com/flutterdevs/keys-in-flutter-104fc01db48f
+
+
+* using a [GlobalKey] allows the element to be moved around the tree (changing parent) without losing state.
+============================================================================================================
+
+
+
+
+
+*******************************************************************************************************
+**************************************   Environment   *********************************************
+*******************************************************************************************************
+color logging:
+
+    https://www.filledstacks.com/snippet/a-guide-to-setting-up-better-logging-in-flutter/
+====================================================================================================
+gradle.projectsEvaluated {
+    tasks.withType(JavaCompile) {
+        options.compilerArgs << "-Xlint:deprecation"  //-Xlint:unchecked
+    }
+}
+====================================================================================================
+Aspect ratio:
+
+double aspectRatio = size.width / size.height;
+
+Horizontal video:
+1/1 = 1         * (Square)
+4/3 = 1.33      *
+16/11 = 1.45
+16/10 = 1.60    *
+16/9 = 1.77     *
+16/8 = 2
+21/9 =
+25/16 =
+
+
+Vertical video:
+9:16
+====================================================================================================
+Change animation speed:
+
+import 'package:flutter/scheduler.dart' show timeDilation;
+
+timeDilation = 1.5;
+====================================================================================================
+Directionals:
+
+- EdgeInsetsDirectional
+- AlignmentDirectional
+- Positioned.directional
+- BorderDirectional
+- BorderRadiusDirectional
+====================================================================================================
+primary :
+
+AppBar
+    * primary: if false : unUse status bar height padding.
+
+ListView:
+    * primary: if true : match with scrollController.
+====================================================================================================
+
+*******************************************************************************************************
+**************************************   Others   *********************************************
+*******************************************************************************************************
+KeepAlive:
+
+class FooState extends State<Foo> with AutomaticKeepAliveClientMixin {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+
+    );
+  }
+
+  @override
+  bool get wantKeepAlive => true;
+}
+------------------------------------------------
+on listView:
+
+- cacheExtent property
+- addAutomaticKeepAlives:  property
+-------------------------------------------------
+KeepAlive Widget:
+
+* Mark a child as needing to stay alive even when it's in a lazy list that would otherwise remove it.
+* This widget is for use in SliverWithKeepAliveWidgets, [SliverGrid or SliverList].
+====================================================================================================
+
+dependencies:
+  if (dart.library.io)
+    sqflite: ^1.3.0
+  else if (dart.library.html)
+    indexedb_db:
+
+-----------------------------------------
+library indexDB;
+
+export 'indexDBMobile.dart'
+    if (dart.library.io) 'indexDBWeb.dart'
+    if (dart.library.html) 'indexDBWeb.dart';
+-----------------------------------------
+
+import 'indexDBStub.dart'
+      if (dart.library.io) 'indexDBMobile.dart'
+      if (dart.library.html) 'indexDBWeb.dart';
+====================================================================================================

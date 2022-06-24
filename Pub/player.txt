@@ -1,0 +1,92 @@
+================================================================================================
+_controller = VideoPlayerController.network('http://www.sample-videos.com/video123/mp4/720/big_buck_bunny_720p_20mb.mp4');
+
+
+// Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
+
+_controller.initialize().then((_) {
+        setState(() {});
+      });
+
+
+
+Center(
+  child: _controller.value.initialized
+      ? AspectRatio(
+          aspectRatio: _controller.value.aspectRatio,
+          child: VideoPlayer(_controller),
+        )
+      : Container(),
+),
+
+
+floatingActionButton: FloatingActionButton(
+  onPressed: () {
+    setState(() {
+      _controller.value.isPlaying
+          ? _controller.pause()
+          : _controller.play();
+    });
+  },
+  child: Icon(_controller.value.isPlaying ? Icons.pause : Icons.play_arrow,),
+ ),
+);
+================================================================================================
+
+
+
+
+================================================================================================
+final player = AudioPlayer();
+var duration = await player.setUrl('https://foo.com/bar.mp3');
+var duration = await player.setFilePath('/path/to/file.mp3');
+var duration = await player.setAsset('path/to/asset.mp3');
+
+player.play();
+await player.seek(Duration(seconds: 10));
+await player.pause();
+
+await player.setClip(start: Duration(seconds: 10), end: Duration(seconds: 20));
+
+await player.setSpeed(2.0);
+await player.setVolume(0.5);
+
+
+
+await player.setLoopMode(LoopMode.off); // no looping (default)
+await player.setLoopMode(LoopMode.all); // loop playlist
+await player.setLoopMode(LoopMode.one); // loop current item
+await player.setShuffleModeEnabled(true);
+-------------------------------------------------------------------------------------------------
+await player.setUrl('https://a.b/c.mp3', preload: false);
+var duration = await player.load();
+await player.stop();
+-------------------------------------------------------------------------------------------------
+final session = await AudioSession.instance;
+await session.configure(AudioSessionConfiguration.speech());
+-------------------------------------------------------------------------------------------------
+ClippingAudioSource(
+      start: Duration(seconds: 60),
+      end: Duration(seconds: 65),
+      child: AudioSource.uri(Uri.parse( "https://s3.amazonaws.com/scifri-episodes/scifri20181123-episode.mp3")),
+    ),
+
+
+AudioSource.uri(
+      Uri.parse( "https://s3.amazonaws.com/scifri-episodes/scifri20181123-episode.mp3"),
+      tag: AudioMetadata(
+        album: "Science Friday",
+        title: "A Salute To Head-Scratching Science",
+        artwork: "https://media.wnyc.org/i/1400/1400/l/80/1/ScienceFriday_WNYCStudios_1400.jpg",
+      ),
+    ),
+
+
+    AudioSource.uri(
+      Uri.parse("https://s3.amazonaws.com/scifri-segments/scifri201711241.mp3"),
+    ),
+
+
+    AudioSource.uri( Uri.parse("asset:///audio/nature.mp3"),),
+
+================================================================================================

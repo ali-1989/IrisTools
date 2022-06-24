@@ -1,0 +1,97 @@
+
+=====================================================================================================
+Help & Site:
+
+    https://medium.com/flutter-community/a-deep-dive-into-datepicker-in-flutter-37e84f7d8d6c
+    https://flutterawesome.com/a-persian-farsi-datepicker-for-flutter/
+=====================================================================================================
+Sample:
+
+showDatePicker(
+    context: context,
+    initialDate: DateTime.now(),
+    firstDate: DateTime(1950),
+    lastDate: DateTime.now())
+        .then((pickedDate) {
+
+          if (pickedDate == null) {
+            return;
+          }
+
+         setState(() {
+        _selectedDate = pickedDate;
+      });
+  });
+=====================================================================================================
+Time only:
+
+TimeOfDay selectedTime = TimeOfDay.now();
+and call this method:-
+
+Future<Null> _selectTime(BuildContext context) async {
+    final TimeOfDay picked_s = await showTimePicker(
+        context: context,
+        initialTime: selectedTime, builder: (BuildContext context, Widget child) {
+           return MediaQuery(
+             data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: false),
+            child: child,
+          );});
+
+    if (picked_s != null && picked_s != selectedTime )
+      setState(() {
+        selectedTime = picked_s;
+      });
+  }
+=====================================================================================================
+Sample:
+
+if(Settings.calendarType.type == TypeOfCalendar.solarHijri){
+    jalali.jalaliCalendarPicker(context: state.context,
+    textDirection: AppThemes.textDirection,
+    locale: Settings.appLocale,
+      initialDatePickerMode: jalali.DatePickerMode.day,
+    convertToGregorian: true,).then((value){
+      if(value != null){
+        state.birthDateTime = DateTime.parse(value);
+        calcBirthDate(state);
+        state.refreshBirthDate.update();
+      }
+    });
+  }
+  else {
+    showDatePicker(
+      textDirection: AppThemes.textDirection,
+      locale: Settings.appLocale,
+      initialDatePickerMode: DatePickerMode.day,
+      context: state.context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1930),
+      lastDate: DateTime(2021),
+      builder: (context, child) {
+        return Theme(
+          data: AppThemes.themeData,
+          child: child,
+        );
+      },
+    ).then((value){
+      if(value != null){
+        state.birthDateTime = value;
+        calcBirthDate(state);
+        state.refreshBirthDate.update();
+      }
+    });
+    }
+=====================================================================================================
+jalali Sample:
+
+jalali.DatePicker.showDatePicker(state.context,
+    minYear: 1300, maxYear: 1401,
+    confirm: Text(AppManager.appLocalize.get('ok')),
+    cancel: Text(AppManager.appLocalize.get('Cancel')),
+    onConfirm: (year, month, day) {
+      state.birthDateTime = value;
+      calcBirthDate(state);
+      state.refreshBirthDate.update();
+    }
+);
+=====================================================================================================

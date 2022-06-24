@@ -1,0 +1,226 @@
+==============================================================================================================================
+* for use [onTap] in OverflowBox / Stack:
+
+- use Transform.translate(transformHitTests: false,)
+==============================================================================================================================
+# used in ContentScreen.dart
+# overflow 2 icon button from own place
+
+
+Column(
+  crossAxisAlignment: CrossAxisAlignment.start,
+  mainAxisAlignment: MainAxisAlignment.start,
+  children: <Widget>[
+
+    getTypeView(state, contentModel),
+
+    Stack(
+      overflow: Overflow.visible,
+      clipBehavior: Clip.none,
+      children: [
+
+        Positioned.directional(
+          top: -17, end: 16,
+            textDirection: AppThemes.textDirection,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+
+                ConstrainedBox(
+                  constraints: BoxConstraints(
+                    minWidth: 34, minHeight: 34,
+                    maxWidth: 34, maxHeight: 34,
+                  ),
+                  child: Material(
+                    clipBehavior: Clip.antiAlias,
+                    color: AppThemes.currentTheme.differentColor,
+                    type: MaterialType.circle,
+                    child: IconButton(
+                      icon: Icon(Icons.edit, size: 24,).onColor(),
+                      alignment: Alignment.center,
+                      padding: EdgeInsets.all(0.0),
+                      splashColor: AppThemes.currentTheme.accentColor,
+                      onPressed: (){
+                        showEditPanel(state, contentModel.id);
+                      },
+                    ),
+                  ),
+                ),
+              ],
+            ),
+        ),
+
+        Column(
+          children: [
+            SizedBox(height: 10,),
+
+          ],
+        ),
+      ],
+    ),
+  ],
+);
+------------------------------------------------
+# old codes:
+
+Column(
+  crossAxisAlignment: CrossAxisAlignment.start,
+  mainAxisAlignment: MainAxisAlignment.start,
+  children: <Widget>[
+
+    getTypeView(state, contentModel),
+
+    SizedBox(                           <<-- overflow
+      height: 8,
+      child: Transform.translate(
+        offset: Offset(0, -5),
+        child: OverflowBox(
+          minHeight: 38, maxHeight: 38,
+          child: Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget>[
+
+              Material(
+                clipBehavior: Clip.antiAlias,
+                color: AppThemes.currentTheme.differentColor,
+                type: MaterialType.circle,
+                child: IconButton(
+                  icon: Icon(Icons.edit, size: 24,).onColor(),
+                  alignment: Alignment.center,
+                  padding: EdgeInsets.all(0.0),
+                  splashColor: AppThemes.currentTheme.accentColor,
+                  onPressed: (){
+                    showEditPanel(state, contentModel.id);
+                  },
+                ),
+              ),
+
+              Material(
+                clipBehavior: Clip.antiAlias,
+                color: AppThemes.currentTheme.differentColor,
+                type: MaterialType.circle,
+                child: IconButton(
+                  icon: Icon(Icons.delete_forever, size: 24,).onColor(),
+                  alignment: Alignment.center,
+                  padding: EdgeInsets.all(0.0),
+                  splashColor: AppThemes.currentTheme.accentColor,
+                  onPressed: (){
+                    deleteItem(state, contentModel.id);
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    ),
+
+    SizedBox(height: 10,),
+
+    ]
+  }
+==============================================================================================================================
+==============================================================================================================================
+# used in UserScreen.dart:
+$ widgets [Align, Padding, Positioned.directional]
+
+
+Align(
+  alignment: Alignment.bottomCenter,
+  child: Stack(
+    alignment: Alignment.bottomCenter,
+    overflow: Overflow.visible,
+    clipBehavior: Clip.none,
+    children: [
+
+      Padding(
+        padding: EdgeInsets.only(top:18.0),
+        child: ColoredBox(
+          color: AppThemes.currentTheme.appBarBackColor,
+          child: SingleChildScrollView(
+            child: ListTileTheme(
+              dense: true,
+              iconColor: AppThemes.currentBaseTextStyle().color,
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Center(
+                      child: RaisedButton.icon(
+                        icon: Icon(Icons.edit),
+                        label: Text(AppManager.appLocalize.getCapitalize('edit')),
+                        shape: StadiumBorder(),
+                        onPressed: () {
+                          state.weSlideController.hide();
+                          showEditPanel(state);
+                        }),
+                    ),
+
+                    getBlockUnblock(state, state.selectedUserId),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+
+      Positioned.directional(
+        textDirection: AppThemes.textDirection,
+        top: 0, end: 40,
+        //alignment: AlignmentDirectional.topEnd,
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+          minWidth: 34, minHeight: 34,
+          maxWidth: 34, maxHeight: 34,
+          ),
+          child: RaisedButton(
+            padding: EdgeInsets.all(0),
+            shape: CircleBorder(),
+            onPressed: () {
+              state.weSlideController.hide();
+            },
+            child: Icon(Icons.close, size: 26,),
+          ),
+        ),
+      ),
+    ],
+  ),
+);
+--------------------------------------
+* old codes, not correct touch worked
+$ widgets [Align, Transform.translate, SizedBox, OverflowBox]
+
+
+Align(
+  alignment: AlignmentDirectional.topStart,
+
+  child: Transform.translate(
+    offset: Offset(20, -5),
+
+    child: SizedBox(
+      width: 40, height: 5,
+      child: GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onTap: (){state.weSlideController.hide();},
+
+        child: OverflowBox(
+          minWidth: 40, minHeight: 40,
+          maxWidth: 40, maxHeight: 40,
+          child: RaisedButton(
+            padding: EdgeInsets.all(0),
+            shape: CircleBorder(),
+            onPressed: () {
+              state.weSlideController.hide();
+            },
+            child: Icon(Icons.close, size: 32,),),
+        ),
+      ),
+    ),
+  ),
+),
+==============================================================================================================================

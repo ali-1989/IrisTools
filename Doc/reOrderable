@@ -1,0 +1,35 @@
+===================================================================================================
+SliverReorderableList(
+  itemCount: foodProgram.mealList.length,
+  itemBuilder: (ctx, idx){
+    return genReOrderList(idx);
+  },
+  onReorder: (int oldIndex, int newIndex){
+
+    if(newIndex >= foodProgram.mealList.length){
+      newIndex--;
+    }
+
+    var item = foodProgram.mealList.removeAt(oldIndex);
+    foodProgram.mealList.insert(newIndex, item);
+
+    multiController.updateMain();
+  },
+)
+===================================================================================================
+ReorderableListView (
+  shrinkWrap: true,
+  children: getReOrderList(),
+  onReorder: (int oldIndex, int newIndex){
+
+    if(newIndex >= foodProgram.mealList.length){
+      newIndex--;
+    }
+
+    var item = foodProgram.mealList.removeAt(oldIndex);
+    foodProgram.mealList.insert(newIndex, item);
+
+    multiController.updateMain();
+  },
+)
+===================================================================================================
