@@ -148,9 +148,7 @@ class AssistController {
       }
     }
 
-    if(_mainStateRef == null){
-      _mainStateRef = state;
-    }
+    _mainStateRef ??= state;
 
     if(state.widget.groupId != null) {
       var isAddToGroup = false;
@@ -236,6 +234,16 @@ class AssistController {
 
   bool hasState(String state){
     return _shareStateList.contains(state);
+  }
+
+  bool hasStates(List<String> states){
+    for(final s in states){
+      if(!_shareStateList.contains(s)){
+        return false;
+      }
+    }
+
+    return true;
   }
 
   void addState(String state){
@@ -372,6 +380,7 @@ class AssistController {
       k._remove(this);
     }
 
+    _observerList.clear();
     _mainStateRef = null;
   }
 
@@ -528,7 +537,7 @@ class KeyValueManager {
 ///===================================================================================================
 class AssistObserver<T> {
   T? _value;
-  List<AssistController> _assistController = [];
+  final List<AssistController> _assistController = [];
 
   AssistObserver([T? value]) :_value = value;
 
@@ -544,8 +553,17 @@ class AssistObserver<T> {
     }
   }
 
+  void changeAndNotify(T? value){
+    _value = value;
+    notify();
+  }
+
   bool hasListeners(){
     return _assistController.isNotEmpty;
+  }
+
+  List<AssistController> get listeners {
+    return _assistController;
   }
 
   void _add(AssistController controller){
