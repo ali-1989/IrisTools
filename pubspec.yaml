@@ -36,7 +36,6 @@ dependencies:
   image: ^3.1.0                       # W, https://pub.dev/packages/image     {crop, rotate} alter:https://pub.dev/packages/pic
   image_size_getter: ^1.0.0           # W, https://pub.dev/packages/image_size_getter
   flutter_image_compress: ^1.1.0      # https://pub.dev/packages/flutter_image_compress
-  flutter_local_notifications: ^9.1.5 # https://pub.dev/packages/flutter_local_notifications  old:6.0.0
 
 
   iris_db:
