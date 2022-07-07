@@ -124,7 +124,7 @@ class Reporter {
                 if(isSame){
                   var r = Report();
                   r.reportTs = ts;
-                  r.type = ReportType.AppInfo.byName(sp[1]);
+                  r.type = ReportType.appInfo.byName(sp[1]);
                   r.description = sp[2];
                   res.add(r);
 
@@ -146,20 +146,20 @@ class Reporter {
 }
 ///=================================================================================================
 enum ReportType {
-  AppInfo,
-  Error,
-  Database,
+  appInfo,
+  error,
+  database,
 }
 
 extension TypeOfCalendarExtension on ReportType {
 
   String get name {
     switch (this) {
-      case ReportType.AppInfo:
+      case ReportType.appInfo:
         return 'AppInfo';
-      case ReportType.Error:
+      case ReportType.error:
         return 'Error';
-      case ReportType.Database:
+      case ReportType.database:
         return 'Database';
       default:
         return 'unknown';
@@ -168,20 +168,20 @@ extension TypeOfCalendarExtension on ReportType {
 
   ReportType byName(String name){
     if(name == 'AppInfo') {
-      return ReportType.AppInfo;
+      return ReportType.appInfo;
     }
     else if(name == 'Error') {
-      return ReportType.Error;
+      return ReportType.error;
     }
     else {
-      return ReportType.Database;
+      return ReportType.database;
     }
   }
 }
 ///=================================================================================================
 class Report {
   DateTime reportTs = DateHelper.getNowToUtc();
-  ReportType type = ReportType.AppInfo;
+  ReportType type = ReportType.appInfo;
   String description = 'non';
 
   Report();
@@ -196,7 +196,7 @@ class Report {
   factory Report.database(String description){
     var r = Report();
     r.description = description;
-    r.type = ReportType.Database;
+    r.type = ReportType.database;
 
     return r;
   }
@@ -204,7 +204,7 @@ class Report {
   factory Report.error(String description){
     var r = Report();
     r.description = description;
-    r.type = ReportType.Error;
+    r.type = ReportType.error;
 
     return r;
   }

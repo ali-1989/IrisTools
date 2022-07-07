@@ -32,7 +32,7 @@ class Logger {
       print('LOG:[$type] $text');
     }
     else {
-      print('$text');
+      print(text);
     }
   }
 

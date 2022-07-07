@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/widgets.dart';
 import 'package:gallery_saver/gallery_saver.dart';
@@ -5,6 +7,14 @@ import 'package:open_file/open_file.dart';
 
 class Tools {
   Tools._();
+
+  static void verbosePrint(dynamic obj){
+    final txt = obj.toString();
+
+    for(int i = 0; i< txt.length; i+= 500){
+      print(txt.substring(i, min(i+500, txt.length)));
+    }
+  }
 
   static Future<OpenResult> openFileByOtherApp(String path){
     return OpenFile.open(path);

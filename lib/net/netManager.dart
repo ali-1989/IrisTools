@@ -5,7 +5,7 @@ class NetManager {
   NetManager._();
 
   static StreamSubscription? _listener;
-  static List<void Function(ConnectivityResult connectivityResult)> _listeners = [];
+  static final List<void Function(ConnectivityResult connectivityResult)> _listeners = [];
 
 
   static Future<bool> isConnected() async {
@@ -42,14 +42,15 @@ class NetManager {
   static void removeChangeListener(Function listener) async {
     _listeners.remove(listener);
 
-    if (_listeners.length < 1) {
+    if (_listeners.isEmpty) {
       stopListening();
     }
   }
 
   static void startConnectionChangeListen() async {
-    if (_listener != null && !_listener!.isPaused)
+    if (_listener != null && !_listener!.isPaused) {
       return;
+    }
 
     _listener?.cancel();
 
@@ -60,7 +61,7 @@ class NetManager {
         } catch (e) {}
       }
 
-      if (_listeners.length < 1) stopListening();
+      if (_listeners.isEmpty) stopListening();
     });
   }
 
@@ -70,13 +71,13 @@ class NetManager {
   }
 }
 ///===============================================================================================
-typedef void OnConnected(bool isWifi);
-typedef void OnDisConnected();
+typedef OnConnected = void Function(bool isWifi);
+typedef OnDisConnected = void Function();
 
 class NetListener {
   NetListener._();
 
-  static Map<String, NetListener> _holder = {};
+  static final Map<String, NetListener> _holder = {};
   bool _isActive = false;
   bool _isPurge = false;
   int _callCount = 0;
