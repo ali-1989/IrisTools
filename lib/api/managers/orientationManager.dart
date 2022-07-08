@@ -22,10 +22,11 @@ class OrientationManager {
       DeviceOrientation.portraitDown,
     ]).then((_) {
 
-      if(funArg != null)
+      if(funArg != null) {
         onThen?.call(funArg);
-      else
+      } else {
         onThen?.call();
+      }
     });
   }
 
@@ -34,10 +35,11 @@ class OrientationManager {
       DeviceOrientation.landscapeLeft,
       DeviceOrientation.landscapeRight,
     ]).then((_) {
-      if(funArg != null)
+      if(funArg != null) {
         onThen?.call(funArg);
-      else
+      } else {
         onThen?.call();
+      }
     });
   }
 
@@ -82,8 +84,9 @@ class OrientationManager {
 mixin PortraitStatelessMixin on StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    if(!OrientationManager.isPortrait(context))
+    if(!OrientationManager.isPortrait(context)) {
       OrientationManager.fixPortraitModeOnly();
+    }
 
     return super.build(context);
   }
@@ -92,8 +95,9 @@ mixin PortraitStatelessMixin on StatelessWidget {
 mixin PortraitStatefulMixin<T extends StatefulWidget> on State<T> {
   @override
   Widget build(BuildContext context) {
-    if(!OrientationManager.isPortrait(context))
+    if(!OrientationManager.isPortrait(context)) {
       OrientationManager.fixPortraitModeOnly();
+    }
 
     return super.build(context);
   }

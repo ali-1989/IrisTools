@@ -19,7 +19,7 @@ class _SizeReportRenderObject extends RenderProxyBox {
       if (newSize != null && currentSize != newSize) {
         currentSize = newSize;
 
-        WidgetsBinding.instance?.addPostFrameCallback((_) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
           onSizeChange(newSize);
         });
       }
@@ -90,7 +90,7 @@ class _MeasureSizeRenderObject extends RenderProxyBox {
 
     detected = true;
 
-    WidgetsBinding.instance!.addPostFrameCallback((timestamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timestamp) {
       onChangeSize(newSize);
     });
   }

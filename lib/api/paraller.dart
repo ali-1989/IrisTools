@@ -48,7 +48,7 @@ class AsyncTransformer<S, T> extends StreamTransformerBase<S, T> {
     var futureOrValue = _asyncCB(data);
 
     // check if it returned a future, or a value
-    if (!(futureOrValue is Future)) {
+    if (futureOrValue is! Future) {
       // if it does not return a future
       // we will immediately add it to the stream
       _streamController.add(futureOrValue);

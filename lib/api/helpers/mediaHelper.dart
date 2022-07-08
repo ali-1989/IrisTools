@@ -14,9 +14,9 @@ import 'package:video_player/video_player.dart';
 /// flutter_ffmpeg
 
 enum ImageOrientation {
-  SQUARE,
-  LANDSCAPE,
-  PORTLAND
+  square,
+  landscape,
+  portland
 }
 ///==============================================================================================
 class MediaHelper {
@@ -24,14 +24,14 @@ class MediaHelper {
 
   static ImageOrientation getImageOrientation(int w, int h){
     if((w - h).abs() < 16){
-      return ImageOrientation.SQUARE;
+      return ImageOrientation.square;
     }
 
     if(w > h){
-      return ImageOrientation.LANDSCAPE;
+      return ImageOrientation.landscape;
     }
 
-    return ImageOrientation.PORTLAND;
+    return ImageOrientation.portland;
   }
 
   static bool isLandscape(int w, int h) {
@@ -45,12 +45,12 @@ class MediaHelper {
   static Point<int> getMaxSize(int w, int h, int maxW, int maxHLandscape, int maxHPortland) {
     var state = getImageOrientation(w, h);
 
-    if(state == ImageOrientation.SQUARE){
+    if(state == ImageOrientation.square){
       var v = math.min(w, maxW);
       return Point(v, v);
     }
 
-    return state == ImageOrientation.LANDSCAPE?
+    return state == ImageOrientation.landscape?
       Point(math.min(w, maxW), math.min(h, maxHLandscape))
         : Point(math.min(w, maxW), math.min(h, maxHPortland));
   }

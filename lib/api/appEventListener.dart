@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 /// usage: WidgetsBinding.instance.addObserver(AppEventListener());
 
 class AppEventListener extends WidgetsBindingObserver {
-	List<FutureOr Function()> _resumeCallBackList = [];
-	List<Function> _pauseCallBackList = [];
-	List<Function> _detachedCallBackList = [];
+	final List<FutureOr Function()> _resumeCallBackList = [];
+	final List<Function> _pauseCallBackList = [];
+	final List<Function> _detachedCallBackList = [];
 
 	AppEventListener();
 
@@ -104,7 +104,7 @@ class AppEventListener extends WidgetsBindingObserver {
 	//  @override
 	//  void didHaveMemoryPressure()
 
-	@override
+	/*@override
 	Future<bool> didPopRoute(){
 		return super.didPopRoute();
 	}
@@ -112,5 +112,5 @@ class AppEventListener extends WidgetsBindingObserver {
 	@override
 	Future<bool> didPushRoute(String route){
 		return super.didPushRoute(route);
-	}
+	}*/
 }

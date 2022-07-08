@@ -559,9 +559,6 @@ abstract class ADateStructure implements Comparable<ADateStructure> {
   }
 
   @override
-  int get hashCode => super.hashCode;
-
-  @override
   bool operator ==(Object other) {
     return identical(this, other) || other is ADateStructure && compareTo(other) == 0;
   }

@@ -24,7 +24,7 @@ class ImageHelper {
   }
 
   static void evictCacheImages(){
-    PaintingBinding.instance!.imageCache?.clear();
+    PaintingBinding.instance.imageCache.clear();
   }
   //--------------------------------------------------------------------------
   static Future<Uint8List> readImageAsBytes(String path) {

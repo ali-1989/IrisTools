@@ -11,7 +11,7 @@ class KeyboardSize {
 
 	static _init(BuildContext context){
 		if(!_isInit){
-			_initSize = EdgeInsets.fromWindowPadding(WidgetsBinding.instance!.window.viewInsets, WidgetsBinding.instance!.window.devicePixelRatio).bottom;
+			_initSize = EdgeInsets.fromWindowPadding(WidgetsBinding.instance.window.viewInsets, WidgetsBinding.instance.window.devicePixelRatio).bottom;
 			_isInit = true;
 		}
 	}
@@ -21,8 +21,8 @@ class KeyboardSize {
 
 		//double s = MediaQuery.of(context).viewInsets.bottom;
 		double s = EdgeInsets.fromWindowPadding(
-				WidgetsBinding.instance!.window.viewInsets,
-				WidgetsBinding.instance!.window.devicePixelRatio
+				WidgetsBinding.instance.window.viewInsets,
+				WidgetsBinding.instance.window.devicePixelRatio
 		).bottom;
 
 		return s;

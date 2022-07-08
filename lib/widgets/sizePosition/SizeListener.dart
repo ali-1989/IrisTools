@@ -27,7 +27,7 @@ class _SizeListenerState extends State<SizeListener> {
     super.initState();
 
     if(!widget.isListener){
-      WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
         if(!mounted){
           return;
         }

@@ -84,7 +84,7 @@ class GlowAnimationState extends State<GlowAnimation> with SingleTickerProviderS
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       if(mounted){
         final render = context.findRenderObject()! as RenderBox;
 

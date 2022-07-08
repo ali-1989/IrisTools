@@ -19,7 +19,7 @@ class _SizeProviderWidgetState extends State<SizeProviderWidget> {
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       _overlayChild = widget.onSizeDetected(context.size!);
     });
   }

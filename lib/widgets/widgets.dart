@@ -26,7 +26,7 @@ class _StickyState extends State<Sticky> {
       builder: (context) => stickyBuilder(),
     );
 
-    SchedulerBinding.instance!.addPostFrameCallback((_) {
+    SchedulerBinding.instance.addPostFrameCallback((_) {
       Overlay.of(context)!.insert(stickyEntry);
     });
   }
