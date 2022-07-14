@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/io_client.dart';
 
-class TrustAllCertificates {
+class TrustSsl {
 
   static http.Client getTrustClint() {
     var ioClient = HttpClient()..badCertificateCallback = (X509Certificate cert, String host, int port) {

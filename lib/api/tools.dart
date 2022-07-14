@@ -9,6 +9,10 @@ class Tools {
   Tools._();
 
   static void verbosePrint(dynamic obj){
+    if(obj == null){
+      return;
+    }
+
     final txt = obj.toString();
 
     for(int i = 0; i< txt.length; i+= 500){
