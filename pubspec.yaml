@@ -6,46 +6,49 @@ homepage: https://iris.ir
 publish_to: 'none'
 
 environment:
-  sdk: ">=2.15.0 <3.0.0"
-  flutter: ">=2.8.0"
+  sdk: ">=2.15.0"
+  flutter: ">=2.15.0"
 
 
 dependencies:
   flutter:
     sdk: flutter
-  cupertino_icons: ^1.0.4             # W, https://pub.dev/packages/cupertino_icons
-  community_material_icon: ^5.9.55    # W, https://materialdesignicons.com/  https://www.fluttericon.com/
-  intl: ^0.17.0                       # W, https://pub.dev/packages/intl
-  jiffy: ^4.1.0                       # W, https://pub.dev/packages/jiffy
-  convert: ^3.0.1                     # W, https://pub.dev/packages/convert
-  path_provider: ^2.0.8               # https://pub.dev/packages/path_provider
-  path: ^1.8.0                        # W, https://pub.dev/packages/path (path manager)
-  android_path_provider: ^0.3.0       # (android directory)
-  disk_space: ^0.2.1                  # https://pub.dev/packages/disk_space
-  mime: ^1.0.1                        # W, https://pub.dev/packages/mime
-  open_file: ^3.2.1                   # https://pub.dev/packages/open_file (intent)
-  url_launcher: ^6.0.17               # W, https://pub.dev/packages/url_launcher
-  dio: ^4.0.6                          # W, https://pub.dev/packages/dio
-  connectivity_plus: ^2.3.5           # W, https://pub.dev/packages/connectivity_plus
-  photo_view: ^0.14.0                 # W, https://pub.dev/packages/photo_view    image view gallery
-  file_picker: ^4.2.7                 # W, https://pub.dev/packages/file_picker
-  just_audio: ^0.9.18                 # W, https://pub.dev/packages/just_audio
-  video_player: ^2.2.7                # W, https://pub.dev/packages/video_player
-  video_compress: ^3.1.0              # https://pub.dev/packages/video_compress    thumbnail
-  gallery_saver: 2.3.2              #Edited, https://pub.dev/packages/gallery_saver minSdkVersion 17
-  image: ^3.1.0                       # W, https://pub.dev/packages/image     {crop, rotate} alter:https://pub.dev/packages/pic
-  image_size_getter: ^1.0.0           # W, https://pub.dev/packages/image_size_getter
-  flutter_image_compress: ^1.1.0      # https://pub.dev/packages/flutter_image_compress
-
+  cupertino_icons: ^1.0.5
+  community_material_icon: ^5.9.55    # https://materialdesignicons.com/  https://www.fluttericon.com/
+  intl: ^0.17.0
+  jiffy: ^5.0.0
+  convert: ^3.0.2
+  path_provider: ^2.0.11               # no Web
+  path: ^1.8.2                        # path manager
+  android_path_provider: ^0.3.0       # android directory
+  disk_space: ^0.2.1                  # no Web
+  mime: ^1.0.2
+  open_file: ^3.2.1                   # no Web
+  url_launcher: ^6.1.5
+  dio: ^4.0.6
+  connectivity_plus: ^2.3.5
+  photo_view: ^0.14.0                 # image view gallery
+  file_picker: ^4.6.1
+  just_audio: ^0.9.27
+  video_player: ^2.4.5
+  video_compress: ^3.1.1              # no Web    thumbnail
+  gallery_saver: 2.3.2                # Edited minSdkVersion 17
+  image: ^3.2.0                       # {crop, rotate} alter:https://pub.dev/packages/pic
+  image_size_getter: ^2.1.2
+  flutter_image_compress: ^1.1.0      # no Web
 
   iris_db:
     git: https://github.com/ali-1989/IrisDB.git
 
 
+dependency_overrides:
+  path: ^1.8.2
+
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^1.0.4
+  flutter_lints: ^2.0.1
 
 
 flutter:
