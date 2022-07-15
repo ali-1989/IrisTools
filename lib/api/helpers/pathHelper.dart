@@ -90,9 +90,10 @@ class PathHelper{
       }
       else {
         path = path.replaceAll(RegExp(r'\\'), '/');
-        path = path.replaceAll(RegExp('(?<!:)/{2,}'), '/');
       }
     }
+
+    path = path.replaceAll(RegExp('(?<!:)/{2,}'), '/');
 
     return path;
   }
