@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:android_path_provider/android_path_provider.dart';
 import 'package:disk_space/disk_space.dart';
 import 'package:flutter/services.dart';
+import 'package:iris_tools/api/helpers/pathHelper.dart';
 import 'package:iris_tools/api/system.dart';
 import 'package:path_provider/path_provider.dart'; // for ios/android document dir
 import 'package:path/path.dart' as pat; // work with path address
@@ -127,7 +128,7 @@ class StorageHelper {
 	}
 	///--- Web --------------------------------------------------------------------------------------------
 	static String getWebExternalStorage() {
-		return getMemoryFileSystem().path.current;
+		return '/';
 	}
 	///--- android ----------------------------------------------------------------------------------------
 		// /storage/emulated/0
@@ -192,13 +193,16 @@ class StorageHelper {
 	//android: /storage/emulated/0/Documents
 	static Future<String> getDocumentsDirectory$external() async {
 		if(System.isWeb()) {
-		  return getWebExternalStorage() + '/Documents';
-		} else if(Platform.isAndroid) {
+		  return PathHelper.resolvePath('${getWebExternalStorage()}/Documents')!;
+		}
+		else if(Platform.isAndroid) {
 		  return (await getAndroidDocumentsDir())!;
-		} else if(Platform.isIOS) {
+		}
+		else if(Platform.isIOS) {
 		  return (await getIosDocumentsDirectory()).path;
-		} else {
-		  return '';
+		}
+		else {
+		  return '/Documents';
 		}
 	}
 	///------------------------------------------------------------------------------------------------
