@@ -17,3 +17,15 @@ extension TypeOfCalendarExtension on CalendarType {
     return CalendarType.unKnow;
   }
 }
+
+class CalendarTypeHelper {
+  static CalendarType calendarTypeFrom(String? name){
+    for(final t in CalendarType.values){
+      if(t.name == name){
+        return t;
+      }
+    }
+
+    return CalendarType.unKnow;
+  }
+}
