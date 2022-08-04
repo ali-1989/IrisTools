@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:iris_tools/api/helpers/fileHelper.dart';
 
 import 'loggerStub.dart'
@@ -40,8 +41,16 @@ class Logger {
     return logToRelativeFile(await getFilePath(), text, type);
   }
 
+  String _ps(){
+    if(kIsWeb){
+      return '/';
+    }
+
+    return Platform.pathSeparator;
+  }
+
   Future<String> getFilePath() async{
-    var p = dirPath + Platform.pathSeparator + '$fileName$counter.txt';
+    var p = '$dirPath${_ps()}$fileName$counter.txt';
     var f = File(p);
 
     if(!f.existsSync()) {
