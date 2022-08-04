@@ -42,11 +42,16 @@ class Logger {
   }
 
   String _ps(){
-    if(kIsWeb){
+    try {
+      if (kIsWeb) {
+        return '/';
+      }
+
+      return Platform.pathSeparator;
+    }
+    catch (e){
       return '/';
     }
-
-    return Platform.pathSeparator;
   }
 
   Future<String> getFilePath() async{
