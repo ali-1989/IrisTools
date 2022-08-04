@@ -14,6 +14,6 @@ Future<bool> logToRelativeFile(String filePath, String text, String type) async 
     await FileHelper.createNewFile(filePath);
   }
 
-  String pr = '$type::$text\n-------------------------\n';
+  String pr = '$type::$text\n---------------------------\n';
   return f.writeAsString(pr, mode: FileMode.append, flush: true).then((value) => true);
 }

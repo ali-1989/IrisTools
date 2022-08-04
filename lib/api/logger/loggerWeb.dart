@@ -1,8 +1,7 @@
 //import 'dart:html';
-import 'package:file/src/backends/memory.dart';
 
 String getStoragePath(){
-  return MemoryFileSystem().systemTempDirectory.path;
+  return '/tmp';
 }
 
 Future<bool> logToRelativeFile(String filePath, String text, String type){
