@@ -25,6 +25,10 @@ class Logger {
   }
 
   Future logToFile(String text, {String type = ''}){
+    if(kIsWeb){
+      return Future.value();
+    }
+
     return _log(text, type);
   }
 
