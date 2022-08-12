@@ -15,14 +15,16 @@ class CommonRefresh extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _CommonRefreshState createState() => _CommonRefreshState();
+  State createState() => _CommonRefreshState();
 
   static _CommonHolder? _findCommonHolder(String tag){
-    for(var c in _commons){
+    for(final c in _commons){
       if(c.tag == tag){
         return c;
       }
     }
+
+    return null;
   }
 
   static void _addState(_CommonRefreshState state){
@@ -58,7 +60,7 @@ class CommonRefresh extends StatefulWidget {
     if(common != null){
       common.data = data;
 
-      for(var f in common.states){
+      for(final f in common.states){
         f.update();
       }
     }
@@ -101,9 +103,9 @@ class _CommonRefreshState extends State<CommonRefresh> {
   Widget build(BuildContext context) {
     /*if(_commonHolder.data == null){
       return widget.onNoData.call(context);
-    }
+    } */
 
-    */return widget.builder.call(context, _commonHolder.data);
+    return widget.builder.call(context, _commonHolder.data);
   }
 
   @override

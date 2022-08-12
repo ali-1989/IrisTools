@@ -92,7 +92,7 @@ class NotifyBroadcast {
   void notifyAll(dynamic value){
     _currentValue = value;
 
-    for(var x in _list){
+    for(final x in _list){
       try{
         x.call(_currentValue);
       }

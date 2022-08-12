@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 
-typedef RefreshBuilder<T> = Widget Function(BuildContext context, UpdateController controller);
+typedef SelfRefreshBuilder<T> = Widget Function(BuildContext context, SelfRefreshController controller);
 
 class SelfRefresh extends StatefulWidget {
-  final RefreshBuilder builder;
+  final SelfRefreshBuilder builder;
 
   SelfRefresh({Key? key, required this.builder}): super(key : key);
 
@@ -15,13 +15,12 @@ class SelfRefresh extends StatefulWidget {
 }
 ///============================================================================================
 class _SelfRefreshState extends SelfUpdaterStateApi<SelfRefresh> {
-  late UpdateController controller;
-  int c = 0;
+  late SelfRefreshController controller;
 
   @override
   void initState() {
     super.initState();
-    controller = UpdateController(this);
+    controller = SelfRefreshController(this);
   }
 
   @override
@@ -43,7 +42,9 @@ class _SelfRefreshState extends SelfUpdaterStateApi<SelfRefresh> {
 
   @override
   void update() {
-    setState(() {});
+    if(mounted){
+      setState(() {});
+    }
   }
 
   @override
@@ -57,21 +58,20 @@ abstract class SelfUpdaterStateApi<w extends StatefulWidget> extends State<w> {
   void disposeWidget();
 }
 ///===================================================================================================
-class UpdateController {
+class SelfRefreshController {
   final SelfUpdaterStateApi? _state;
   Map<String, dynamic> objects = {};
   dynamic _attach;
   bool errorOccurred = false;
-  String? _primaryTag;
-  String? _extraTag;
 
-  UpdateController(this._state);
+  SelfRefreshController(this._state);
 
   void update({Duration? delay}){
     if(_state != null && _state!.mounted){
       if(delay == null) {
         _state!.update();
-      } else {
+      }
+      else {
         Timer(delay, (){_state!.update();});
       }
     }
@@ -79,25 +79,6 @@ class UpdateController {
 
   Widget? get widget => _state?.widget;
   BuildContext? get context => _state?.context;
-
-  bool isPrimaryTag(String tag) => _primaryTag != null && _primaryTag == tag;
-  bool isExtraTag(String tag) => _extraTag != null && _extraTag == tag;
-
-  void setPrimaryTag(String val){
-    _primaryTag = val;
-  }
-
-  String? getPrimaryTag(){
-    return _primaryTag;
-  }
-
-  void setExtraTag(String val){
-    _extraTag = val;
-  }
-
-  String? getExtraTag(){
-    return _extraTag;
-  }
 
   void set(String key, dynamic val){
     objects[key] = val;

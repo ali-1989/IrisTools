@@ -30,8 +30,11 @@ class RefreshState extends RefreshStateApi<Refresh> {
 	/// call before any build() if parent rebuild
 	@override
 	void didUpdateWidget(Refresh oldWidget) {
-		//_controller = oldWidget.controller;
 		super.didUpdateWidget(oldWidget);
+
+		if(oldWidget.controller != widget.controller){
+			widget.controller._state = this;
+		}
 	}
 
 	/// this is call any time, like: init, screen on/off, rotation, ...
@@ -50,7 +53,9 @@ class RefreshState extends RefreshStateApi<Refresh> {
 
 	@override
   void update() {
-		setState(() {});
+		if(mounted){
+			setState(() {});
+		}
 	}
 
 	@override
@@ -70,8 +75,6 @@ class RefreshController {
 	dynamic _attach;
 	bool errorOccurred = false;
 	bool usePrimaryView = true;
-	String? _primaryTag;
-	String? _extraTag;
 	final List<Sink> _chainUpdate = [];
 	final Map<Stream, StreamSubscription> _streamListeners = {};
 	StreamController? _streamCtr;
@@ -97,25 +100,6 @@ class RefreshController {
 
 	Widget? get widget => _state?.widget;
 	BuildContext? get context => _state?.context;
-
-	bool isPrimaryTag(String tag) => _primaryTag != null && _primaryTag == tag;
-	bool isExtraTag(String tag) => _extraTag != null && _extraTag == tag;
-
-	void setPrimaryTag(String val){
-		_primaryTag = val;
-	}
-
-	String? getPrimaryTag(){
-		return _primaryTag;
-	}
-
-	void setExtraTag(String val){
-		_extraTag = val;
-	}
-
-	String? getExtraTag(){
-		return _extraTag;
-	}
 
 	void set(String key, dynamic val){
 		objects[key] = val;
