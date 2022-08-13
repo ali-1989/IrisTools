@@ -5,10 +5,12 @@ class MediaModel {
   String? path;
   String? name;
   String? extension;
-  double? volume;
+  int? volume;
   double? width;
   double? height;
   Map? extra;
+
+  MediaModel();
 
   MediaModel.fromMap(Map map){
     id = map['id'] as String?;
