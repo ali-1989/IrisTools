@@ -3,10 +3,12 @@ class MediaModel {
   String? id;
   String? url;
   String? path;
-  String? name;
+  String? title;
+  String? fileName;
   String? extension;
   DateTime? date;
   int? volume;
+  int? duration;
   double? width;
   double? height;
   Map? extra;
@@ -17,9 +19,11 @@ class MediaModel {
     id = map['id'] as String?;
     url = map['url'];
     path = map['path'];
-    name = map['name'];
+    title = map['title'];
+    fileName = map['file_name'];
     extension = map['extension'];
     volume = map['volume'];
+    duration = map['duration'];
     width = map['width'];
     height = map['height'];
     extra = map['extra'];
@@ -31,8 +35,10 @@ class MediaModel {
     map['id'] = id;
     map['url'] = url;
     map['path'] = path;
-    map['name'] = name;
+    map['title'] = title;
+    map['file_name'] = fileName;
     map['extension'] = extension;
+    map['duration'] = duration;
     map['volume'] = volume;
     map['width'] = width;
     map['height'] = height;
