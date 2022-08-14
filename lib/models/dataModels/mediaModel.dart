@@ -1,10 +1,11 @@
 
 class MediaModel {
-  String? url;
   String? id;
+  String? url;
   String? path;
   String? name;
   String? extension;
+  DateTime? date;
   int? volume;
   double? width;
   double? height;
@@ -22,6 +23,7 @@ class MediaModel {
     width = map['width'];
     height = map['height'];
     extra = map['extra'];
+    date = map['date'];
   }
 
   Map<String, dynamic> toMap(){
@@ -35,6 +37,7 @@ class MediaModel {
     map['width'] = width;
     map['height'] = height;
     map['extra'] = extra;
+    map['date'] = date;
 
     return map;
   }
