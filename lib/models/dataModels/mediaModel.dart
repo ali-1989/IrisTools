@@ -1,6 +1,6 @@
 
 class MediaModel {
-  String? id;
+  int? id;
   String? url;
   String? path;
   String? title;
@@ -16,7 +16,7 @@ class MediaModel {
   MediaModel();
 
   MediaModel.fromMap(Map map){
-    id = map['id'] as String?;
+    id = map['id'];
     url = map['url'];
     path = map['path'];
     title = map['title'];
@@ -32,7 +32,6 @@ class MediaModel {
 
   Map<String, dynamic> toMap(){
     final map = <String, dynamic>{};
-    map['id'] = id;
     map['url'] = url;
     map['path'] = path;
     map['title'] = title;
@@ -45,6 +44,25 @@ class MediaModel {
     map['extra'] = extra;
     map['date'] = date;
 
+    if(id != null){
+      map['id'] = id;
+    }
+
     return map;
+  }
+
+  void matchBy(MediaModel other){
+    //id = other.id;
+    url = other.url;
+    path = other.path;
+    title = other.title;
+    fileName = other.fileName;
+    extension = other.extension;
+    volume = other.volume;
+    duration = other.duration;
+    width = other.width;
+    height = other.height;
+    extra = other.extra;
+    date = other.date;
   }
 }

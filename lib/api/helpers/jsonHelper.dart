@@ -194,7 +194,7 @@ class JsonHelper {
     }
   }
 
-  static Map? removeNulls(Map? inp) {
+  static Map<K, V>? removeNulls<K, V>(Map<K, V>? inp) {
     if(inp == null){
       return null;
     }
