@@ -1,3 +1,4 @@
+import 'package:iris_tools/dateSection/dateHelper.dart';
 
 class MediaModel {
   int? id;
@@ -27,7 +28,7 @@ class MediaModel {
     width = map['width'];
     height = map['height'];
     extra = map['extra'];
-    date = map['date'];
+    date = DateHelper.tsToSystemDate(map['date']);
   }
 
   Map<String, dynamic> toMap(){
@@ -42,7 +43,10 @@ class MediaModel {
     map['width'] = width;
     map['height'] = height;
     map['extra'] = extra;
-    map['date'] = date;
+
+    if(date != null) {
+      map['date'] = DateHelper.toTimestampNullable(date);
+    }
 
     if(id != null){
       map['id'] = id;
