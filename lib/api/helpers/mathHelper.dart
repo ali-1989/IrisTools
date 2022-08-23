@@ -75,16 +75,15 @@ class MathHelper {
 	}
 
 	static double percent(double whole, int per){
-		return per / whole * 100;
+		return per / 100 * whole;
 	}
 
 	static double percentFixPrecision(double whole, int per){
-		final res = per / whole * 100;
-		return fixPrecisionRound(res, 1);
+		return fixPrecisionRound(percent(whole, per), 1);
 	}
 
 	static int percentInt(int whole, int per){
-		return per ~/ whole * 100;
+		return per ~/ 100 * whole;
 	}
 
 	static double degreesToRadian(double deg) {
