@@ -94,6 +94,23 @@ class TextHelper{
 		return src.split(RegExp(r'\b\w+\b'));
 	}
 
+	static String getFirstWord(String? src){
+		if(src == null){
+			return '';
+		}
+
+		int idx = src.length;
+
+		for(int i=1; i < src.length; i++){
+			if(src[i] == ' '){
+				idx = i;
+				break;
+			}
+		}
+
+		return src.substring(0, idx);
+	}
+
 	static List<String> splitRegex(String src, String reg){
 		return src.split(RegExp(reg));
 	}

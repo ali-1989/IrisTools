@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:iris_tools/api/system.dart';
 
 class TimeZone {
@@ -31,6 +32,10 @@ class TimeZone {
 
   // android: IRDT
   static String getCurrentTimezone(){
+    if(kIsWeb){
+      return DateTime.now().timeZoneName;
+    }
+
     if(System.isWindows()){
       var x = DateTime.now().timeZoneName.replaceFirst(' Daylight Time', '');
       var res = windowsToLinux(x);

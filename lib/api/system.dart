@@ -50,41 +50,39 @@ class System {
   }
 
   static void hideBothStatusBar(){
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge, overlays: []);
-  }
-
-  /// fullscreen
-  static void hideTopStatusBar(){
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge, overlays: [SystemUiOverlay.bottom]);
-  }
-
-  static void hideBottomStatusBar(){
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge, overlays: [SystemUiOverlay.top]);
-  }
-
-  static void showTopStatusBar(){
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge, overlays: [SystemUiOverlay.top]);
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+    //SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge, overlays: []);
+    //SystemChrome.setEnabledSystemUIOverlays([]);
   }
 
   static void showBothStatusBar(){
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge, overlays: SystemUiOverlay.values);
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge/*, overlays: SystemUiOverlay.values*/);
+    //SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
+  }
+
+  static void onlyStatusBar(){
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [SystemUiOverlay.top]);
+  }
+
+  static void onlyBottomNavBar(){
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
   }
 
   static void changeStatusBarNavBarColor(Color color){
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: color, systemNavigationBarColor: color));
   }
 
-  static void removeColorTopStatusBar(){
+  static void removeColorStatusBar(){
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: Colors.transparent,));
   }
 
-  static void returnBackColorTopStatusBar(bool isLightTheme){
+  static void simulateStatusBarBackColor(bool isLightTheme){
     SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle(statusBarColor: isLightTheme? Colors.black.withAlpha(70): Colors.black.withAlpha(70),)
+        SystemUiOverlayStyle(statusBarColor: isLightTheme? Colors.black.withAlpha(70): Colors.black.withAlpha(70))
     );
   }
 
-  static void removeColorBottomStatusBar(){
+  static void removeColorBottomNavBar(){
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(systemNavigationBarColor: Colors.transparent,));
   }
 
