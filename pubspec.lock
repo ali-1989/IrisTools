@@ -234,7 +234,7 @@ packages:
     source: sdk
     version: "0.0.0"
   g_json:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: g_json
       url: "https://pub.dartlang.org"

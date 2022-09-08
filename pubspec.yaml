@@ -1,6 +1,6 @@
 name: iris_tools
 description: iris tools Library.
-version: 0.0.10
+version: 0.0.11
 homepage: https://iris.ir
 
 publish_to: 'none'
@@ -32,11 +32,13 @@ dependencies:
   gallery_saver: 2.3.2                # Edited minSdkVersion 17
   image: ^3.2.0                       # (crop, rotate) alter:https://pub.dev/packages/pic
   image_size_getter: ^2.1.2
+  g_json: ^4.1.0
   video_compress: ^3.1.1              # no Web    (thumbnail)
   path_provider: ^2.0.11              # no Web
   disk_space: ^0.2.1                  # no Web
   open_file: ^3.2.1                   # no Web
   flutter_image_compress: ^1.1.2      # no Web
+
 
   iris_db:
     git: https://github.com/ali-1989/IrisDB.git

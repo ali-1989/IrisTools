@@ -1,5 +1,6 @@
 import 'package:iris_db/iris_db.dart';
 import 'package:iris_tools/api/logger/logger.dart';
+export 'package:g_json/g_json.dart';
 
 class DatabaseHelper {
   late IrisDB _irisDB;
