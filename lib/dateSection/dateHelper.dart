@@ -324,7 +324,7 @@ class DateHelper {
 
 		final future = date.add(dur);
 
-		return date.compareTo(future) < 1;
+		return DateTime.now().compareTo(future) < 1;
 	}
 
 	static int compareDatesTs(String? d1, String? d2, {bool asc = true}){
