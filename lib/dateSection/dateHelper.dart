@@ -317,6 +317,16 @@ class DateHelper {
 		return today.difference(d).inDays;
 	}
 
+	static bool isPastOf(DateTime? date, Duration dur){
+		if(date == null){
+			return true;
+		}
+
+		final future = date.add(dur);
+
+		return date.compareTo(future) < 1;
+	}
+
 	static int compareDatesTs(String? d1, String? d2, {bool asc = true}){
 		final s1 = tsToSystemDate(d1);
 		final s2 = tsToSystemDate(d2);
