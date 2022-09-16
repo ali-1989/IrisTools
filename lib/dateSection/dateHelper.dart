@@ -324,6 +324,16 @@ class DateHelper {
 
 		final future = date.add(dur);
 
+		return DateTime.now().compareTo(future) > 0;
+	}
+
+	static bool isPastOfOrSame(DateTime? date, Duration dur){
+		if(date == null){
+			return true;
+		}
+
+		final future = date.add(dur);
+
 		return DateTime.now().compareTo(future) > -1;
 	}
 

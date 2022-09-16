@@ -1,6 +1,6 @@
 name: iris_tools
 description: iris tools Library.
-version: 0.0.14
+version: 0.0.15
 homepage: https://iris.ir
 
 publish_to: 'none'
@@ -24,10 +24,10 @@ dependencies:
   mime: ^1.0.2
   url_launcher: ^6.1.5
   dio: ^4.0.6
-  connectivity_plus: ^2.3.6+1
+  connectivity_plus: ^2.3.7
   photo_view: ^0.14.0                 # (image view gallery)
-  file_picker: ^5.0.1
-  just_audio: ^0.9.28
+  file_picker: ^5.1.0
+  just_audio: ^0.9.29
   video_player: ^2.4.7
   gallery_saver: 2.3.2                # Edited minSdkVersion 17
   image: ^3.2.0                       # (crop, rotate) alter:https://pub.dev/packages/pic
@@ -38,6 +38,7 @@ dependencies:
   disk_space: ^0.2.1                  # no Web
   open_file: ^3.2.1                   # no Web
   flutter_image_compress: ^1.1.2      # no Web
+  crypto: ^3.0.2
 
 
   iris_db:

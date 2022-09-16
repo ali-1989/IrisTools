@@ -2,8 +2,13 @@ import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:iris_tools/api/keyboard/keyboardEvent.dart';
+import 'package:iris_tools/modules/irisDialog/irisDialogWidget.dart';
 import 'package:iris_tools/modules/irisDialog/navHelper.dart';
 
+/// if return true, pop
+typedef OnButtonCallback = FutureOr<bool>? Function(BuildContext ctx);
+typedef OnAnyButtonCallback = dynamic Function(dynamic result);
+///=====================================================================================================
 class IrisDialogDecoration {
   ThemeData? themeData;
   Color? dimColor;
@@ -21,6 +26,8 @@ class IrisDialogDecoration {
   TextStyle? descriptionStyle;
   TextStyle? positiveStyle;
   TextStyle? negativeStyle;
+  MainAxisSize? buttonsAxisSize;
+  MainAxisAlignment? buttonsAxisAlignment;
   ShapeBorder? shape;
   EdgeInsets? padding;
   EdgeInsets titlePadding = EdgeInsets.all(10.0);
@@ -60,26 +67,25 @@ class IrisDialogDecoration {
     return res;
   }
 }
-
+///===============================================================================================
 class IrisDialog {
   IrisDialog._();
 
   static Future<T?> show<T>(
-      BuildContext context,
-      {
+      BuildContext context, {
         Key? key,
-        required String positiveButtonText,
         String? title,
         String? descriptionText,
         Widget? descriptionWidget,
-        String? pageNavigatorName,
+        String? pageRouteName,
+        String? positiveButtonText,
         String? negativeButtonText,
         String? threeButtonText,
         TextDirection? direction,
         Widget? icon,
-        OnButtonPressed? positivePress,
-        OnButtonPressed? negativePress,
-        OnButtonPressed? threePress,
+        OnButtonCallback? positivePress,
+        OnButtonCallback? negativePress,
+        OnButtonCallback? threePress,
         bool canDismissible = false,
         bool dismissOnButtons = true,
         IrisDialogDecoration? decoration,
@@ -88,18 +94,16 @@ class IrisDialog {
     assert(descriptionText != null || descriptionWidget != null, 'both descriptionText & descriptionWidget is null');
 
     decoration ??= IrisDialogDecoration();
-
     decoration.dimColor ??= Colors.black.withAlpha(120);
-    final routeName = pageNavigatorName?? _generateId(10);
-
+    final routeName = pageRouteName?? _generateId(10);
     //............................................
     final tween = Tween<double>(begin: 0.0, end: 1.0).chain(CurveTween(curve: Curves.easeIn));
 
-    animation(ctx, anim1, anim2, child) => ScaleTransition(
+    AnimatedWidget buildAnimation(ctx, anim1, anim2, child) => ScaleTransition(
       child: child,
       scale: tween.animate(anim1),
     );
-    //............................................
+    ///.......... show ..................................
     final res = showGeneralDialog<T>(
       context: context,
       barrierColor: decoration.dimColor!,
@@ -107,7 +111,7 @@ class IrisDialog {
       barrierLabel: routeName,
       routeSettings: RouteSettings(name: routeName),
       transitionDuration: decoration.animationDuration,
-      transitionBuilder: decoration.transitionsBuilder?? animation,
+      transitionBuilder: decoration.transitionsBuilder?? buildAnimation,
       pageBuilder: (ctx, anim1, anim2){
         void onAnyBtn(res){
           if(dismissOnButtons) {
@@ -169,253 +173,3 @@ class IrisDialog {
   }
 }
 ///=====================================================================================================
-/// if return true, pop
-typedef OnButtonPressed = dynamic Function(BuildContext ctx);
-typedef OnAnyButton = dynamic Function(dynamic result);
-///=====================================================================================================
-class IrisDialogWidget extends StatefulWidget {
-  final IrisDialogDecoration? decoration;
-  final String? title;
-  final String? descriptionText;
-  final Widget? descriptionWidget;
-  final String positiveButtonText;
-  final String? negativeButtonText;
-  final String? threeButtonText;
-  final TextDirection? direction;
-  final Widget? icon;
-  final OnButtonPressed? positivePress;
-  final OnButtonPressed? negativePress;
-  final OnButtonPressed? threePress;
-  final OnAnyButton? anyButtonPress;
-  final bool canDismissible;
-  //final Lottie lottieAnimation;
-
-  IrisDialogWidget({
-    Key? key,
-    this.decoration,
-    this.title,
-    this.descriptionText,
-    this.descriptionWidget,
-    required this.positiveButtonText,
-    this.negativeButtonText,
-    this.threeButtonText,
-    this.direction,
-    this.icon,
-    this.positivePress,
-    this.negativePress,
-    this.threePress,
-    this.anyButtonPress,
-    this.canDismissible = true,
-  }) : super(key: key);
-
-  @override
-  State<StatefulWidget> createState() {
-    return _IrisDialogWidgetState();
-  }
-}
-///=====================================================================================================
-class _IrisDialogWidgetState extends State<IrisDialogWidget> {
-  late IrisDialogDecoration decoration;
-  late Widget descriptionView;
-  TextDirection? direction;
-  //main padding, if not set is: EdgeInsets.fromLTRB(25.0, 7.0, 25.0, 5.0)
-  EdgeInsets padding = EdgeInsets.zero;
-
-  @override
-  void initState() {
-    super.initState();
-
-    decoration = widget.decoration?? IrisDialogDecoration();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    _prepare();
-    descriptionView = widget.descriptionWidget?? Text(widget.descriptionText!, style: decoration.descriptionStyle,);
-
-    return WillPopScope(
-      onWillPop: widget.canDismissible? null : willPopFn,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          FractionallySizedBox( //or IntrinsicWidth
-            widthFactor: decoration.widthFactor,
-            child: Card(
-              color: decoration.backgroundColor,
-              clipBehavior: Clip.antiAlias,
-              shadowColor: decoration.shadowColor,
-              elevation: decoration.elevation,
-              shape: decoration.shape,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  if(widget.icon != null)
-                    Card(
-                      elevation: 0,
-                      borderOnForeground: false,
-                      shape: Border.symmetric(),
-                      margin: EdgeInsets.zero,
-                      color: decoration.iconBackgroundColor?? Colors.blueGrey,
-                      child: Center(
-                        child: Padding(
-                          padding: EdgeInsets.fromLTRB(0, 10, 0, 16),
-                          child: widget.icon,
-                        ),
-                      ),
-                    ),
-
-                  if(widget.title != null)
-                    ColoredBox(
-                      color: decoration.titleBackgroundColor?? Colors.transparent,
-                      child: SizedBox(
-                        width: double.infinity,
-                        child: Padding(
-                          padding: decoration.titlePadding,
-                          child: Center(
-                            child: Text(widget.title!, style: decoration.titleStyle,),
-                          ),
-                        ),
-                      ),
-                    ),
-
-                  Padding(
-                    padding: padding,
-                    child: Directionality(
-                      textDirection: direction!,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        textDirection: direction,
-                        children: <Widget>[
-                          descriptionView,
-                          SizedBox(height: decoration.messageToButtonsSpace,),
-
-                          ButtonBar(
-                            children: [
-                              ElevatedButton(
-                                style: ButtonStyle(
-                                  backgroundColor: MaterialStateProperty.all(decoration.positiveButtonBackColor),
-                                ),
-                                child: Text(widget.positiveButtonText, style: decoration.positiveStyle,),
-                                onPressed: (){
-                                  //var close = widget.positivePress?.call(context)?? true;
-                                  final res = widget.positivePress?.call(context);
-
-                                  if(res is Future){
-                                    res.then((value) {
-                                      widget.anyButtonPress?.call(value);
-                                    });
-                                  }
-                                  else {
-                                    widget.anyButtonPress?.call(res);
-                                  }
-                                },
-                              ),
-
-                              if(widget.negativeButtonText != null)
-                                ElevatedButton(
-                                  style: ButtonStyle(
-                                    backgroundColor: MaterialStateProperty.all(decoration.negativeButtonBackColor),
-                                  ),
-                                  child: Text(widget.negativeButtonText!, style: decoration.negativeStyle,),
-                                  onPressed: (){
-                                    final res = widget.negativePress?.call(context);
-
-                                    if(res is Future){
-                                      res.then((value) {
-                                        widget.anyButtonPress?.call(value);
-                                      });
-                                    }
-                                    else {
-                                      widget.anyButtonPress?.call(res);
-                                    }
-                                    },
-                              ),
-
-                              if(widget.threeButtonText != null)
-                                ElevatedButton(
-                                  style: ButtonStyle(
-                                    backgroundColor: MaterialStateProperty.all(decoration.negativeButtonBackColor),
-                                  ),
-                                  child: Text(widget.threeButtonText!, style: decoration.negativeStyle,),
-                                  onPressed: () {
-                                    final res = widget.threePress?.call(context);
-
-                                    if(res is Future){
-                                      res.then((value) {
-                                        widget.anyButtonPress?.call(value);
-                                      });
-                                    }
-                                    else {
-                                      widget.anyButtonPress?.call(res);
-                                    }
-                                  },
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
-  void _prepare(){
-    decoration.themeData ??= Theme.of(context);
-    decoration.backgroundColor ??= decoration.themeData!.dialogBackgroundColor;
-    decoration.titleColor ??= decoration.themeData!.dialogTheme.titleTextStyle!.color;
-    decoration.descriptionColor ??= decoration.themeData!.dialogTheme.contentTextStyle!.color;
-    //positiveButtonTextColor = widget.positiveButtonTextColor?? themeData.buttonTheme.colorScheme.primary;
-    decoration.positiveButtonBackColor ??= decoration.themeData!.elevatedButtonTheme.style!.backgroundColor!.resolve({MaterialState.focused});
-    //negativeButtonTextColor = widget.negativeButtonTextColor?? themeData.buttonTheme.colorScheme.primary;
-    decoration.negativeButtonBackColor ??= decoration.themeData!.buttonTheme.colorScheme!.background;
-    decoration.shadowColor ??= decoration.themeData!.shadowColor;
-    decoration.titleStyle ??= decoration.themeData!.dialogTheme.titleTextStyle;
-    decoration.descriptionStyle ??= decoration.themeData!.dialogTheme.contentTextStyle?.copyWith(
-      fontWeight: FontWeight.w600,
-    );
-    decoration.positiveStyle ??= decoration.themeData!.textTheme.button;
-    decoration.negativeStyle ??= decoration.positiveStyle;
-    decoration.shape ??= decoration.themeData!.dialogTheme.shape;
-
-    direction = widget.direction?? Directionality.of(context);
-    padding = EdgeInsets.fromLTRB(25.0, 20.0, 25.0, 10.0);
-
-    if(decoration.titleColor != null) {
-      decoration.titleStyle = decoration.titleStyle!.copyWith(color: decoration.titleColor);
-    }
-
-    if(decoration.descriptionColor != null) {
-      decoration.descriptionStyle = decoration.descriptionStyle!.copyWith(color: decoration.descriptionColor);
-    }
-
-    if(decoration.positiveButtonTextColor != null) {
-      decoration.positiveStyle = decoration.positiveStyle!.copyWith(color: decoration.positiveButtonTextColor);
-    }
-
-    if(decoration.negativeButtonTextColor != null) {
-      decoration.negativeStyle = decoration.negativeStyle!.copyWith(color: decoration.negativeButtonTextColor);
-    }
-  }
-
-  Future<bool> willPopFn(){
-    if(widget.canDismissible) {
-      return Future.value(true);
-    }
-
-    return Future.value(false);
-  }
-}

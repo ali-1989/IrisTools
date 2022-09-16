@@ -49,6 +49,10 @@ class Generator {
     return res;
   }
 
+  static bool randomBool(){
+    return _random.nextBool();
+  }
+
   static int generateIntId(int len){
     final s = '0123456789';
     var res = '';
