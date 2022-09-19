@@ -1,6 +1,6 @@
 name: iris_tools
 description: iris tools Library.
-version: 0.0.15
+version: 0.0.16
 homepage: https://iris.ir
 
 publish_to: 'none'
@@ -42,7 +42,8 @@ dependencies:
 
 
   iris_db:
-    git: https://github.com/ali-1989/IrisDB.git
+    path: ../../../DartProjects/IrisDB
+
 
 
 dependency_overrides:

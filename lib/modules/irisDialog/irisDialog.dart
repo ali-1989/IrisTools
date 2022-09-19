@@ -34,6 +34,7 @@ class IrisDialogDecoration {
   double widthFactor = 0.8;
   double elevation = 4.0;
   double messageToButtonsSpace = 20;
+  double buttonsSpace = 30;
   RouteTransitionsBuilder? transitionsBuilder;
   Duration animationDuration = Duration(milliseconds: 300);
 

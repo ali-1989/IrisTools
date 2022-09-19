@@ -1,4 +1,4 @@
-import 'dart:io' show Platform;
+import 'dart:io' show Platform, exit;
 import 'dart:ui' as ui;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -180,7 +180,17 @@ class System {
   }
 
   static void exitApp(){
-    SystemNavigator.pop();
+    if (Platform.isAndroid) {
+      try {
+        SystemNavigator.pop();
+      }
+      catch (e) {/**/}
+
+      exit(0);
+    }
+    else if (Platform.isIOS) {
+      exit(0);
+    }
   }
 
   static Locale getPlatformLocale() {

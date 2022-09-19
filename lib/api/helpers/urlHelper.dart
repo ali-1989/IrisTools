@@ -1,3 +1,4 @@
+import 'package:url_launcher/url_launcher.dart';
 
 class UrlHelper {
   UrlHelper._();
@@ -96,7 +97,7 @@ class UrlHelper {
       }
 
       var extension = lastPartContents[dotLength -1];
-      filename = name + '.' +extension;
+      filename = '$name.$extension';
     }
     else {
       filename = lastPart;
@@ -145,7 +146,7 @@ class UrlHelper {
 
   static String? removeDomain(String url, {bool keepFirstSlash = true}) {
     try {
-      final reg = RegExp('^http[s]?:\/\/.+?\/');
+      final reg = RegExp('^http[s]?://.+?/');
       return url.replaceFirst(reg, keepFirstSlash? '/' : '');
     }
     catch (e) {
@@ -180,6 +181,17 @@ class UrlHelper {
       return encodeFilePathForDataBase(filePath);
     } catch (e) {
     return null;
+    }
+  }
+
+  static Future<bool> launchLink(String url) async {
+    try {
+      final Uri uri = Uri.parse(url);
+
+      return await launchUrl(uri);
+    }
+    catch (e) {
+      return false;
     }
   }
 }

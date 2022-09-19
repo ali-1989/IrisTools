@@ -47,14 +47,14 @@ class _IrisDialogWidgetState extends State<IrisDialogWidget> {
   late IrisDialogDecoration decoration;
   late Widget descriptionView;
   TextDirection? direction;
-  //main padding, if not set is: EdgeInsets.fromLTRB(25.0, 7.0, 25.0, 5.0)
-  EdgeInsets padding = EdgeInsets.fromLTRB(25.0, 20.0, 25.0, 10.0);
+  late EdgeInsets padding;
 
   @override
   void initState() {
     super.initState();
 
     decoration = widget.decoration?? IrisDialogDecoration();
+    padding = decoration.padding?? EdgeInsets.fromLTRB(25.0, 20.0, 25.0, 10.0);
   }
 
   @override
@@ -159,23 +159,30 @@ class _IrisDialogWidgetState extends State<IrisDialogWidget> {
                                           ),
 
                                         if(widget.negativeButtonText != null)
-                                          ElevatedButton(
-                                            style: ButtonStyle(
-                                              backgroundColor: MaterialStateProperty.all(decoration.negativeButtonBackColor),
-                                            ),
-                                            child: Text(widget.negativeButtonText!, style: decoration.negativeStyle,),
-                                            onPressed: () {
-                                              final res = widget.negativePress?.call(context);
+                                          Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              SizedBox(width: widget.decoration?.buttonsSpace?? 0),
 
-                                              if (res != null && res is Future) {
-                                                (res as Future).then((value) {
-                                                  widget.anyButtonPress?.call(value);
-                                                });
-                                              }
-                                              else {
-                                                widget.anyButtonPress?.call(res);
-                                              }
-                                            },
+                                              ElevatedButton(
+                                                style: ButtonStyle(
+                                                  backgroundColor: MaterialStateProperty.all(decoration.negativeButtonBackColor),
+                                                ),
+                                                child: Text(widget.negativeButtonText!, style: decoration.negativeStyle,),
+                                                onPressed: () {
+                                                  final res = widget.negativePress?.call(context);
+
+                                                  if (res != null && res is Future) {
+                                                    (res as Future).then((value) {
+                                                      widget.anyButtonPress?.call(value);
+                                                    });
+                                                  }
+                                                  else {
+                                                    widget.anyButtonPress?.call(res);
+                                                  }
+                                                },
+                                              ),
+                                            ],
                                           ),
 
                                         if(widget.threeButtonText != null)
