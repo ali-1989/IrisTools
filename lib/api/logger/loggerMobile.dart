@@ -8,12 +8,17 @@ String getStoragePath(){
 }
 
 Future<bool> logToRelativeFile(String filePath, String text, String type) async {
-  File f = File(filePath);
+  try {
+    File f = File(filePath);
 
-  if(!f.existsSync()) {
-    await FileHelper.createNewFile(filePath);
+    if (!f.existsSync()) {
+      await FileHelper.createNewFile(filePath);
+    }
+
+    String pr = '$type::$text\n---------------------------\n';
+    return f.writeAsString(pr, mode: FileMode.append, flush: true).then((value) => true);
   }
-
-  String pr = '$type::$text\n---------------------------\n';
-  return f.writeAsString(pr, mode: FileMode.append, flush: true).then((value) => true);
+  catch (e){
+    return false;
+  }
 }

@@ -140,21 +140,7 @@ class SolarHijriDate extends ADateStructure {
 
   @override
   bool getDaylightState() {
-    return _useDST;// && isAtDaylightRange();
-  }
-
-  @override
-  bool isAtDaylightRange() {
-    /// این به کشور جاری مربوط می شود نه به نوع تاریخ پس باید کشور دریافت شود و بر مبنای تاریخ میلادی چک شود ایا در بازه هست یا خیر
-    final month = getMonth(), day = getDay(), hour = hoursOfToday();
-
-    if ((month < 6 && month > 1) ||
-        (month == 6 && day < 31) ||
-        (month == 1 && ((day > 2) || (day == 2 && hour > 0)))) {
-      return true;
-    }
-
-    return false;
+    return useDST() && isAtDaylightRange();
   }
 
   @override

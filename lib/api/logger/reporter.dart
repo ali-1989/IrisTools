@@ -41,7 +41,7 @@ class Reporter {
 
   Future<String> _getFilePath([String? dir]) async {
     //dir ??= await AppDirectories.getDatabasesDir();
-    var p = _dirPath + PathHelper.getSeparator() + '$_filePrefix$_counter.txt';
+    var p = '$_dirPath${PathHelper.getSeparator()}$_filePrefix$_counter.txt';
     var f = FileHelper.getFile(p);
 
     if(!f.existsSync()) {
@@ -182,7 +182,7 @@ extension TypeOfCalendarExtension on ReportType {
 class Report {
   DateTime reportTs = DateHelper.getNowToUtc();
   ReportType type = ReportType.appInfo;
-  String description = 'non';
+  String description = 'none';
 
   Report();
 
@@ -209,4 +209,3 @@ class Report {
     return r;
   }
 }
-///=================================================================================================
