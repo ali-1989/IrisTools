@@ -34,15 +34,21 @@ class Logger {
 
   void logToScreen(String text, {String type = ''}){
     if(type.isNotEmpty) {
-      print('LOG:[$type] $text');
+      print('======> LOG:[$type] $text');
     }
     else {
-      print(text);
+      print('======> LOG: $text');
     }
   }
 
-  Future _log(String text, String type) async{
-    return logToRelativeFile(await getFilePath(), text, type);
+  Future<bool> _log(String text, String type) async {
+    final path = await getFilePath();
+
+    if(path != null) {
+      return logToRelativeFile(path, text, type);
+    }
+
+    return false;
   }
 
   String _ps(){
@@ -58,23 +64,29 @@ class Logger {
     }
   }
 
-  Future<String> getFilePath() async{
-    var p = '$dirPath${_ps()}$fileName$counter.txt';
-    var f = File(p);
+  Future<String?> getFilePath() async {
+    try {
+      var p = '$dirPath${_ps()}$fileName$counter.txt';
+      var f = File(p);
 
-    if(!f.existsSync()) {
-      await FileHelper.createNewFile(p);
-      return p;
-    }
-    else {
-      var size = await f.length();
-
-      if(size < 1024000){
+      if (!f.existsSync()) {
+        await FileHelper.createNewFile(p);
         return p;
       }
+      else {
+        var size = await f.length();
 
-      counter++;
-      return getFilePath();
+        if (size < 1024000) {
+          return p;
+        }
+
+        counter++;
+        return getFilePath();
+      }
+    }
+    catch (e){
+      print('======> error in logging');
+      return null;
     }
   }
 
