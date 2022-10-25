@@ -16,7 +16,9 @@ Future<bool> logToRelativeFile(String filePath, String text, String type) async 
     }
 
     String pr = '$type::$text\n---------------------------\n';
-    return f.writeAsString(pr, mode: FileMode.append, flush: true).then((value) => true);
+    return f.writeAsString(pr, mode: FileMode.append, flush: true)
+        .then((value) => true)
+        .onError((error, stackTrace) => false);
   }
   catch (e){
     return false;

@@ -44,19 +44,23 @@ class System {
     return Future.delayed(dur, (){});
   }
 
-  static Future waitThen(Duration dur, void Function() fn) {
-    return Future.delayed(dur, fn);
+  static Future<T> waitThen<T>(Duration dur, T Function() fn) {
+    return Future<T>.delayed(dur, fn);
     //Timer(dur, fn);
   }
 
-  static void hideBothStatusBar(){
+  static void hideBothStatusBarOnce(){
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
+  }
+
+  static void hideBothStatusBarEny(){
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
-    //SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge, overlays: []);
+    //SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
     //SystemChrome.setEnabledSystemUIOverlays([]);
   }
 
   static void showBothStatusBar(){
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge/*, overlays: SystemUiOverlay.values*/);
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: SystemUiOverlay.values);
     //SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
   }
 
@@ -65,7 +69,7 @@ class System {
   }
 
   static void onlyBottomNavBar(){
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [SystemUiOverlay.bottom]);
   }
 
   static void changeStatusBarNavBarColor(Color color){

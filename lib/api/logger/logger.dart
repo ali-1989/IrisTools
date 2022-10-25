@@ -66,12 +66,15 @@ class Logger {
 
   Future<String?> getFilePath() async {
     try {
-      var p = '$dirPath${_ps()}$fileName$counter.txt';
-      var f = File(p);
+      final p = '$dirPath${_ps()}$fileName$counter.txt';
+      final f = File(p);
 
       if (!f.existsSync()) {
-        await FileHelper.createNewFile(p);
-        return p;
+        final res = await FileHelper.createNewFile(p)
+            .then<File?>((value) => value)
+            .catchError((e){return null;});
+
+        return res != null? p : null;
       }
       else {
         var size = await f.length();
