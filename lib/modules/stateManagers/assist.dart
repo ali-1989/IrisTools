@@ -268,6 +268,10 @@ class AssistController {
     updateAll(stateData: stateData, delay: delay);
   }
 
+  void clearStates(){
+    _shareStateList.clear();
+  }
+
   void updateAll({dynamic stateData, Duration? delay}){
     void fn(){
       for(final s in _assistStateList){
