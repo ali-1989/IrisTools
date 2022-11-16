@@ -1,6 +1,6 @@
 name: iris_tools
 description: iris tools Library.
-version: 0.0.19
+version: 0.0.20
 homepage: https://iris.ir
 
 publish_to: 'none'
@@ -37,7 +37,7 @@ dependencies:
   path_provider: ^2.0.11              # no Web
   disk_space: ^0.2.1                  # no Web
   open_file: ^3.2.1                   # no Web
-  flutter_image_compress: ^1.1.2      # no Web
+  flutter_image_compress: ^1.1.3      # no Web
   crypto: ^3.0.2
 
 

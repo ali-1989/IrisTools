@@ -20,6 +20,10 @@ class Tools {
     }
   }
 
+  static void verboseStackTrace(){
+    verbosePrint(StackTrace.current);
+  }
+
   static Future<OpenResult> openFileByOtherApp(String path){
     return OpenFile.open(path);
   }

@@ -184,11 +184,13 @@ class UrlHelper {
     }
   }
 
-  static Future<bool> launchLink(String url) async {
+  static Future<bool> launchLink(String url, {
+    LaunchMode mode = LaunchMode.platformDefault,
+    WebViewConfiguration webViewConfiguration = const WebViewConfiguration(),
+  }) async {
     try {
       final Uri uri = Uri.parse(url);
-
-      return await launchUrl(uri);
+      return await launchUrl(uri, mode: mode, webViewConfiguration: webViewConfiguration);
     }
     catch (e) {
       return false;
