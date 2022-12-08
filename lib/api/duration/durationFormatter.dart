@@ -95,7 +95,7 @@ class DurationFormatter {
       message = 'tomorrow';
     } else if (date.addDays(-7).isBefore(LocalDate.today())) {
       if (abbr) {
-        message = '${DateFormat('EEE.').format(date.toDateTime())}';
+        message = DateFormat('EEE.').format(date.toDateTime());
       } else {
         message = 'on ${DateFormat('EEEE').format(date.toDateTime())}';
       }
@@ -103,7 +103,7 @@ class DurationFormatter {
       var ordinal = getDayOrdinal(date);
       if (abbr) {
         var format = '''d'$ordinal' MMM.''';
-        message = '${DateFormat(format).format(date.toDateTime())}';
+        message = DateFormat(format).format(date.toDateTime());
       } else {
         var format = '''d'$ordinal' 'of' MMMM''';
         message = 'on the ${DateFormat(format).format(date.toDateTime())}';

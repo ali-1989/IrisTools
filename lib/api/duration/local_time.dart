@@ -1,4 +1,4 @@
-import 'package:iris_tools/api/duration/durationFormater.dart';
+import 'package:iris_tools/api/duration/durationFormatter.dart';
 import 'package:meta/meta.dart';
 
 import 'local_date.dart';
