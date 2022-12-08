@@ -7,7 +7,7 @@ typedef NotifierUpdate = void Function(dynamic sendData);
 ///===================================================================================================
 class Assist extends StatefulWidget {
   final AssistController? controller;
-  final bool isHead;
+  final bool? isHead;
   final String? id;
   final String? groupId;
   final AssistObserver? observable;
@@ -19,7 +19,7 @@ class Assist extends StatefulWidget {
     this.groupId,
     this.controller,
     this.observable,
-    required this.isHead,
+    this.isHead,
     required this.builder,
   }) : super(key: key);
       //: assert(!(observable != null && controller != null), 'can not set observable and controller together'), super(key: key);
@@ -136,14 +136,13 @@ class AssistController {
     _allControllers.add(this);
   }
 
-  void _add(_AssistState state, bool isHead){
-    if(isHead){
-      _headStateRef ??= state;
+  void _add(_AssistState state, bool? isHead){
+    if((isHead == null || !isHead) && state.widget.id == null && state.widget.groupId == null && state.widget.observable == null){
+      throw Exception('this assist must be a head or have (an id or an groupId or an observer)');
     }
-    else {
-      if(state.widget.id == null && state.widget.groupId == null && state.widget.observable == null){
-        throw Exception('this assist must have an id or an groupId or an observable');
-      }
+
+    if((isHead == null && _headStateRef == null) || (isHead != null && isHead)){
+      _headStateRef ??= state;
     }
 
     if(!_assistStateList.contains(state)){
@@ -151,7 +150,7 @@ class AssistController {
         final sameId = _getAssist(state.widget.id!);
 
         if(sameId != null){
-          throw Exception('this id [${state.widget.id}] exist in Assist');
+          throw Exception('this id [${state.widget.id}] exist in Assist, use other');
         }
       }
 
