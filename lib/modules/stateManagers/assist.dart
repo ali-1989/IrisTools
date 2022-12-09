@@ -137,8 +137,10 @@ class AssistController {
   }
 
   void _add(_AssistState state, bool? isHead){
-    if((isHead == null || !isHead) && state.widget.id == null && state.widget.groupId == null && state.widget.observable == null){
-      throw Exception('this assist must be a head or have (an id or an groupId or an observer)');
+    if(state.widget.id == null && state.widget.groupId == null && state.widget.observable == null){
+      if(isHead != null && !isHead /*&& _headStateRef == null*/){
+        throw Exception('this assist must be a head or have (an id or an groupId or an observer)');
+      }
     }
 
     if((isHead == null && _headStateRef == null) || (isHead != null && isHead)){
