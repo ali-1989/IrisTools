@@ -20,9 +20,9 @@ class Converter {
   }
 
   /// use
-  static String? multiLineToSqlWt(String str) {
+  static String? multiLineToSqlWt(String? str) {
     try {
-      return str.replaceAll(sqlEscapeWt, r'\n');
+      return str?.replaceAll(sqlEscapeWt, r'\n');
     }
     catch (e) { //FormatException
       return null;

@@ -75,7 +75,7 @@ class MathHelper {
 	}
 
 	static double percent(double whole, int per){
-		return per / 100 * whole;
+		return per / 100 * whole; // == per * whole ~/ 100
 	}
 
 	static double percentFixPrecision(double whole, int per){
@@ -83,7 +83,7 @@ class MathHelper {
 	}
 
 	static int percentInt(int whole, int per){
-		return per ~/ 100 * whole;
+		return (per / 100 * whole).toInt();
 	}
 
 	static double degreesToRadian(double deg) {
