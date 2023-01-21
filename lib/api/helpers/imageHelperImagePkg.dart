@@ -4,6 +4,8 @@ import 'dart:typed_data';
 import 'dart:ui' as ui;
 import 'package:flutter/foundation.dart';
 import 'package:image/image.dart' as img;
+import 'package:image/src/filter/adjust_color.dart' as ac;
+import 'package:image/src/command/command.dart' as img_cmd;
 
 /// this package (package:image/image.dart) is slow
 
@@ -21,13 +23,13 @@ class ImageHelperImagePkg {
     return img.decodeImage(bytes);
   }
 
-  static img.Image? bytesToImageSized(Uint8List bytes, int w, int h) {
-    return img.Image.fromBytes(w, h, bytes);
+  static img.Image? bytesToImageSized(ByteBuffer bytes, int w, int h) {
+    return img.Image.fromBytes(bytes: bytes, width: w, height: h);
   }
 
   static Future<img.Image?> bytesToImage$isolate(Uint8List bytes, int w, int h) {
     return compute<Uint8List, Uint8List>(_decodeImage, bytes).then((Uint8List value) {
-      return img.Image.fromBytes(w, h, value);
+      return img.Image.fromBytes(bytes:value.buffer, width: w, height: h);
     });
   }
   //------------------------------------------------------------------------------------------
@@ -44,53 +46,52 @@ class ImageHelperImagePkg {
     return img.encodeGif(image, samplingFactor: factor);
   }
 
-  static img.Image? jpgToImage(List<int> list) {
-    return img.readJpg(list);
+  static img.Image? jpgToImage(Uint8List list) {
+    return img.decodeJpg(list);
   }
 
-  static img.Image? pngToImage(List<int> list) {
-    return img.readPng(list);
+  static img.Image? pngToImage(Uint8List list) {
+    return img.decodePng(list);
   }
 
-  static img.Image? tgaToImage(List<int> list) {
-    return img.readTga(list);
+  static img.Image? tgaToImage(Uint8List list) {
+    return img.decodeTga(list);
   }
 
-  static img.Image? bmpToImage(List<int> list) {
+  static img.Image? bmpToImage(Uint8List list) {
     return img.decodeBmp(list);
   }
 
-  static img.Image? webpToImage(List<int> list) {
+  static img.Image? webpToImage(Uint8List list) {
     return img.decodeWebP(list);
   }
 
-  static img.Image? tifToImage(List<int> list) {
+  static img.Image? tifToImage(Uint8List list) {
     return img.decodeTiff(list);
   }
 
-  static img.Image? psdToImage(List<int> list) {
+  static img.Image? psdToImage(Uint8List list) {
     return img.decodePsd(list);
   }
 
   static img.Image flipH$image(img.Image image) {
-    return img.flip(image, img.Flip.horizontal);
+    return img.flip(image, direction: img.FlipDirection.horizontal);
   }
 
   static img.Image flipV$image(img.Image image) {
-    return img.flip(image, img.Flip.vertical);
+    return img.flip(image, direction: img.FlipDirection.vertical);
   }
 
   static img.Image rotateDegrees$image(img.Image image, num angle) {
-    return img.copyRotate(image, angle);
+    return img.copyRotate(image, angle: angle);
   }
 
   static img.Image crop$image(img.Image image, int top, int left, int w, int h) {
-    return img.copyCrop(image, top, left, w, h);
+    return img.copyCrop(image, y: top, x: left, width: w, height: h);
   }
 
   static img.Image cropByRect$image(img.Image image, ui.Rect rect) {
-    return img.copyCrop(image, rect.top as int, rect.left as int,
-        rect.width as int, rect.height as int);
+    return img.copyCrop(image, y: rect.top as int, x: rect.left as int, width: rect.width as int, height: rect.height as int);
   }
 
   /// for (7200*5400, 29MB) take 900 mil
@@ -105,7 +106,7 @@ class ImageHelperImagePkg {
   }
 
   static img.Image? contrast$image(img.Image image, num contrast) {
-    return img.contrast(image, contrast);
+    return img.contrast(image, contrast: contrast);
   }
 
   static img.Image grayscale$image(img.Image image) {
@@ -113,11 +114,17 @@ class ImageHelperImagePkg {
   }
 
   static img.Image? brightness$image(img.Image image, int val) {
-    return img.brightness(image, val);
+    return ac.adjustColor(image, brightness: val);
+    //return img.brightness(image, val);
   }
 
   static img.Image gaussianBlur$image(img.Image image, int deg) {
-    return img.gaussianBlur(image, deg);
+    final cmd = img_cmd.Command();
+    cmd.image(image);
+    //cmd.execute();
+    cmd.gaussianBlur(radius: deg);
+    cmd.execute();
+    return cmd.outputImage!;
   }
 
   static img.Image invertColor$image(img.Image src) {
@@ -137,13 +144,12 @@ class ImageHelperImagePkg {
   }
 
   //img.PixelateMode.upperLeft
-  static img.Image pixelByPixel$image(
-      img.Image src, int blockSize, img.PixelateMode mode) {
-    return img.pixelate(src, blockSize, mode: mode);
+  static img.Image pixelByPixel$image(img.Image src, int blockSize, img.PixelateMode mode) {
+    return img.pixelate(src, size: blockSize, mode: mode);
   }
 
   static img.Image normalize$image(img.Image src, int min, int max) {
-    return img.normalize(src, min, max);
+    return img.normalize(src, min: min, max: max);
   }
 
   static img.Image sepia$image(img.Image src, int amount) {
@@ -155,7 +161,7 @@ class ImageHelperImagePkg {
   }
 
   static img.Image smooth$image(img.Image src, int w) {
-    return img.smooth(src, w);
+    return img.smooth(src, weight: w);
   }
 
   static Future<int?> getSystemImageSize$image(ui.Image img) async {
@@ -182,6 +188,6 @@ class ImageHelperImagePkg {
 }
 //--------------------------------------------------------------------------
 /// isolate
-Uint8List _decodeImage(List<int> bytes){
+Uint8List _decodeImage(Uint8List bytes){
   return img.decodeImage(bytes)!.getBytes();
 }

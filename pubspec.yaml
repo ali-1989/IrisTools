@@ -6,7 +6,7 @@ homepage: https://iris.ir
 publish_to: 'none'
 
 environment:
-  sdk: ">=2.15.0"
+  sdk: ">=2.18.0"
   flutter: ">=2.15.0"
 
 
@@ -18,22 +18,22 @@ dependencies:
   intl: ^0.17.0
   jiffy: ^5.0.0
   file: 6.1.4
-  convert: ^3.0.2
-  path: ^1.8.2                        # (path manager)
+  convert: ^3.1.1
+  path: ^1.8.3                        # (path manager)
   android_path_provider: ^0.3.0       # (android directory)
-  mime: ^1.0.2
-  url_launcher: ^6.1.5
+  mime: ^1.0.4
+  url_launcher: ^6.1.8
   dio: ^4.0.6
-  connectivity_plus: ^2.3.7
+  connectivity_plus: ^3.0.2
   photo_view: ^0.14.0                 # (image view gallery)
-  file_picker: ^5.1.0
-  just_audio: ^0.9.29
-  video_player: ^2.4.7
+  file_picker: ^5.2.5
+  just_audio: ^0.9.31
+  video_player: ^2.5.1
   gallery_saver: 2.3.2                # Edited minSdkVersion 17
-  image: ^3.2.0                       # (crop, rotate) alter:https://pub.dev/packages/pic
+  image: ^4.0.10                       # (crop, rotate) alter:https://pub.dev/packages/pic
   image_size_getter: ^2.1.2
   g_json: ^4.1.0
-  video_compress: ^3.1.1              # no Web    (thumbnail)
+  video_compress: ^3.1.2              # no Web    (thumbnail)
   path_provider: ^2.0.11              # no Web
   disk_space: ^0.2.1                  # no Web
   open_file: ^3.2.1                   # no Web
@@ -48,7 +48,7 @@ dependencies:
 
 
 dependency_overrides:
-  path: ^1.8.2
+  path: ^1.8.3
   ffi: ^2.0.1
 
 

@@ -11,13 +11,17 @@ class WidgetRecorder extends StatefulWidget {
   final Widget? child;
   final WidgetRecorderController controller;
 
-  WidgetRecorder({Key? key, this.child, required this.controller,}) : super(key: key);
+  WidgetRecorder({
+    Key? key,
+    this.child,
+    required this.controller,
+  }) : super(key: key);
 
   @override
-  _WidgetRecorderState createState() => _WidgetRecorderState();
+  WidgetRecorderState createState() => WidgetRecorderState();
 }
 ///=================================================================================================================
-class _WidgetRecorderState extends State<WidgetRecorder> {
+class WidgetRecorderState extends State<WidgetRecorder> {
   late WidgetRecorderController _controller;
 
   @override
@@ -41,7 +45,7 @@ class _WidgetRecorderState extends State<WidgetRecorder> {
 
   @override
   Widget build(BuildContext context) {
-    return RepaintBoundary(key: _controller._containerKey, child: widget.child,);
+    return RepaintBoundary(key: _controller._containerKey, child: widget.child);
   }
 }
 ///=================================================================================================================
@@ -65,14 +69,16 @@ class WidgetRecorderController {
   /// and record each new frame and add it to an animation
   ///
   /// Returns the recorded animation
-  Future<img.Animation> captureAnimation({double pixelRatio = 1,}) async {
+  Future<img.Image> captureAnimation({double pixelRatio = 1,}) async {
     _frameImages = List<img.Image>.empty(growable: true);
 
     while (_recordedFrameCount < _recorderInfo.totalFrameNeeded) {
       childAnimationCtr.value = _recordedFrameCount / _recorderInfo.totalFrameNeeded;
       requestFrame();
+
       _newFrameAvailable = Completer();
       await _newFrameAvailable.future;
+
       final image = await _captureAsUiImage(pixelRatio: pixelRatio);
       await _addUiImageToAnimation(image);
     }
@@ -80,19 +86,22 @@ class WidgetRecorderController {
     return _createAnimation();
   }
 
-  Future _addUiImageToAnimation(ui.Image image) async {
+  Future<void> _addUiImageToAnimation(ui.Image image) async {
     final frameDuration = Duration(milliseconds: _recorderInfo.frameDurationsInMs[_recordedFrameCount],);
 
     final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
-    final List<int> pngBytes = byteData!.buffer.asUint8List();
-    final decodedImage = img.decodeImage(pngBytes)!..duration = frameDuration.inMilliseconds;
-    decodedImage.blendMethod = img.BlendMode.over;
+    final Uint8List pngBytes = byteData!.buffer.asUint8List();
+    final decodedImage = img.decodePng(pngBytes)!..frameDuration = frameDuration.inMilliseconds;
+    //decodedImage.blendMethod = img.BlendMode.over;
     _frameImages!.add(decodedImage);
   }
 
-  img.Animation _createAnimation() {
-    final animation = img.Animation();
-    for (var frame in _frameImages!) {
+  img.Image _createAnimation() {
+    final animation = img.Image.from(_frameImages!.first);
+    animation.loopCount = 0;
+    animation.frameType = img.FrameType.animation;
+
+    for (final frame in _frameImages!) {
       animation.addFrame(frame);
     }
 
@@ -100,7 +109,6 @@ class WidgetRecorderController {
   }
 
   Future<ui.Image> _captureAsUiImage({double pixelRatio = 1, Duration delay = const Duration(milliseconds: 20)}) {
-
     return Future.delayed(delay, () async {
       try {
         final boundary = _containerKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
@@ -121,15 +129,11 @@ class WidgetRecorderController {
   }
 
   /// Calls the listener every time a new frame is requested.
-  ///
-  /// Listeners can be removed with [removeListener].
   void addListener(VoidCallback listener) {
     _listeners.add(listener);
   }
 
   /// Stop calling the listener every time a new frame is requested.
-  ///
-  /// Listeners can be added with [addListener].
   void removeListener(VoidCallback listener) {
     _listeners.remove(listener);
   }
