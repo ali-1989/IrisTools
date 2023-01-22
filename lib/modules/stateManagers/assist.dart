@@ -464,12 +464,15 @@ class AssistController {
   }
 
   static void commonUpdateByClass(Type classType, {dynamic stateData, Duration? delay}){
+    print('-----------------> element: ${element.runtimeType}   ${element.depth}');
     for(final c in _allControllers){
+      print('=============================================================');
       if(c._headStateRef != null){
+        print('===================================================================== ${(c._headStateRef!.context as Element).depth}');
         _touchAncestorsToRoot(c._headStateRef!.context, (element){
-          print('-----------------> element: ${element.runtimeType}   ${element.depth}');
+          print('-----------------> element: ${element.widget.runtimeType}   ${element.depth}');
           //if(identityHashCode(c._headStateRef!.widget) == classType){
-          if(element.runtimeType == classType){
+          if(element.widget.runtimeType == classType){
             print('-----------------> element: $element   ${element.depth}');
             c.updateHead(stateData: stateData, delay: delay);
             return false;
