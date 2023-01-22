@@ -109,6 +109,23 @@ class NavigatorHelper {
     return result;
   }
 
+  static bool popByRouteName(BuildContext context, String routeName, {dynamic result}){
+    final route = accessModalRouteByRouteName(context, routeName);
+
+    if(route == null) {
+      return false;
+    }
+
+    if(route.isCurrent) {
+      Navigator.of(context).pop(result);
+    }
+    else {
+      Navigator.of(context).removeRoute(route);
+    }
+
+    return true;
+  }
+
   /// *** it is work else in initState, is best
   static List<ModalRoute> getAllModalRoutesByFocusScope({BuildContext? context, bool onlyActives = true}) {
     final nav = getRootNavigator();
@@ -317,23 +334,6 @@ class NavigatorHelper {
     }
 
     return cas;
-  }
-
-  static bool popByRouteName(BuildContext context, String routeName, {dynamic result}){
-    final route = accessModalRouteByRouteName(context, routeName);
-
-    if(route == null) {
-      return false;
-    }
-
-    if(route.isCurrent) {
-      Navigator.of(context).pop(result);
-    }
-    else {
-      Navigator.of(context).removeRoute(route);
-    }
-
-    return true;
   }
 
   static void touchAncestorsToRoot(BuildContext context, bool Function(Element elem) onParent) {
