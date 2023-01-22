@@ -113,7 +113,6 @@ class _AssistState extends IAssistState<Assist> {
 }
 ///===================================================================================================
 class AssistController {
-  static const state$normal = 'NormalState';
   static const state$error = 'ErrorState';
   static const state$emptyData = 'EmptyDataState';
   static const state$loading = 'LoadingState';
@@ -455,6 +454,16 @@ class AssistController {
     }
   }
   ///........... commons ...................................................................
+  static void commonUpdateByClass(int classIdentity, {dynamic stateData, Duration? delay}){
+    for(final c in _allControllers){
+      if(c._headStateRef != null){
+        if(identityHashCode(c._headStateRef!.widget) == classIdentity){
+          c.updateHead(stateData: stateData, delay: delay);
+        }
+      }
+    }
+  }
+
   static void commonUpdateAllHeads({dynamic stateData, Duration? delay}){
     for(final c in _allControllers){
       c.updateHead(stateData: stateData, delay: delay);

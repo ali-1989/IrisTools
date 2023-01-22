@@ -5,12 +5,14 @@ class MaxHeight extends StatelessWidget {
   final double maxHeight;
   final double? widthFactor;
   final double? heightFactor;
+  final bool apply;
   final AlignmentGeometry alignment;
 
   MaxHeight({
     Key? key,
     required this.maxHeight,
     required this.child,
+    this.apply = true,
     this.alignment = Alignment.center,
     this.widthFactor,
     this.heightFactor,
@@ -18,6 +20,10 @@ class MaxHeight extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if(apply){
+      return child;
+    }
+
     return Align(
       alignment: alignment,
       widthFactor: widthFactor,

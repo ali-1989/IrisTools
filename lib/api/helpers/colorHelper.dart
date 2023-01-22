@@ -9,6 +9,10 @@ class ColorHelper {
     return TextToColor.toColor(text);
   }
 
+  static MaterialColor buildMaterialColor(Color primary) {
+    return MaterialColor(primary.value, getColorMap(primary));
+  }
+
   static Color getColorFromHex(String code) {
     return Color(int.parse(code.substring(1, 7), radix: 16) + 0xFF000000);
   }

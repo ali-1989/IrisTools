@@ -10,6 +10,18 @@ import 'package:iris_tools/api/webTools.dart';
 class System {
   System._();
 
+  /// this is different by hashCode.
+  /// this is share between all instance of class. [this.hashCode] is unique for instance
+  static int identityHashCode({Object? obj}){
+    return identityHashCode(obj: obj);
+  }
+
+  /// if are same object return true
+  /// for primitives (int, String, ...) with same value , return true.
+  static bool identical(Object obj1, Object obj2){
+    return identical(obj1, obj2);
+  }
+
   static int currentTimeMillis(){
     return DateTime.now().millisecondsSinceEpoch;
   }
