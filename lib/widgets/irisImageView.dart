@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -42,7 +41,7 @@ class IrisImageView extends StatefulWidget{
     this.onErrorFn,
     this.onLoadFn,
     this.beforeLoadFn,
-    this.beforeLoadWidget = const SizedBox(width: 2, height: 2,),
+    this.beforeLoadWidget = const SizedBox(width: 2, height: 2),
     this.errorWidget,// = const SizedBox(width: 2, height: 2,)
     this.forceDownloadImage = false,
     this.filterQuality = FilterQuality.low,

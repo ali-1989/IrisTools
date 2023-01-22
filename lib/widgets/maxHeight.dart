@@ -20,7 +20,7 @@ class MaxHeight extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if(apply){
+    if(!apply){
       return child;
     }
 
