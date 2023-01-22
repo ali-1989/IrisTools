@@ -467,7 +467,7 @@ class AssistController {
     for(final c in _allControllers){
       if(c._headStateRef != null){
         _touchAncestorsToRoot(c._headStateRef!.context, (element){
-
+          print('-----------------> element: ${element.runtimeType}   ${element.depth}');
           //if(identityHashCode(c._headStateRef!.widget) == classType){
           if(element.runtimeType == classType){
             print('-----------------> element: $element   ${element.depth}');
