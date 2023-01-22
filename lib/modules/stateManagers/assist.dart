@@ -454,28 +454,29 @@ class AssistController {
     }
   }
   ///........... commons ...................................................................
+  /// if return false: stop
   static void _touchAncestorsToRoot(BuildContext context, bool Function(Element elem) onParent) {
     final e = context as Element;
 
     e.visitAncestorElements((element) {
       return onParent(element);
-      //return true;
     });
   }
 
   static void commonUpdateByClass(Type classType, {dynamic stateData, Duration? delay}){
-    print('----------------- classIdentity:   ${_allControllers.length}');
     for(final c in _allControllers){
       if(c._headStateRef != null){
         _touchAncestorsToRoot(c._headStateRef!.context, (element){
-          print('-----------------> element: $element ');
+
+          //if(identityHashCode(c._headStateRef!.widget) == classType){
+          if(element.runtimeType == classType){
+            print('-----------------> element: $element   ${element.depth}');
+            c.updateHead(stateData: stateData, delay: delay);
+            return false;
+          }
+
           return true;
         });
-
-        //if(identityHashCode(c._headStateRef!.widget) == classType){
-        if(c._headStateRef!.widget.runtimeType == classType){
-          c.updateHead(stateData: stateData, delay: delay);
-        }
       }
     }
   }

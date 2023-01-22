@@ -336,6 +336,7 @@ class NavigatorHelper {
     return cas;
   }
 
+  /// if return false: stop
   static void touchAncestorsToRoot(BuildContext context, bool Function(Element elem) onParent) {
     final e = context as Element;
 
