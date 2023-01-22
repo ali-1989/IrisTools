@@ -22,6 +22,10 @@ class System {
     return identical(obj1, obj2);
   }
 
+  static String executablePath(){
+    return Platform.resolvedExecutable;
+  }
+
   static int currentTimeMillis(){
     return DateTime.now().millisecondsSinceEpoch;
   }

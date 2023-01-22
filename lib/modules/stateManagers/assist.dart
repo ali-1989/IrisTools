@@ -455,9 +455,11 @@ class AssistController {
   }
   ///........... commons ...................................................................
   static void commonUpdateByClass(int classIdentity, {dynamic stateData, Duration? delay}){
+    print('----------------- classIdentity: $classIdentity ');
     for(final c in _allControllers){
       if(c._headStateRef != null){
         if(identityHashCode(c._headStateRef!.widget) == classIdentity){
+          print('-----------------> ${identityHashCode(c._headStateRef!.widget)} ');
           c.updateHead(stateData: stateData, delay: delay);
         }
       }
