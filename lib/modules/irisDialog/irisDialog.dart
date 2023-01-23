@@ -32,6 +32,7 @@ class IrisDialogDecoration {
   EdgeInsets? padding;
   EdgeInsets titlePadding = EdgeInsets.all(10.0);
   double widthFactor = 0.8;
+  double? maxWidth;
   double elevation = 4.0;
   double messageToButtonsSpace = 20;
   double buttonsSpace = 30;
@@ -128,7 +129,7 @@ class IrisDialog {
               alignment: Alignment.topCenter,
               child: SizedBox(
                 height: mq.size.height - mq.viewInsets.bottom,
-                width: mq.size.width,
+                width: decoration?.maxWidth?? mq.size.width,
                 child: Center(
                   child: SingleChildScrollView(
                     child: IrisDialogWidget(

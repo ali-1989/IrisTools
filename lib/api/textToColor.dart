@@ -1,8 +1,7 @@
-import 'dart:math';
 import 'dart:ui';
 
 class TextToColor {
-  static Random rand = Random();
+  //static final Random _rand = Random();
 
   TextToColor._();
 
@@ -13,7 +12,7 @@ class TextToColor {
 
     var hash = 919; // org:5381
     var shift = str.length > 5? 2 : 4;
-    //int shift = rand.nextInt(4);
+    //int shift = _rand.nextInt(4);
 
     for (var i = 0; i < str.length; i++) {
       //hash = (hash + str.codeUnitAt(i)) << shift;
@@ -38,7 +37,7 @@ class TextToColor {
       gg = gg.padLeft(2, '8');
       bb = bb.padLeft(2, '9');
 
-      var x = '0xFF' + rr.substring(rr.length - 2) + gg.substring(gg.length - 2) + bb.substring(bb.length - 2);
+      var x = '0xFF${rr.substring(rr.length - 2)}${gg.substring(gg.length - 2)}${bb.substring(bb.length - 2)}';
       return int.parse(x);
     }
     catch (err) {
