@@ -203,7 +203,7 @@ class IrisDialogNav {
   static List<ModalRoute> getAllModalRoutes({BuildContext? context, bool onlyActives = true}) {
     final nav = getRootNavigator();
     final res = <ModalRoute>[];
-print('-------------------- nav is null: ${nav == null}');
+
     if(nav == null) {
       return res;
     }
@@ -214,7 +214,6 @@ print('-------------------- nav is null: ${nav == null}');
       elm.visitChildren((Element element) {
         try {
           final runType = element.widget.runtimeType.toString();
-          print('-------------------- runType: $runType || ${element.widget}');
 
           if(runType == '_ModalScopeStatus') {// if add this: take error [Duplicate GlobalKeys]
             final dynamic d = element.widget;
