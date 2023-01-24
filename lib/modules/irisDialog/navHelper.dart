@@ -5,17 +5,16 @@ class IrisDialogNav {
 
   static NavigatorState? getRootNavigator(){
     var ctx = FocusManager.instance.rootScope.context;
-print('====== ctx : ${ctx == null}');
+
     if(ctx == null){
       final children = FocusManager.instance.rootScope.children;
       var dep = 100;
-      print('====== length : ${children.length}');
+
       for (var element in children) {
         final context = element.context;
 
         if(context != null){
           final elm = context as Element;
-          print('====== depth : ${elm.depth}');
           if(elm.depth < dep){
             dep = elm.depth;
             ctx = context;
@@ -27,7 +26,6 @@ print('====== ctx : ${ctx == null}');
     late BuildContext navigatorCtx;
 
     touchChildren(ctx!, (elem) {
-      print('==== touchChildren ===========');
       if(elem.widget is Navigator){
         navigatorCtx = elem;
         return false;
@@ -36,8 +34,6 @@ print('====== ctx : ${ctx == null}');
       return true;
     });
 
-    print('======= ${Navigator.maybeOf(navigatorCtx, rootNavigator: true)}');
-    print('======= ${Navigator.maybeOf(navigatorCtx, rootNavigator: false)}');
     return Navigator.maybeOf(navigatorCtx, rootNavigator: false);
   }
 
@@ -218,7 +214,8 @@ print('-------------------- nav is null: ${nav == null}');
       elm.visitChildren((Element element) {
         try {
           final runType = element.widget.runtimeType.toString();
-          print('-------------------- runType: $runType');
+          print('-------------------- runType: $runType || ${element.widget}');
+
           if(runType == '_ModalScopeStatus') {// if add this: take error [Duplicate GlobalKeys]
             final dynamic d = element.widget;
 

@@ -30,7 +30,7 @@ dependencies:
   just_audio: ^0.9.31
   video_player: ^2.5.1
   gallery_saver: 2.3.2                  # Edited minSdkVersion 17
-  image: ^4.0.11                        # (crop, rotate) alter:https://pub.dev/packages/pic
+  image: ^4.0.12                        # (crop, rotate) alter:https://pub.dev/packages/pic
   image_size_getter: ^2.1.2
   g_json: ^4.1.0
   video_compress: ^3.1.2                # no Web    (thumbnail)
