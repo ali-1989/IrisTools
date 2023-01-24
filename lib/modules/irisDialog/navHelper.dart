@@ -249,6 +249,9 @@ class IrisDialogNav {
 
   static ModalRoute? accessModalRouteByRouteName(BuildContext context, String name, {bool onlyActives = false}){
     final list = getAllModalRoutes(context: context, onlyActives: onlyActives);
+    print(name);
+    print('====================');
+    print(list);
     return findRouteByName(list, name);
   }
 
@@ -321,11 +324,11 @@ class IrisDialogNav {
 
   static bool popByRouteName(BuildContext context, String routeName, {dynamic result}){
     final route = accessModalRouteByRouteName(context, routeName);
-
+    print('====================== ${route == null}');
     if(route == null) {
       return false;
     }
-
+    print('======================isCurrent: ${route.isCurrent}');
     if(route.isCurrent) {
       Navigator.of(context).pop(result);
     }
