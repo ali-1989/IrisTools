@@ -5,17 +5,17 @@ class IrisDialogNav {
 
   static NavigatorState? getRootNavigator(){
     var ctx = FocusManager.instance.rootScope.context;
-
+print('====== ctx : ${ctx == null}');
     if(ctx == null){
       final children = FocusManager.instance.rootScope.children;
       var dep = 100;
-
+      print('====== length : ${children.length}');
       for (var element in children) {
         final context = element.context;
 
         if(context != null){
           final elm = context as Element;
-
+          print('====== depth : ${elm.depth}');
           if(elm.depth < dep){
             dep = elm.depth;
             ctx = context;
@@ -27,6 +27,7 @@ class IrisDialogNav {
     late BuildContext navigatorCtx;
 
     touchChildren(ctx!, (elem) {
+      print('==== touchChildren ===========');
       if(elem.widget is Navigator){
         navigatorCtx = elem;
         return false;
@@ -35,7 +36,8 @@ class IrisDialogNav {
       return true;
     });
 
-
+    print('======= ${Navigator.maybeOf(navigatorCtx, rootNavigator: true)}');
+    print('======= ${Navigator.maybeOf(navigatorCtx, rootNavigator: false)}');
     return Navigator.maybeOf(navigatorCtx, rootNavigator: false);
   }
 
@@ -205,7 +207,7 @@ class IrisDialogNav {
   static List<ModalRoute> getAllModalRoutes({BuildContext? context, bool onlyActives = true}) {
     final nav = getRootNavigator();
     final res = <ModalRoute>[];
-
+print('-------------------- nav is null: ${nav == null}');
     if(nav == null) {
       return res;
     }
@@ -216,7 +218,7 @@ class IrisDialogNav {
       elm.visitChildren((Element element) {
         try {
           final runType = element.widget.runtimeType.toString();
-
+          print('-------------------- runType: $runType');
           if(runType == '_ModalScopeStatus') {// if add this: take error [Duplicate GlobalKeys]
             final dynamic d = element.widget;
 
@@ -249,9 +251,7 @@ class IrisDialogNav {
 
   static ModalRoute? accessModalRouteByRouteName(BuildContext context, String name, {bool onlyActives = false}){
     final list = getAllModalRoutes(context: context, onlyActives: onlyActives);
-    print(name);
-    print('====================');
-    print(list);
+
     return findRouteByName(list, name);
   }
 
@@ -324,11 +324,11 @@ class IrisDialogNav {
 
   static bool popByRouteName(BuildContext context, String routeName, {dynamic result}){
     final route = accessModalRouteByRouteName(context, routeName);
-    print('====================== ${route == null}');
+
     if(route == null) {
       return false;
     }
-    print('======================isCurrent: ${route.isCurrent}');
+
     if(route.isCurrent) {
       Navigator.of(context).pop(result);
     }
