@@ -26,7 +26,7 @@ class Assist extends StatefulWidget {
   })
       : super(key: key) {
      //assert(!(observable != null && controller != null), 'can not set observable and controller together'), super(key: key);
-     assert(selfControl && controller != null, 'if this is a selfControl then it is can not have controller');
+     assert(!(selfControl && controller != null), 'if this is a selfControl then it is can not have controller');
   }
   @override
   State<StatefulWidget> createState() {
