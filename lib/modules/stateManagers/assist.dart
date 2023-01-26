@@ -8,6 +8,7 @@ typedef NotifierUpdate = void Function(dynamic sendData);
 class Assist extends StatefulWidget {
   final AssistController? controller;
   final bool? isHead;
+  final bool selfControl;
   final String? id;
   final String? groupId;
   final AssistObserver? observable;
@@ -20,10 +21,13 @@ class Assist extends StatefulWidget {
     this.controller,
     this.observable,
     this.isHead,
+    this.selfControl = false,
     required this.builder,
-  }) : super(key: key);
-      //: assert(!(observable != null && controller != null), 'can not set observable and controller together'), super(key: key);
-
+  })
+      : super(key: key) {
+     //assert(!(observable != null && controller != null), 'can not set observable and controller together'), super(key: key);
+     assert(selfControl && controller != null, 'if this is a selfControl then it is can not have controller');
+  }
   @override
   State<StatefulWidget> createState() {
     return _AssistState();
@@ -114,15 +118,16 @@ class _AssistState extends IAssistState<Assist> {
 ///===================================================================================================
 class AssistController {
   static const state$error = 'ErrorState';
-  static const state$emptyData = 'EmptyDataState';
   static const state$loading = 'LoadingState';
-  static const state$serverNotResponse = 'ServerNotResponseState';
-  static const state$netDisconnect = 'NetDisconnectState';
+  static const state$noData = 'NoDataState';
+  static const state$noResponse = 'noResponseState';
+  static const state$disconnected = 'DisconnectedState';
 
   /// public list of all assists
   static final List<AssistController> _allControllers = [];
 
   _AssistState? _headStateRef;
+  _AssistState? _selfStateRef;
   final List<_AssistState> _assistStateList = [];
   final List<GroupOfAssist> _groupList = [];
   final List<AssistObserver> _observerList = [];
@@ -137,26 +142,32 @@ class AssistController {
 
   void _add(_AssistState state, bool? isHead){
     if(state.widget.id == null && state.widget.groupId == null && state.widget.observable == null){
-      if(isHead != null && !isHead /*&& _headStateRef == null*/){
-        throw Exception('this assist must be a head or have (an id or an groupId or an observer)');
+      if(isHead != null && !isHead && !state.widget.selfControl/*&& _headStateRef == null*/){
+        throw Exception('this assist must be a head or have (an id or an groupId or an observer) or be selfControl');
       }
     }
 
-    if((isHead == null && _headStateRef == null) || (isHead != null && isHead)){
-      _headStateRef ??= state;
+    if(state.widget.selfControl){
+      _selfStateRef = state;
     }
+    else {
+      if((isHead == null && _headStateRef == null) || (isHead != null && isHead)){
+        _headStateRef ??= state;
+      }
 
-    if(!_assistStateList.contains(state)){
-      if(state.widget.id != null){
-        final sameId = _getAssist(state.widget.id!);
+      if(!_assistStateList.contains(state)){
+        if(state.widget.id != null){
+          final sameId = _getAssist(state.widget.id!);
 
-        if(sameId != null){
-          throw Exception('this id [${state.widget.id}] exist in Assist, use other');
+          if(sameId != null){
+            throw Exception('this id [${state.widget.id}] exist in Assist, use other');
+          }
         }
-      }
 
-      _assistStateList.add(state);
+        _assistStateList.add(state);
+      }
     }
+
 
     /// groupId
     if(state.widget.groupId != null) {
@@ -252,6 +263,19 @@ class AssistController {
   void removeStateAndUpdateAssist(String state, String assistId, {String? sectionId, dynamic stateData, Duration? delay}){
     removeState(state, sectionId: sectionId);
     updateAssist(assistId, stateData: stateData, delay: delay);
+  }
+
+  void updateSelf({dynamic stateData, Duration? delay}) {
+    void fn(){
+      _selfStateRef?.update(data: stateData);
+    }
+
+    if(delay == null) {
+      fn();
+    }
+    else {
+      Timer(delay, (){fn();});
+    }
   }
 
   void updateHead({dynamic stateData, Duration? delay}) {
