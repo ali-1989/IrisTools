@@ -1,12 +1,13 @@
 name: iris_tools
 description: iris tools Library.
-version: 0.0.26+39
+version: 0.0.26+40
 homepage: https://iris.ir
 
 publish_to: 'none'
 
 environment:
   sdk: ">=2.18.0"
+  
   flutter: ">=2.15.0"
 
 

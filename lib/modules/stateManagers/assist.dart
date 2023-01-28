@@ -215,24 +215,46 @@ class AssistController {
     _observerList.remove(observer);
   }
 
-  bool hasState(String state, {String? sectionId}){
-    return _stateManager.existState(sectionId?? _headSection, state);
+  bool hasState(String state, {String? scopeId}){
+    return _stateManager.existState(scopeId?? _headSection, state);
   }
 
-  bool hasStates(List<String> states, {String? sectionId}){
-    return _stateManager.existStates(sectionId?? _headSection, states);
+  bool hasStates(List<String> states, {String? scopeId}){
+    return _stateManager.existStates(scopeId?? _headSection, states);
   }
 
-  void addState(String state, {String? sectionId}){
-    _stateManager.addState(sectionId?? _headSection, state);
+  void addState(String state){
+    _stateManager.addState(_headSection, state);
   }
 
-  void removeState(String state, {String? sectionId}){
-    _stateManager.removeState(sectionId?? _headSection, state);
+  void addStateWithClear(String state){
+    _stateManager.clearStates(_headSection);
+    _stateManager.addState(_headSection, state);
   }
 
-  void clearStates({String? sectionId}){
-    _stateManager.clearStates(sectionId?? _headSection);
+  void addStateTo({required String state, required String scopeId}){
+    _stateManager.addState(scopeId, state);
+  }
+
+  void addStateToWithClear({required String state, required String scopeId}){
+    _stateManager.clearStates(_headSection);
+    _stateManager.addState(scopeId, state);
+  }
+
+  void removeState(String state){
+    _stateManager.removeState(_headSection, state);
+  }
+
+  void removeStateFrom({required String state, required String scopeId}){
+    _stateManager.removeState(scopeId, state);
+  }
+
+  void clearStates({String? scopeId}){
+    _stateManager.clearStates(scopeId?? _headSection);
+  }
+
+  void clearStatesFrom(String scopeId){
+    _stateManager.clearStates(scopeId);
   }
 
   void addStateAndUpdateHead(String state, {dynamic data}){
@@ -255,19 +277,19 @@ class AssistController {
     updateUnHeads(stateData: stateData, delay: delay);
   }
 
-  void addStateAndUpdateAssist(String state, String assistId, {String? sectionId, dynamic stateData, Duration? delay}){
-    addState(state, sectionId: sectionId);
+  void addStateAndUpdateAssist(String state, String assistId, {dynamic stateData, Duration? delay}){
+    addState(state);
     updateAssist(assistId, stateData: stateData, delay: delay);
   }
 
-  void removeStateAndUpdateAssist(String state, String assistId, {String? sectionId, dynamic stateData, Duration? delay}){
-    removeState(state, sectionId: sectionId);
+  void removeStateAndUpdateAssist(String state, String assistId, {dynamic stateData, Duration? delay}){
+    removeState(state);
     updateAssist(assistId, stateData: stateData, delay: delay);
   }
 
   void updateSelf({dynamic stateData, Duration? delay}) {
     void fn(){
-      _selfStateRef?.update(data: stateData);
+      (_selfStateRef?? _headStateRef)?.update(data: stateData);
     }
 
     if(delay == null) {

@@ -4,7 +4,7 @@ import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:iris_tools/api/cache/cacheMap.dart';
+import 'package:iris_tools/api/cache/sizedCacheMap.dart';
 import 'package:iris_tools/widgets/download/downloadNotifier.dart';
 
 typedef OnDownload = Widget Function(Uint8List? bytes);
@@ -13,7 +13,7 @@ class DownloadBuilder extends StatefulWidget{
   final String? url;
   final FutureOr<String>? filePath;
   final OnDownload builder;
-  final CacheMap<String, Uint8List>? cacheManager;
+  final SizedCacheMap<String, Uint8List>? cacheManager;
   final String? cacheKey;
   final Widget Function()? beforeLoadFn;
   final Widget beforeLoadWidget;

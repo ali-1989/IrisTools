@@ -1,6 +1,6 @@
 
-class MemoryCache {
-  final Map<String, CacheItem> _itemList = {};
+class MemoryCache<T> {
+  final Map<String, CacheItem<T?>> _itemList = {};
 
   MemoryCache();
 
@@ -12,7 +12,7 @@ class MemoryCache {
     _itemList.remove(key);
   }
 
-  bool add(String key, CacheItem ci){
+  bool add(String key, CacheItem<T?> ci){
     if(existCash(key)) {
       return false;
     }
@@ -21,11 +21,11 @@ class MemoryCache {
     return true;
   }
 
-  void addOrReplace(String key, CacheItem ci){
+  void addOrReplace(String key, CacheItem<T?> ci){
     _itemList[key] = ci;
   }
 
-  void addOrReplaceBy(String key, dynamic val){
+  void addOrReplaceBy(String key, T? val){
     _itemList[key] = CacheItem(value: val);
   }
 
@@ -34,7 +34,7 @@ class MemoryCache {
       return false;
     }
 
-    var ci = CacheItem(value: 'none');
+    var ci = CacheItem<T?>(value: null);
     _itemList[key] = ci;
 
     return true;
@@ -63,31 +63,31 @@ class MemoryCache {
     return _itemList[key];
   }
 
-  T? getValue<T>(String key){
+  T? getValue(String key){
     return _itemList[key]?._value;
   }
 
-  dynamic getValueOrDefault(String key, dynamic def){
+  T? getValueOrDefault(String key, T? def){
     var t = _itemList[key];
     return (t != null)? t._value : def;
   }
 }
 ///====================================================================================
-class CacheItem {
+class CacheItem<T> {
   String? tag;
   late DateTime _lastUpdated;
-  dynamic _value;
+  T? _value;
 
-  CacheItem({required dynamic value, this.tag}){
-    _lastUpdated = DateTime.now();
-    _value = value;
-  }
-
-  void update(dynamic value){
-    _value = value;
-    _lastUpdated = DateTime.now();
-  }
-
-  dynamic get value => _value;
+  T? get value => _value;
   DateTime get lastUpdated => _lastUpdated;
+
+  CacheItem({this.tag, required T value}){
+    _lastUpdated = DateTime.now();
+    _value = value;
+  }
+
+  void update(T value){
+    _value = value;
+    _lastUpdated = DateTime.now();
+  }
 }

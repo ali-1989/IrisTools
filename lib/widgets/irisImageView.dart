@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:iris_tools/api/cache/cacheMap.dart';
+import 'package:iris_tools/api/cache/sizedCacheMap.dart';
 import 'package:iris_tools/widgets/download/downloadNotifier.dart';
 
 
@@ -11,7 +11,7 @@ class IrisImageView extends StatefulWidget{
   final String? url;
   final Uint8List? bytes;
   final FutureOr<String>? imagePath;
-  final CacheMap<String, Uint8List>? cacheManager;
+  final SizedCacheMap<String, Uint8List>? cacheManager;
   final String? cacheKey;
   final Widget Function()? beforeLoadFn;
   final Widget beforeLoadWidget;
