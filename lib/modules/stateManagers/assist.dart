@@ -134,7 +134,7 @@ class AssistController {
   final Set<NotifierUpdate> _notifyHeadStateUpdate = {};
   final AssistStateManager _stateManager = AssistStateManager();
   final KeyValueManager _shareDataManager = KeyValueManager();
-  final String _headSection = '_headSection';
+  final String _shareSection = '_shareSection';
 
   AssistController(){
     _allControllers.add(this);
@@ -215,21 +215,39 @@ class AssistController {
     _observerList.remove(observer);
   }
 
+  _AssistState? _getHeadOrSelfState(){
+    return _headStateRef?? _selfStateRef;
+  }
+
+  _AssistState? _getAssist(String assistId){
+    for(final s in _assistStateList){
+      if(s.widget.id == assistId){
+        return s;
+      }
+    }
+
+    return null;
+  }
+  ///.........................................................................
   bool hasState(String state, {String? scopeId}){
-    return _stateManager.existState(scopeId?? _headSection, state);
+    return _stateManager.existState(scopeId?? _shareSection, state);
+  }
+
+  bool hasStateIn(String scopeId, String state){
+    return _stateManager.existState(scopeId, state);
   }
 
   bool hasStates(List<String> states, {String? scopeId}){
-    return _stateManager.existStates(scopeId?? _headSection, states);
+    return _stateManager.existStates(scopeId?? _shareSection, states);
   }
 
   void addState(String state){
-    _stateManager.addState(_headSection, state);
+    _stateManager.addState(_shareSection, state);
   }
 
   void addStateWithClear(String state){
-    _stateManager.clearStates(_headSection);
-    _stateManager.addState(_headSection, state);
+    _stateManager.clearStates(_shareSection);
+    _stateManager.addState(_shareSection, state);
   }
 
   void addStateTo({required String state, required String scopeId}){
@@ -237,12 +255,12 @@ class AssistController {
   }
 
   void addStateToWithClear({required String state, required String scopeId}){
-    _stateManager.clearStates(_headSection);
+    _stateManager.clearStates(_shareSection);
     _stateManager.addState(scopeId, state);
   }
 
   void removeState(String state){
-    _stateManager.removeState(_headSection, state);
+    _stateManager.removeState(_shareSection, state);
   }
 
   void removeStateFrom({required String state, required String scopeId}){
@@ -250,7 +268,7 @@ class AssistController {
   }
 
   void clearStates({String? scopeId}){
-    _stateManager.clearStates(scopeId?? _headSection);
+    _stateManager.clearStates(scopeId?? _shareSection);
   }
 
   void clearStatesFrom(String scopeId){
@@ -272,7 +290,7 @@ class AssistController {
     updateUnHeads(stateData: stateData, delay: delay);
   }
 
-  void removeStateAndUpdateUnHead(String state, {dynamic stateData, Duration? delay}){
+  void removeStateAndUpdateUnHeads(String state, {dynamic stateData, Duration? delay}){
     removeState(state);
     updateUnHeads(stateData: stateData, delay: delay);
   }
@@ -377,32 +395,22 @@ class AssistController {
 
     return {};
   }
-
-  _AssistState? _getAssist(String assistId){
-    for(final s in _assistStateList){
-      if(s.widget.id == assistId){
-        return s;
-      }
-    }
-
-    return null;
-  }
-
+  ///............. Overlay ......................................................
   void setOverlay(OverlayBuilder? overlay, {String? assistId}){
-    if(_headStateRef == null){
-      return;
-    }
-
     if(assistId == null) {
-      _headStateRef!._overlayBuilder = overlay;
-      _headStateRef!.overlayNotifier.value++;
+      if(_getHeadOrSelfState() == null){
+        return;
+      }
+
+      _getHeadOrSelfState()!._overlayBuilder = overlay;
+      _getHeadOrSelfState()!.overlayNotifier.value++;
     }
     else {
       _getAssist(assistId)?._overlayBuilder = overlay;
       _getAssist(assistId)?.overlayNotifier.value++;
     }
   }
-  ///............. shareDataManager .................................................................
+  ///............. shareDataManager ......................................................
   void setKeyValue(String key, dynamic value){
     _shareDataManager.set(key, value);
   }
@@ -449,6 +457,7 @@ class AssistController {
 
     _observerList.clear();
     _headStateRef = null;
+    _selfStateRef = null;
   }
 
   void _widgetIsDisposed(IAssistState state){
@@ -466,6 +475,10 @@ class AssistController {
 
     if(state == _headStateRef){
       _headStateRef = null;
+    }
+
+    if(state == _selfStateRef){
+      _selfStateRef = null;
     }
 
     temp.clear();
