@@ -233,9 +233,9 @@ class WidgetHelper {
     return (context.findRenderObject() as RenderBox).paintBounds;
   }
 
-  static Offset? getPositionAfterRender(BuildContext context) {
-    final RenderBox? box = context.findRenderObject() as RenderBox;
-    return box?.localToGlobal(Offset.zero); // Global is SafeArea box
+  static Offset getPositionAfterRender(BuildContext context) {
+    final RenderBox box = context.findRenderObject() as RenderBox;
+    return box.localToGlobal(Offset.zero); // Global is SafeArea box
   }
 
   static int getDeep(BuildContext context) {
@@ -319,12 +319,12 @@ class WidgetHelper {
 
   ///--------------- scaffold
   static Scaffold? getNearestChildScaffold(BuildContext context) {
-    final Scaffold? w = findChildWidget(context, TypeFinder<Scaffold>()) as Scaffold;
+    final Scaffold w = findChildWidget(context, TypeFinder<Scaffold>()) as Scaffold;
     return w;
   }
 
   static Scaffold? getNearestAncestorScaffold(BuildContext context) {
-    final Scaffold? w = context.findAncestorWidgetOfExactType() as Scaffold;
+    final Scaffold w = context.findAncestorWidgetOfExactType() as Scaffold;
     return w;
   }
 

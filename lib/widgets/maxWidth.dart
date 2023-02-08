@@ -38,7 +38,7 @@ class MaxWidth extends StatelessWidget{
 }
 
 /*
-import 'package:flutter/widgets.dart';
+import 'package:flutter/sticky.dart';
 
 class MaxWidth extends StatefulWidget{
   final Widget child;

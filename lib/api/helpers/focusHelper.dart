@@ -56,13 +56,12 @@ class FocusHelper{
   }
 
   // FocusScope.of(context).requestFocus(FocusNode());
+  /// use this if has textField
   static void hideKeyboardByUnFocusRoot(){
     FocusManager.instance.primaryFocus?.unfocus();
   }
 
-  /// use this if has textField
   static void hideKeyboardByUnFocus(BuildContext context){
-
     /// is nearest scope or rootScope
     final currentScope = FocusScope.of(context);
 
@@ -136,9 +135,5 @@ class FocusHelper{
 
   static bool isFocusInWidget(BuildContext ctx){
     return Focus.isAt(ctx);
-  }
-
-  static void fullSelect(TextEditingController ctr){
-    ctr.selection = TextSelection(baseOffset: 0, extentOffset: ctr.text.length);
   }
 }

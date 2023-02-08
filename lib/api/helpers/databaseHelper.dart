@@ -41,14 +41,14 @@ class DatabaseHelper {
     return query(tbName, null).length;
   }
 
-  List<dynamic> query(String tbName, Conditions? conditions, {
+  List<T> query<T>(String tbName, Conditions? conditions, {
     List path = const [],
     int? limit,
     int? offset,
     OutType outType = OutType.MapOrDynamic,
     OrderBy? orderBy,
   }) {
-    return _irisDB.find(tbName, conditions,
+    return _irisDB.find<T>(tbName, conditions,
         path: path,
         limit: limit,
         offset: offset,
@@ -168,6 +168,6 @@ class DatabaseHelper {
 
 
 --------------------------------------------------------------------------------
- value[Op.increment] = {LKeys.deposit: deposit};
+ value[Op.increment] = {Keys.deposit: deposit};
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% DOC %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% */

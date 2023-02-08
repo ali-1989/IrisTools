@@ -1,3 +1,6 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
+import 'package:iris_tools/api/helpers/textFieldHelper.dart';
 
 class MaskHelper {
   MaskHelper._();
@@ -18,5 +21,15 @@ class MaskHelper {
     }
 
     return res;
+  }
+
+  static String maskWithFormatter(TextInputFormatter formatter, TextEditingController tController){
+    if(tController.text.isNotEmpty) {
+      final old = TextFieldHelper.getTextEditingValue('');
+      final te = TextFieldHelper.getTextEditingValue(tController.text);
+      return formatter.formatEditUpdate(old, te).text;
+    }
+
+    return '';
   }
 }

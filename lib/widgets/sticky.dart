@@ -2,17 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
 
-///●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●
-///●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●
 class Sticky extends StatefulWidget {
   final String? title;
 
   const Sticky({Key? key, this.title}) : super(key: key);
 
   @override
-  _StickyState createState() => _StickyState();
+  State createState() => _StickyState();
 }
-
+///==============================================================================
 class _StickyState extends State<Sticky> {
   final controller = ScrollController();
   GlobalKey stickyKey = GlobalKey();
@@ -89,9 +87,8 @@ class _StickyState extends State<Sticky> {
           );
         }
 
-        return Container();
+        return SizedBox();
       },
     );
   }
 }
-///●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●

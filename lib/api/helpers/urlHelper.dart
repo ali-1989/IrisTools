@@ -184,6 +184,7 @@ class UrlHelper {
     }
   }
 
+  /// forBackToApp: mode: LaunchMode.externalApplication
   static Future<bool> launchLink(String url, {
     LaunchMode mode = LaunchMode.platformDefault,
     WebViewConfiguration webViewConfiguration = const WebViewConfiguration(),
@@ -195,5 +196,20 @@ class UrlHelper {
     catch (e) {
       return false;
     }
+  }
+
+  static Future<bool> launchTel(String tel) async {
+    return launchLink('tel://$tel');
+  }
+
+  static Future<bool> launchWeb(String url, {
+    LaunchMode mode = LaunchMode.platformDefault,
+    WebViewConfiguration webViewConfiguration = const WebViewConfiguration(),
+  }) async {
+    if(!url.toLowerCase().startsWith('http')){
+      url = 'http://$url';
+    }
+
+    return launchLink(url, mode: mode, webViewConfiguration: webViewConfiguration);
   }
 }

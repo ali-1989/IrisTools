@@ -1,20 +1,19 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:iris_tools/api/cache/sizedCacheMap.dart';
 import 'package:iris_tools/widgets/download/downloadNotifier.dart';
 
 
-class IrisImageView extends StatefulWidget{
+class IrisImageView extends StatefulWidget {
   final String? url;
   final Uint8List? bytes;
   final FutureOr<String>? imagePath;
   final SizedCacheMap<String, Uint8List>? cacheManager;
   final String? cacheKey;
   final Widget Function()? beforeLoadFn;
-  final Widget beforeLoadWidget;
+  final Widget? beforeLoadWidget;
   final Widget? errorWidget;
   final double? width;
   final double? height;
@@ -36,12 +35,13 @@ class IrisImageView extends StatefulWidget{
     this.imagePath,
     this.cacheManager,
     this.cacheKey,
-    this.width, this.height,
+    this.width,
+    this.height,
     this.onDownloadFn,
     this.onErrorFn,
     this.onLoadFn,
     this.beforeLoadFn,
-    this.beforeLoadWidget = const SizedBox(width: 2, height: 2),
+    this.beforeLoadWidget,
     this.errorWidget,// = const SizedBox(width: 2, height: 2,)
     this.forceDownloadImage = false,
     this.filterQuality = FilterQuality.low,
@@ -72,6 +72,7 @@ class _IrisImageViewState extends State<IrisImageView> with TickerProviderStateM
   HttpClient? httpClient;
   String? cacheKey;
   DownloadNotifier? downloadNotifier;
+  late Widget beforeLoadWidget;
 
   void _preparePath(){
     if(widget.imagePath is Future) {
@@ -100,6 +101,8 @@ class _IrisImageViewState extends State<IrisImageView> with TickerProviderStateM
     notSetPath = widget.imagePath == null;
 
     _preparePath();
+
+    beforeLoadWidget = widget.beforeLoadWidget?? SizedBox(width: widget.width?? 2, height: widget.height?? 2);
 
     animController = AnimationController(
       duration: Duration(milliseconds: 300),
@@ -190,7 +193,9 @@ class _IrisImageViewState extends State<IrisImageView> with TickerProviderStateM
     if(downloadNotifier != null) {
       if (downloadNotifier!.isIOwner('$hashCode')) {
         if(downloadNotifier!.state == DownloadNotifierState.isDownloading) {
-          File(imgPath!).delete().catchError((e){return File('');});
+          if(!kIsWeb){
+            File(imgPath!).delete().catchError((e){return File('');});
+          }
         }
 
         downloadNotifier!.setState(DownloadNotifierState.none, '$hashCode');
@@ -247,14 +252,15 @@ class _IrisImageViewState extends State<IrisImageView> with TickerProviderStateM
     );
   }
 
+  //if use [BoxFit.scaleDown] must set width,height to some widget like: Image widget
+  //if use [BoxFit.contain] loading widget is big
   Widget getBeforeView(){
-    //if use [BoxFit.scaleDown] must set width,height to some widget like: Image widget
-    //if use [BoxFit.contain] loading widget is big
-    // return FittedBox(child: widget.beforeLoadFn(), fit: BoxFit.contain)
     if(widget.beforeLoadFn != null) {
+      // return FittedBox(child: widget.beforeLoadFn(), fit: BoxFit.contain)
       return widget.beforeLoadFn!();
-    } else {
-      return widget.beforeLoadWidget;
+    }
+    else {
+      return beforeLoadWidget;
     }
   }
 
@@ -309,7 +315,7 @@ class _IrisImageViewState extends State<IrisImageView> with TickerProviderStateM
       }
     }
 
-    if (notSetPath) {
+    if (notSetPath || kIsWeb) {
       // ignore: unawaited_futures
       _downloadAsBytes(widget.url!).then((value) {
         widget.onDownloadFn?.call(imgBytes!, imgPath);
@@ -367,7 +373,7 @@ class _IrisImageViewState extends State<IrisImageView> with TickerProviderStateM
         }
       }
       else {
-        throw Exception('err: ' + response.statusCode.toString());
+        throw Exception('err: ${response.statusCode}');
       }
     }
     catch (err){
@@ -388,7 +394,11 @@ class _IrisImageViewState extends State<IrisImageView> with TickerProviderStateM
     return imgBytes;
   }
 
-  Future<dynamic> _downloadAsFile(String url, String path) async{
+  Future<dynamic> _downloadAsFile(String url, String path) async {
+    if(kIsWeb){
+      return Future.value(null);
+    }
+
     try {
       await _downloadAsBytes(url);
     }
@@ -408,7 +418,7 @@ class _IrisImageViewState extends State<IrisImageView> with TickerProviderStateM
   }
 
   Future<bool> _checkFileAndRead(String? path) async{
-    if(path == null) {
+    if(kIsWeb || path == null) {
       return false;
     }
 
