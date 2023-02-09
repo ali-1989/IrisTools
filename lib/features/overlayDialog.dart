@@ -33,7 +33,7 @@ class OverlayDialog {
 		);
 	}
 
-	Future<T?> showMiniInfo<T>(BuildContext context, Widget infoView, String name, {
+	Future<T?> showMiniDialog<T>(BuildContext context, Widget infoView, String routeName, {
 		Duration? autoClose,
 		Color background = Colors.transparent,
 		bool center = true,
@@ -55,7 +55,7 @@ class OverlayDialog {
 			content: GestureDetector(
 				behavior: HitTestBehavior.translucent,
 				onTap: (){
-					OverlayDialog().hideByName(stableCtx, name);
+					OverlayDialog().hideByName(stableCtx, routeName);
 				},
 				child: SizedBox(
 					width: size.width,
@@ -83,7 +83,7 @@ class OverlayDialog {
 					),
 				),
 			),
-			routingName: name,
+			routingName: routeName,
 		);
 
 		if(autoClose != null) {
@@ -101,6 +101,33 @@ class OverlayDialog {
 			builder: (BuildContext context) {
 				return view;
 			},
+		);
+	}
+
+	static void showMiniInfo(BuildContext context, Widget info, {
+		double top = 0,
+		double bottom = 0,
+		double start = 0,
+		double end = 0,
+		bool center = true,
+		String routeName = 'showMiniInfo'
+	}){
+		final Widget v = Card(
+			margin: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+			child: Padding(
+				padding: EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+				child: info,
+			),
+		);
+
+		OverlayDialog().showMiniDialog(
+			context, v,
+			routeName,
+			top: top,
+			bottom: bottom,
+			start: start,
+			end: end,
+			center: center,
 		);
 	}
 

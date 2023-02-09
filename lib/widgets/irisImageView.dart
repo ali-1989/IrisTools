@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:iris_tools/api/cache/sizedCacheMap.dart';
 import 'package:iris_tools/widgets/download/downloadNotifier.dart';
+import 'package:http/http.dart' as http;
 
 
 class IrisImageView extends StatefulWidget {
@@ -61,36 +62,18 @@ class IrisImageView extends StatefulWidget {
 ///=================================================================================================================
 class _IrisImageViewState extends State<IrisImageView> with TickerProviderStateMixin {
   bool occurError = false;
-  bool notSetPath = true;
+  bool isSetPath = false;
   String? imgPath;
   Uint8List? imgBytes;
   int tried = 0;
-  //Size? sizeOfScreen;
   late AnimationController animController;
   late Animation<double> animation;
   bool _mustAnimate = false;
-  HttpClient? httpClient;
+  //HttpClient? httpClient;
+  http.Client? httpClient;
   String? cacheKey;
   DownloadNotifier? downloadNotifier;
   late Widget beforeLoadWidget;
-
-  void _preparePath(){
-    if(widget.imagePath is Future) {
-      (widget.imagePath as Future).then((address) {
-        imgPath = address;
-        update();
-      });
-    }
-    else if(widget.imagePath is String) {
-      imgPath = widget.imagePath! as String;
-    }
-  }
-
-  void _prepareDownloader(){
-    if(widget.url != null && !notSetPath) {
-      downloadNotifier = DownloadNotifier(widget.url!, '$hashCode');
-    }
-  }
 
   @override
   void initState() {
@@ -98,7 +81,6 @@ class _IrisImageViewState extends State<IrisImageView> with TickerProviderStateM
 
     imgBytes = widget.bytes;
     cacheKey = widget.cacheKey?? '';
-    notSetPath = widget.imagePath == null;
 
     _preparePath();
 
@@ -133,6 +115,7 @@ class _IrisImageViewState extends State<IrisImageView> with TickerProviderStateM
 
   @override
   Widget build(BuildContext context) {
+    print('build iris imae');
     if(imgBytes == null && widget.cacheManager != null){
       if(imgPath != null || widget.url != null) {
         imgBytes = widget.cacheManager!.find((key, item) => (key == cacheKey));
@@ -153,6 +136,7 @@ class _IrisImageViewState extends State<IrisImageView> with TickerProviderStateM
       else {
         _mustAnimate = false;
         animController.forward();
+
         return FadeTransition(
           opacity: animation,
           child: (widget.shape == null) ? getMemoryImage() : clipView(getMemoryImage()),
@@ -165,20 +149,21 @@ class _IrisImageViewState extends State<IrisImageView> with TickerProviderStateM
     }
 
     if(imgPath != null) {
-      _checkFileAndRead(imgPath).then((exist) {
-        if (exist) {
-          if (widget.forceDownloadImage) {
+      if (widget.forceDownloadImage) {
+        startDownload();
+      }
+      else {
+        _checkFileAndRead(imgPath).then((exist) {
+          if (exist) {
+            updateState();
+          }
+          else {
             startDownload();
           }
-
-          update();
-        }
-        else if(widget.url != null) {
-          startDownload();
-        }
-      });
+        });
+      }
     }
-    else if(widget.url != null) {
+    else {
       startDownload();
     }
 
@@ -187,10 +172,12 @@ class _IrisImageViewState extends State<IrisImageView> with TickerProviderStateM
 
   @override
   void dispose() {
-    httpClient?.close(force: true);
+    httpClient?.close(/*force: true*/);
     animController.dispose();
 
     if(downloadNotifier != null) {
+      downloadNotifier!.removeListener(_listenDownloadState);
+
       if (downloadNotifier!.isIOwner('$hashCode')) {
         if(downloadNotifier!.state == DownloadNotifierState.isDownloading) {
           if(!kIsWeb){
@@ -201,17 +188,28 @@ class _IrisImageViewState extends State<IrisImageView> with TickerProviderStateM
         downloadNotifier!.setState(DownloadNotifierState.none, '$hashCode');
         downloadNotifier!.delete('$hashCode');
       }
-      else {
-        downloadNotifier!.removeListener(_listenToDownload);
-      }
     }
 
     super.dispose();
   }
 
-  void update(){
+  void updateState(){
     if(mounted) {
       setState(() {});
+    }
+  }
+
+  void _preparePath(){
+    isSetPath = widget.imagePath != null;
+
+    if(widget.imagePath is Future) {
+      (widget.imagePath as Future).then((address) {
+        imgPath = address;
+        updateState();
+      });
+    }
+    else if(widget.imagePath is String) {
+      imgPath = widget.imagePath! as String;
     }
   }
 
@@ -227,24 +225,6 @@ class _IrisImageViewState extends State<IrisImageView> with TickerProviderStateM
     );
   }
 
-  Image getFileImage(){
-    /*FileImage fi = FileImage();
-    ImageStream newStream =
-    fi.resolve(createLocalImageConfiguration(
-      context,
-      size: widget.width != null && widget.height != null ? Size(widget.width, widget.height) : null,
-    )).addListener((listener){});*/
-    //sizeOfScreen = MediaQuery.of(context).size;
-
-    return Image.file(File(imgPath!),
-      //width: widget.width?? sizeOfScreen!.width,
-      height: widget.height,//?? sizeOfScreen!.height/2,
-      fit: widget.fit,
-      filterQuality: widget.filterQuality,
-      alignment: widget.alignment,
-    );
-  }
-
   Widget clipView(Widget child){
     return ClipPath(
       clipper: ShapeBorderClipper(shape: widget.shape!),
@@ -252,11 +232,8 @@ class _IrisImageViewState extends State<IrisImageView> with TickerProviderStateM
     );
   }
 
-  //if use [BoxFit.scaleDown] must set width,height to some widget like: Image widget
-  //if use [BoxFit.contain] loading widget is big
   Widget getBeforeView(){
     if(widget.beforeLoadFn != null) {
-      // return FittedBox(child: widget.beforeLoadFn(), fit: BoxFit.contain)
       return widget.beforeLoadFn!();
     }
     else {
@@ -265,7 +242,6 @@ class _IrisImageViewState extends State<IrisImageView> with TickerProviderStateM
   }
 
   Widget getErrorView(){
-    //return FittedBox(child: widget.errorWidget, fit: BoxFit.scaleDown,);
     return widget.errorWidget?? getBeforeView();
   }
 
@@ -273,13 +249,36 @@ class _IrisImageViewState extends State<IrisImageView> with TickerProviderStateM
     return imgBytes != null ? getMemoryImage() : getBeforeView();
   }
 
-  void _listenToDownload(){
-    if(downloadNotifier?.state == DownloadNotifierState.isDownloaded){
-      downloadNotifier!.removeListener(_listenToDownload);
-      update();
+  void _prepareDownloader(){
+    if(widget.url != null) { // && isSetPath
+      downloadNotifier = DownloadNotifier(widget.url!, '$hashCode');
+      downloadNotifier!.addListener(_listenDownloadState);
     }
-    else if(downloadNotifier?.state == DownloadNotifierState.none){
+  }
+
+  void disposeDownloadNotifier(){
+    downloadNotifier!.removeListener(_listenDownloadState);
+    downloadNotifier?.delete('$hashCode');
+    downloadNotifier = null;
+  }
+
+  void _listenDownloadState() async {
+    if(downloadNotifier?.state == DownloadNotifierState.none){
       startDownload();
+      return;
+    }
+
+    if(downloadNotifier?.state == DownloadNotifierState.isDownloaded){
+
+      if(isSetPath){
+        await FileImage(File(imgPath!)).evict().catchError((err) {
+          _onError(err);
+        });
+      }
+
+      _mustAnimate = true;
+      updateState();
+      disposeDownloadNotifier();
     }
   }
 
@@ -291,9 +290,8 @@ class _IrisImageViewState extends State<IrisImageView> with TickerProviderStateM
     _mustAnimate = true;
     occurError = true;
     widget.onErrorFn?.call(err);
-    update();
-    downloadNotifier?.delete('$hashCode');
-    downloadNotifier = null;
+    updateState();
+    disposeDownloadNotifier();
   }
 
   void startDownload() async {
@@ -304,25 +302,18 @@ class _IrisImageViewState extends State<IrisImageView> with TickerProviderStateM
     _prepareDownloader();
 
     if (downloadNotifier != null && !downloadNotifier!.isIOwner('$hashCode')) {
-      if (downloadNotifier!.state == DownloadNotifierState.isDownloaded) {
+      if (downloadNotifier!.state == DownloadNotifierState.isDownloaded || downloadNotifier!.state == DownloadNotifierState.isDownloading) {
         // this is a loop: update();
-        return;
-      }
-
-      if (downloadNotifier!.state == DownloadNotifierState.isDownloading) {
-        downloadNotifier!.addListener(_listenToDownload);
         return;
       }
     }
 
-    if (notSetPath || kIsWeb) {
+    if (!isSetPath || kIsWeb) {
       // ignore: unawaited_futures
-      _downloadAsBytes(widget.url!).then((value) {
-        widget.onDownloadFn?.call(imgBytes!, imgPath);
+      _downloadImageBytes(widget.url!).then((value) {
         _mustAnimate = true;
-        update();
-      })
-          .catchError((err) {
+        updateState();
+      }).catchError((err) {
         _onError(err);
       });
     }
@@ -333,26 +324,47 @@ class _IrisImageViewState extends State<IrisImageView> with TickerProviderStateM
 
       if (imgPath == null) {
         _onError(AssertionError('Image path is null to download'));
+        return;
       }
 
-      // ignore: unawaited_futures
-      _downloadAsFile(widget.url!, imgPath!).then((value) {
-        widget.onDownloadFn?.call(imgBytes!, imgPath!);
-
-        FileImage(File(imgPath!)).evict().then((value) {
-          _mustAnimate = true;
-          update();
-          downloadNotifier?.setState(DownloadNotifierState.isDownloaded, '$hashCode');
-          downloadNotifier?.delete('$hashCode');
-          downloadNotifier = null;
-        }).catchError((err) {
-          _onError(err);
-        });
-      });
+      await _downloadAndSave(widget.url!, imgPath!);
     }
   }
 
-  Future<dynamic> _downloadAsBytes(String url) async {
+  Future<dynamic> _downloadImageBytes(String url) async {
+    try {
+      httpClient = http.Client();
+      downloadNotifier?.setState(DownloadNotifierState.isDownloading, '$hashCode');
+      imgBytes = await httpClient!.readBytes(Uri.parse(url));
+
+      if(widget.cacheManager != null) {
+        widget.cacheManager!.add(cacheKey!, imgBytes!);
+      }
+
+      downloadNotifier?.setState(DownloadNotifierState.isDownloaded, '$hashCode');
+      httpClient!.close();
+
+      widget.onDownloadFn?.call(imgBytes!, imgPath!);
+    }
+    catch (err){
+      tried++;
+
+      if(!(err is HttpException || err is SocketException)) {
+        rethrow;
+      }
+
+      if(tried < widget.tryCount) {
+        return _downloadImageBytes(url);
+      }
+      else {
+        rethrow;
+      }
+    }
+
+    return imgBytes;
+  }
+
+  /*Future<dynamic> _downloadAsBytes(String url) async {
     httpClient = HttpClient();
     httpClient!.connectionTimeout = Duration(seconds: 30);
     httpClient!.maxConnectionsPerHost = 2;
@@ -392,15 +404,15 @@ class _IrisImageViewState extends State<IrisImageView> with TickerProviderStateM
     }
 
     return imgBytes;
-  }
+  }*/
 
-  Future<dynamic> _downloadAsFile(String url, String path) async {
+  Future<dynamic> _downloadAndSave(String url, String path) async {
     if(kIsWeb){
       return Future.value(null);
     }
 
     try {
-      await _downloadAsBytes(url);
+      await _downloadImageBytes(url);
     }
     catch (err){
       _onError(err);
@@ -438,6 +450,9 @@ class _IrisImageViewState extends State<IrisImageView> with TickerProviderStateM
     return true;
   }
 }
+
+
+
 
 
 /*
