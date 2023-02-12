@@ -66,20 +66,20 @@ class SearchBarState extends State<SearchBar> {
 
     ThemeData theme = Theme.of(context);
     TextDirection direction = widget.textDirection?? Directionality.of(context);
-    Color borderColor = theme.textTheme.bodyText1!.color?? Colors.black;
+    Color borderColor = theme.textTheme.bodyMedium!.color?? Colors.black;
     borderColor = borderColor.withAlpha(150);
     _iconColor = widget.iconColor?? theme.primaryColor;
 
     BoxDecoration decoration = BoxDecoration(
-      color: theme.backgroundColor,
+      color: theme.colorScheme.background,
       borderRadius: BorderRadius.all(Radius.circular(8)),
       border: Border.symmetric(
-          horizontal: BorderSide(color: borderColor, width: 1.0, style: BorderStyle.solid),
-          vertical: BorderSide(color: borderColor, width: 1.0, style: BorderStyle.solid),
+          horizontal: BorderSide(color: borderColor, width: 0.7, style: BorderStyle.solid),
+          vertical: BorderSide(color: borderColor, width: 0.7, style: BorderStyle.solid),
       ),
     );
 
-    TextStyle hintStyle = widget.hintStyle ?? theme.textTheme.caption!.copyWith(
+    TextStyle hintStyle = widget.hintStyle ?? theme.textTheme.bodySmall!.copyWith(
       color: borderColor,
     );
 

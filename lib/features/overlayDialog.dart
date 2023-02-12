@@ -45,7 +45,7 @@ class OverlayDialog {
 	}) {
 
 		final temp = Theme.of(context);
-		dimColor ??= ColorHelper.isDarkColor(temp.backgroundColor)?
+		dimColor ??= ColorHelper.isDarkColor(temp.colorScheme.background)?
 			Colors.white.withAlpha(80): Colors.black.withAlpha(120);
 
 		final size = MediaQuery.of(context).size;
@@ -104,7 +104,10 @@ class OverlayDialog {
 		);
 	}
 
-	static void showMiniInfo(BuildContext context, Widget info, {
+	static void showMiniInfo(
+			BuildContext context,
+			Widget child,
+			Widget Function(BuildContext _, Widget child) builder, {
 		double top = 0,
 		double bottom = 0,
 		double start = 0,
@@ -116,12 +119,13 @@ class OverlayDialog {
 			margin: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
 			child: Padding(
 				padding: EdgeInsets.symmetric(horizontal: 14, vertical: 14),
-				child: info,
+				child: child,
 			),
 		);
 
 		OverlayDialog().showMiniDialog(
-			context, v,
+			context,
+			builder(context, v),
 			routeName,
 			top: top,
 			bottom: bottom,
