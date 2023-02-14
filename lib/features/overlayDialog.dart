@@ -105,16 +105,16 @@ class OverlayDialog {
 	}
 
 	static void showMiniInfo(
-			BuildContext context,
-			Widget child,
-			Widget Function(BuildContext _, Widget child) builder, {
-		double top = 0,
-		double bottom = 0,
-		double start = 0,
-		double end = 0,
-		bool center = true,
-		String routeName = 'showMiniInfo'
-	}){
+			BuildContext context, {
+				required Widget child,
+				required Widget Function(BuildContext _, Widget child) builder,
+				double top = 0,
+				double bottom = 0,
+				double start = 0,
+				double end = 0,
+				bool center = true,
+				String routeName = 'showMiniInfo'
+			}){
 		final Widget v = Card(
 			margin: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
 			child: Padding(

@@ -115,7 +115,6 @@ class _IrisImageViewState extends State<IrisImageView> with TickerProviderStateM
 
   @override
   Widget build(BuildContext context) {
-    print('build iris imae');
     if(imgBytes == null && widget.cacheManager != null){
       if(imgPath != null || widget.url != null) {
         imgBytes = widget.cacheManager!.find((key, item) => (key == cacheKey));
@@ -269,10 +268,10 @@ class _IrisImageViewState extends State<IrisImageView> with TickerProviderStateM
     }
 
     if(downloadNotifier?.state == DownloadNotifierState.isDownloaded){
-
       if(isSetPath){
         await FileImage(File(imgPath!)).evict().catchError((err) {
           _onError(err);
+          return false;
         });
       }
 

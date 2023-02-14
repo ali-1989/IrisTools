@@ -37,22 +37,42 @@ class System {
   }
 
   static bool isDesktop(){
+    if(isWeb()){
+      return isWebDesktop();
+    }
+
     return Platform.isWindows || Platform.isLinux || Platform.isMacOS;
   }
 
   static bool isLinux(){
+    if(isWeb()){
+      return WebTools.isLinux;
+    }
+
     return Platform.isLinux;
   }
 
   static bool isWindows(){
+    if(isWeb()){
+      return WebTools.isWindows;
+    }
+
     return Platform.isWindows;
   }
 
   static bool isMac(){
+    if(isWeb()){
+      return WebTools.isMacOS;
+    }
+
     return Platform.isMacOS;
   }
 
   static bool isAndroid(){
+    if(isWeb()){
+      return WebTools.isAndroid;
+    }
+
     return Platform.isAndroid;
   }
 

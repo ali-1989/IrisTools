@@ -71,7 +71,7 @@ class SearchBarState extends State<SearchBar> {
     _iconColor = widget.iconColor?? theme.primaryColor;
 
     BoxDecoration decoration = BoxDecoration(
-      color: theme.colorScheme.background,
+      color: Colors.transparent ,//theme.colorScheme.background,
       borderRadius: BorderRadius.all(Radius.circular(8)),
       border: Border.symmetric(
           horizontal: BorderSide(color: borderColor, width: 0.7, style: BorderStyle.solid),
@@ -124,7 +124,8 @@ class SearchBarState extends State<SearchBar> {
      IconButton(
          icon: Icon(
            Icons.clear,
-           color: borderColor,
+           color: _iconColor, //borderColor
+           size: 17,
          ),
          padding: EdgeInsets.zero,
          onPressed: (){
