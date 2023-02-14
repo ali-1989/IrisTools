@@ -46,7 +46,7 @@ class System {
 
   static bool isLinux(){
     if(isWeb()){
-      return WebTools.isLinux;
+      return false;
     }
 
     return Platform.isLinux;
@@ -54,7 +54,7 @@ class System {
 
   static bool isWindows(){
     if(isWeb()){
-      return WebTools.isWindows;
+      return false;
     }
 
     return Platform.isWindows;
@@ -62,7 +62,7 @@ class System {
 
   static bool isMac(){
     if(isWeb()){
-      return WebTools.isMacOS;
+      return false;
     }
 
     return Platform.isMacOS;
@@ -70,7 +70,7 @@ class System {
 
   static bool isAndroid(){
     if(isWeb()){
-      return WebTools.isAndroid;
+      return false;
     }
 
     return Platform.isAndroid;
