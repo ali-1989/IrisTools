@@ -522,7 +522,7 @@ class AssistController {
     });
   }
 
-  static void commonUpdateByClass(Type classType, {dynamic stateData, Duration? delay}){
+  static void updateByClass(Type classType, {dynamic stateData, Duration? delay}){
     for(final c in _allControllers){
       if(c._headStateRef != null){
         _touchAncestorsToRoot(c._headStateRef!.context, (element){
@@ -537,28 +537,54 @@ class AssistController {
     }
   }
 
-  static void commonUpdateAllHeads({dynamic stateData, Duration? delay}){
+  static void updateAllHeads({dynamic stateData, Duration? delay}){
     for(final c in _allControllers){
       c.updateHead(stateData: stateData, delay: delay);
     }
   }
 
-  static void commonUpdateAssist(String assistId, {dynamic stateData, Duration? delay}){
+  static void updateAssistGlobal(String assistId, {dynamic stateData, Duration? delay}){
     for(final c in _allControllers){
       c.updateAssist(assistId, stateData: stateData, delay: delay);
     }
   }
 
-  static void commonUpdateGroup(String groupId, {dynamic stateData, Duration? delay}){
+  static void updateGroupGlobal(String groupId, {dynamic stateData, Duration? delay}){
     for(final c in _allControllers){
       c.updateGroup(groupId, stateData: stateData, delay: delay);
     }
   }
 
-  static void globalUpdateUnHeads({dynamic stateData, Duration? delay}){
+  static void updateUnHeadsGlobal({dynamic stateData, Duration? delay}){
     for(final c in _allControllers){
       c.updateUnHeads(stateData: stateData, delay: delay);
     }
+  }
+
+  static AssistController? getController(String assistId){
+    for(final c in _allControllers){
+      for(final ass in c._assistStateList){
+        if(ass.widget.id == assistId){
+          return ass._controller;
+        }
+      }
+    }
+
+    return null;
+  }
+
+  static Set<AssistController> getGroupControllers(String groupId){
+    final res = <AssistController>{};
+
+    for(final c in _allControllers){
+      for(final ass in c._assistStateList){
+        if(ass.widget.groupId == groupId){
+          res.add(ass._controller);
+        }
+      }
+    }
+
+    return res;
   }
 }
 ///===================================================================================================
