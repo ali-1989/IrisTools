@@ -184,7 +184,6 @@ class _IrisImageViewState extends State<IrisImageView> with TickerProviderStateM
           }
         }
 
-        downloadNotifier!.setState(DownloadNotifierState.none, '$hashCode');
         downloadNotifier!.delete('$hashCode');
       }
     }
@@ -256,7 +255,7 @@ class _IrisImageViewState extends State<IrisImageView> with TickerProviderStateM
   }
 
   void disposeDownloadNotifier(){
-    downloadNotifier!.removeListener(_listenDownloadState);
+    downloadNotifier?.removeListener(_listenDownloadState);
     downloadNotifier?.delete('$hashCode');
     downloadNotifier = null;
   }
