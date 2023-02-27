@@ -5,7 +5,7 @@ class Http {
 	Http._();
 
 	static final BaseOptions _options = BaseOptions(
-		connectTimeout: 40000,
+		connectTimeout: Duration(seconds: 40),
 	);
 
 	static Future<Response> sendGet(String url) async { //"http://www.google.com"
