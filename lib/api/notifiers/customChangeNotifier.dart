@@ -5,8 +5,9 @@ class CustomChangeNotifier implements Listenable {
   int _count = 0;
   List<VoidCallback?> _listeners = _emptyListeners;
   int _notificationCallStackDepth = 0;
-  int _reEntrantlyRemovedListeners = 0;
+  int _checkRemovedListeners = 0;
   bool _isDisposed = false;
+  bool _mustDispose = false;
   bool _creationDispatched = false;
 
   bool get hasListeners => _count > 0;
@@ -23,6 +24,7 @@ class CustomChangeNotifier implements Listenable {
         className: '$CustomChangeNotifier',
         object: this,
       );
+
       _creationDispatched = true;
     }
 
@@ -77,16 +79,14 @@ class CustomChangeNotifier implements Listenable {
       if (listenerAtIndex == listener) {
         if (_notificationCallStackDepth > 0) {
           // We don't resize the list during notifyListeners iterations
-          // but we set to null, the listeners we want to remove. We will
-          // effectively resize the list at the end of all notifyListeners
-          // iterations.
+          // but we set to null,
           _listeners[i] = null;
-          _reEntrantlyRemovedListeners++;
-        } else {
-          // When we are outside the notifyListeners iterations we can
-          // effectively shrink the list.
+          _checkRemovedListeners++;
+        }
+        else {
           _removeAt(i);
         }
+
         break;
       }
     }
@@ -94,15 +94,12 @@ class CustomChangeNotifier implements Listenable {
 
   @mustCallSuper
   void dispose() {
-
-    /*assert(
-    _notificationCallStackDepth == 0,
-    'The "dispose()" method on $this was called during the call to '
-        '"notifyListeners()". This is likely to cause errors since it modifies '
-        'the list of listeners while the list is being used.',
-    );*/
-
     if(_isDisposed){
+      return;
+    }
+
+    if(_notificationCallStackDepth > 0){
+      _mustDispose = true;
       return;
     }
 
@@ -130,7 +127,7 @@ class CustomChangeNotifier implements Listenable {
         _listeners[i]?.call();
       }
       catch (exception, stack) {
-        FlutterError.reportError(FlutterErrorDetails(
+        final ed = FlutterErrorDetails(
           exception: exception,
           stack: stack,
           library: 'foundation library',
@@ -142,21 +139,22 @@ class CustomChangeNotifier implements Listenable {
               style: DiagnosticsTreeStyle.errorProperty,
             ),
           ],
-        ));
+        );
+
+        FlutterError.reportError(ed);
       }
     }
 
     _notificationCallStackDepth--;
 
-    if (_notificationCallStackDepth == 0 && _reEntrantlyRemovedListeners > 0) {
-      // We really remove the listeners when all notifications are done.
-      final int newLength = _count - _reEntrantlyRemovedListeners;
+    if (_notificationCallStackDepth == 0 && _checkRemovedListeners > 0) {
+      final int newLength = _count - _checkRemovedListeners;
+
       if (newLength * 2 <= _listeners.length) {
-        // As in _removeAt, we only shrink the list when the real number of
-        // listeners is half the length of our list.
         final List<VoidCallback?> newListeners = List<VoidCallback?>.filled(newLength, null);
 
         int newIndex = 0;
+
         for (int i = 0; i < _count; i++) {
           final VoidCallback? listener = _listeners[i];
           if (listener != null) {
@@ -167,22 +165,26 @@ class CustomChangeNotifier implements Listenable {
         _listeners = newListeners;
       }
       else {
-        // Otherwise we put all the null references at the end.
         for (int i = 0; i < newLength; i += 1) {
           if (_listeners[i] == null) {
-            // We swap this item with the next not null item.
             int swapIndex = i + 1;
+
             while(_listeners[swapIndex] == null) {
               swapIndex += 1;
             }
+
             _listeners[i] = _listeners[swapIndex];
             _listeners[swapIndex] = null;
           }
         }
       }
 
-      _reEntrantlyRemovedListeners = 0;
+      _checkRemovedListeners = 0;
       _count = newLength;
+    }
+
+    if(_notificationCallStackDepth == 0 && _mustDispose){
+      dispose();
     }
   }
 }
