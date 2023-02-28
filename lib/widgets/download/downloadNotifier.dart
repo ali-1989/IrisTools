@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:iris_tools/api/notifiers/customChangeNotifier.dart';
 
 enum DownloadNotifierState {
   isDownloaded,
@@ -7,7 +7,7 @@ enum DownloadNotifierState {
   none,
 }
 
-class DownloadNotifier extends ChangeNotifier {
+class DownloadNotifier extends CustomChangeNotifier {
   static final _list = <DownloadNotifier>[];
 
   late String url;
