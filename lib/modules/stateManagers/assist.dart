@@ -241,6 +241,16 @@ class AssistController {
     return _stateManager.existStates(scopeId?? _shareSection, states);
   }
 
+  bool existAnyStates(List<String> states, {String? scopeId}){
+    for(final x in states){
+      if(_stateManager.existState(scopeId?? _shareSection, x)){
+        return true;
+      }
+    }
+
+    return false;
+  }
+
   void addState(String state){
     _stateManager.addState(_shareSection, state);
   }
