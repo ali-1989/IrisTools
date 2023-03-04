@@ -1,23 +1,22 @@
 import 'package:flutter/widgets.dart';
 
-class MaxWidth extends StatelessWidget{
+class MaxHeight extends StatelessWidget {
   final Widget child;
-  final double minWidth;
+  final double minHeight;
   final double? widthFactor;
   final double? heightFactor;
   final bool apply;
   final AlignmentGeometry alignment;
 
-  MaxWidth({
+  MaxHeight({
     Key? key,
-    required this.minWidth,
+    required this.minHeight,
     required this.child,
     this.apply = true,
-    this.alignment = Alignment.topCenter,
+    this.alignment = Alignment.center,
     this.widthFactor,
     this.heightFactor,
   }): super(key: key);
-
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +29,7 @@ class MaxWidth extends StatelessWidget{
       widthFactor: widthFactor,
       heightFactor: heightFactor,
       child: ConstrainedBox(
-        constraints: BoxConstraints(minWidth: minWidth),
+        constraints: BoxConstraints(minHeight: minHeight),
         child: child,
       ),
     );
