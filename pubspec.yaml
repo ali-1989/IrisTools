@@ -1,6 +1,6 @@
 name: iris_tools
 description: iris tools Library.
-version: 0.0.32+1
+version: 0.0.32+2
 homepage: https://iris.ir
 
 publish_to: 'none'
@@ -29,7 +29,7 @@ dependencies:
   photo_view: ^0.14.0
   file_picker: ^5.2.5
   just_audio: ^0.9.31
-  video_player: ^2.5.2
+  video_player: ^2.5.3
   gallery_saver: 2.3.2                  # Edited minSdkVersion 17
   image: ^4.0.15                        # (crop, rotate) alter:https://pub.dev/packages/pic
   image_size_getter: ^2.1.2
