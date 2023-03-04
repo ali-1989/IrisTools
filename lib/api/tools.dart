@@ -20,6 +20,10 @@ class Tools {
     }
   }
 
+  static void printWithDelimiter(Object obj){
+    print('${'*' * 40}\n ${obj.toString()} \n${'*' * 50}');
+  }
+
   static void verboseStackTrace(){
     verbosePrint(StackTrace.current);
   }
