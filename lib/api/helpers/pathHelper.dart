@@ -93,9 +93,25 @@ class PathHelper{
       }
     }
 
-    path = path.replaceAll(RegExp('(?<!:)/{2,}'), '/');
+    return remove2Slash(path);
+  }
 
-    return path;
+  static String? remove2Slash(String? url) {
+    if(url == null){
+      return null;
+    }
+
+    //path = path.replaceAll(RegExp('(?<!:)/{2,}'), '/'); some browser not support
+    int findStart = url.indexOf('://');
+
+    if(findStart < 0){
+      return url.replaceAll(RegExp('/{2,}'), '/');
+    }
+
+    var p1 = url.substring(0, findStart+3);
+    var p2 = url.substring(findStart+3);
+
+    return p1 + p2.replaceAll(RegExp('/{2,}'), '/');
   }
 
   static String? resolveUrl(String? url) {
@@ -104,9 +120,8 @@ class PathHelper{
     }
 
     url = url.replaceAll(RegExp(r'\\'), r'/');
-    url = url.replaceAll(RegExp('(?<!:)/{2,}'), '/');
 
-    return url;
+    return remove2Slash(url);
   }
 
   /// change multi / or \ to one
