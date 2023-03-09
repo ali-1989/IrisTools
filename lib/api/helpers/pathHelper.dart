@@ -81,11 +81,9 @@ class PathHelper{
     if(path == null) {
       return null;
     }
-print('@@@@ A');
+
     if(!kIsWeb) {
-      print('@@@@ oh 1');
       if (System.isWindows()) {
-        print('@@@@ o2');
         path = path.replaceAll(RegExp(r'/'), r'\');
         path = path.replaceAll(RegExp(r'^(\\+)'), ''); //.replaceAll(RegExp('^(/+)'), '');
         path = remove2BackSlash(path);
