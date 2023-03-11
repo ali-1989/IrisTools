@@ -332,6 +332,7 @@ class IrisDialogNav {
     }
 
     if(route.isCurrent) {
+      print('isCurrent');
       Navigator.of(context).pop(result);
     }
     else {

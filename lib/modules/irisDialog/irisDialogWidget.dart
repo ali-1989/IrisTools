@@ -153,7 +153,7 @@ class _IrisDialogWidgetState extends State<IrisDialogWidget> {
                                                 });
                                               }
                                               else {
-                                                widget.anyButtonPress?.call(res);
+                                                widget.anyButtonPress?.call(res as bool?);
                                               }
                                             },
                                           ),
@@ -178,7 +178,7 @@ class _IrisDialogWidgetState extends State<IrisDialogWidget> {
                                                     });
                                                   }
                                                   else {
-                                                    widget.anyButtonPress?.call(res);
+                                                    widget.anyButtonPress?.call(res as bool?);
                                                   }
                                                 },
                                               ),
@@ -200,7 +200,7 @@ class _IrisDialogWidgetState extends State<IrisDialogWidget> {
                                                 });
                                               }
                                               else {
-                                                widget.anyButtonPress?.call(res);
+                                                widget.anyButtonPress?.call(res as bool?);
                                               }
                                             },
                                           ),
@@ -246,7 +246,7 @@ class _IrisDialogWidgetState extends State<IrisDialogWidget> {
     decoration.descriptionStyle ??= decoration.themeData!.dialogTheme.contentTextStyle?.copyWith(
       fontWeight: FontWeight.w600,
     );
-    decoration.positiveStyle ??= decoration.themeData!.textTheme.button;
+    decoration.positiveStyle ??= decoration.themeData!.textTheme.labelLarge;
     decoration.negativeStyle ??= decoration.positiveStyle;
     decoration.shape ??= decoration.themeData!.dialogTheme.shape;
 
