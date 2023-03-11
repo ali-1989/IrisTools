@@ -1,3 +1,4 @@
+import 'package:iris_tools/api/helpers/pathHelper.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class UrlHelper {
@@ -122,7 +123,7 @@ class UrlHelper {
     }
 
     //return uri.replaceAll(RegExp('/{2,}'), "/").replaceFirst(':\/', ':\/\/');
-    uri = uri.replaceAll(RegExp('(?<!:)(/{2,})'), '/');
+    uri = PathHelper.remove2Slash(uri)!;
     return uri.replaceFirst(RegExp('^/http'), 'http');
   }
   ///==============================================================================================
@@ -166,7 +167,7 @@ class UrlHelper {
     try {
       //no need for Url:  if (SystemMaster.isUnix()) {
       address = address.replaceAll(RegExp(r'\\'), '/'); //for windows
-      address = address.replaceAll(RegExp('(?<!:)/{2,}'), '/');
+      address = PathHelper.remove2Slash(address)!;
 
       //address = PathHelper.removePathSeparateFromEnd(address);
       return address;
