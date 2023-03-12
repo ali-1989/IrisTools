@@ -144,16 +144,15 @@ class _IrisDialogWidgetState extends State<IrisDialogWidget> {
                                             ),
                                             child: Text(widget.positiveButtonText!, style: decoration.positiveStyle,),
                                             onPressed: () {
-                                              //var close = widget.positivePress?.call(context)?? true;
                                               final res = widget.positivePress?.call(context);
 
                                               if (res != null && res is Future) {
-                                                (res as Future).then((value) {
+                                                res.then((value) {
                                                   widget.anyButtonPress?.call(value);
                                                 });
                                               }
                                               else {
-                                                widget.anyButtonPress?.call(res as bool?);
+                                                widget.anyButtonPress?.call(res);
                                               }
                                             },
                                           ),
@@ -173,12 +172,12 @@ class _IrisDialogWidgetState extends State<IrisDialogWidget> {
                                                   final res = widget.negativePress?.call(context);
 
                                                   if (res != null && res is Future) {
-                                                    (res as Future).then((value) {
+                                                    res.then((value) {
                                                       widget.anyButtonPress?.call(value);
                                                     });
                                                   }
                                                   else {
-                                                    widget.anyButtonPress?.call(res as bool?);
+                                                    widget.anyButtonPress?.call(res);
                                                   }
                                                 },
                                               ),
@@ -195,12 +194,12 @@ class _IrisDialogWidgetState extends State<IrisDialogWidget> {
                                               final res = widget.threePress?.call(context);
 
                                               if (res != null && res is Future) {
-                                                (res as Future).then((value) {
+                                                res.then((value) {
                                                   widget.anyButtonPress?.call(value);
                                                 });
                                               }
                                               else {
-                                                widget.anyButtonPress?.call(res as bool?);
+                                                widget.anyButtonPress?.call(res);
                                               }
                                             },
                                           ),
