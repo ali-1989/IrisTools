@@ -92,6 +92,16 @@ class CustomChangeNotifier implements Listenable {
     }
   }
 
+  void clearListeners(){
+    _listeners = _emptyListeners;
+    _count = 0;
+
+    if (kFlutterMemoryAllocationsEnabled && _creationDispatched) {
+      _creationDispatched = false;
+      MemoryAllocations.instance.dispatchObjectDisposed(object: this);
+    }
+  }
+
   @mustCallSuper
   void dispose() {
     if(_isDisposed){

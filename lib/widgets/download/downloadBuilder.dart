@@ -71,6 +71,7 @@ class _DownloadBuilderState extends State<DownloadBuilder>{
   void _prepareDownloader(){
     if(widget.url != null && !notSetPath) {
       downloadNotifier = DownloadNotifier(widget.url!, '$hashCode');
+      downloadNotifier!.addListener(_listenToDownload);
     }
   }
 
@@ -139,17 +140,8 @@ class _DownloadBuilderState extends State<DownloadBuilder>{
     httpClient?.close(force: true);
 
     if(downloadNotifier != null) {
-      if (downloadNotifier!.isIOwner('$hashCode')) {
-        if(downloadNotifier!.state == DownloadNotifierState.isDownloading) {
-          File(filePath!).delete().catchError((e){return File('');});
-        }
-
-        downloadNotifier!.setState(DownloadNotifierState.none, '$hashCode');
-        downloadNotifier!.delete('$hashCode');
-      }
-      else {
-        downloadNotifier!.removeListener(_listenToDownload);
-      }
+      downloadNotifier!.removeListener(_listenToDownload);
+      downloadNotifier!.delete();
     }
 
     super.dispose();
@@ -164,7 +156,8 @@ class _DownloadBuilderState extends State<DownloadBuilder>{
   Widget getBeforeView(){
     if(widget.beforeLoadFn != null) {
       return widget.beforeLoadFn!();
-    } else {
+    }
+    else {
       return widget.beforeLoadWidget;
     }
   }
@@ -179,7 +172,6 @@ class _DownloadBuilderState extends State<DownloadBuilder>{
 
   void _listenToDownload(){
     if(downloadNotifier?.state == DownloadNotifierState.isDownloaded){
-      downloadNotifier!.removeListener(_listenToDownload);
       update();
     }
     else if(downloadNotifier?.state == DownloadNotifierState.none){
@@ -195,8 +187,6 @@ class _DownloadBuilderState extends State<DownloadBuilder>{
     occurError = true;
     widget.onErrorFn?.call(err);
     update();
-    downloadNotifier?.delete('$hashCode');
-    downloadNotifier = null;
   }
 
   void startDownload() async {
@@ -206,14 +196,9 @@ class _DownloadBuilderState extends State<DownloadBuilder>{
 
     _prepareDownloader();
 
-    if (downloadNotifier != null && !downloadNotifier!.isIOwner('$hashCode')) {
+    if (downloadNotifier != null) {
       if (downloadNotifier!.state == DownloadNotifierState.isDownloaded) {
         // this is a loop: update();
-        return;
-      }
-
-      if (downloadNotifier!.state == DownloadNotifierState.isDownloading) {
-        downloadNotifier!.addListener(_listenToDownload);
         return;
       }
     }
@@ -233,7 +218,7 @@ class _DownloadBuilderState extends State<DownloadBuilder>{
       }
 
       if(filePath == null){
-        _onError(AssertionError('Image path is null to download'));
+        _onError(AssertionError('file path is null to download'));
       }
 
       // ignore: unawaited_futures
@@ -241,9 +226,7 @@ class _DownloadBuilderState extends State<DownloadBuilder>{
         widget.onDownloadFn?.call(fileBytes!, filePath!);
 
         update();
-        downloadNotifier?.setState(DownloadNotifierState.isDownloaded, '$hashCode');
-        downloadNotifier?.delete('$hashCode');
-        downloadNotifier = null;
+        downloadNotifier?.setState(DownloadNotifierState.isDownloaded);
       });
     }
   }
@@ -257,7 +240,7 @@ class _DownloadBuilderState extends State<DownloadBuilder>{
       var httpRequest = await httpClient!.getUrl(Uri.parse(url));
       httpRequest.followRedirects = true;
 
-      downloadNotifier?.setState(DownloadNotifierState.isDownloading, '$hashCode');
+      downloadNotifier?.setState(DownloadNotifierState.isDownloading);
       final response = await httpRequest.close();
       httpClient!.close();
 
@@ -269,7 +252,7 @@ class _DownloadBuilderState extends State<DownloadBuilder>{
         }
       }
       else {
-        throw Exception('err: ' + response.statusCode.toString());
+        throw Exception('err: ${response.statusCode}');
       }
     }
     catch (err){
