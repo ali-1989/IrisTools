@@ -1,9 +1,8 @@
 name: iris_tools
 description: iris tools Library.
-version: 0.0.33+5
+version: 0.0.33+6
 homepage: https://iris.ir
 
-publish_to: 'none'
 
 environment:
   sdk: ">=2.18.0"
@@ -23,11 +22,11 @@ dependencies:
   android_path_provider: ^0.3.0         # (android directory)
   mime: ^1.0.4
   url_launcher: ^6.1.10
-  dio: ^5.0.2
+  dio: ^5.0.3
   http: ^0.13.5
   connectivity_plus: ^3.0.3
   photo_view: ^0.14.0
-  file_picker: ^5.2.5
+  file_picker: ^5.2.6
   just_audio: ^0.9.31
   video_player: ^2.6.0
   gallery_saver: 2.3.2                  # Edited minSdkVersion 17
