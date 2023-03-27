@@ -30,7 +30,7 @@ dependencies:
   file_picker: ^5.2.6
   just_audio: ^0.9.32
   video_player: ^2.6.0
-  gallery_saver: 2.3.2                  # Edited minSdkVersion 17
+  gallery_saver: 2.3.2
   image: ^4.0.15                        # (crop, rotate) alter:https://pub.dev/packages/pic
   image_size_getter: ^2.1.2
   g_json: ^4.1.0
