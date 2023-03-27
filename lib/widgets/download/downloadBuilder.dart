@@ -1,11 +1,12 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:iris_tools/api/cache/sizedCacheMap.dart';
 import 'package:iris_tools/widgets/download/downloadNotifier.dart';
+import 'package:http/http.dart' as http;
 
 typedef OnDownload = Widget Function(Uint8List? bytes);
 ///================================================================================================
@@ -16,7 +17,7 @@ class DownloadBuilder extends StatefulWidget{
   final SizedCacheMap<String, Uint8List>? cacheManager;
   final String? cacheKey;
   final Widget Function()? beforeLoadFn;
-  final Widget beforeLoadWidget;
+  final Widget? beforeLoadWidget;
   final Widget? errorWidget;
   final bool forceDownload;
   final int tryCount;
@@ -33,8 +34,8 @@ class DownloadBuilder extends StatefulWidget{
     this.onDownloadFn,
     this.onErrorFn,
     this.beforeLoadFn,
-    this.beforeLoadWidget = const SizedBox(width: 2, height: 2,),
-    this.errorWidget,// = const SizedBox(width: 2, height: 2,)
+    this.beforeLoadWidget,
+    this.errorWidget,
     this.forceDownload = false,
     this.tryCount = 4,
   }) : assert(cacheManager == null || cacheKey != null, 'must set cacheKey for DownloadBuilder'),
@@ -46,43 +47,26 @@ class DownloadBuilder extends StatefulWidget{
   }
 }
 ///=================================================================================================================
-class _DownloadBuilderState extends State<DownloadBuilder>{
+class _DownloadBuilderState extends State<DownloadBuilder> {
   bool occurError = false;
-  bool notSetPath = true;
+  bool isSetPath = false;
   String? filePath;
   Uint8List? fileBytes;
   int tried = 0;
-  HttpClient? httpClient;
+  http.Client? httpClient;
   String? cacheKey;
   DownloadNotifier? downloadNotifier;
-
-  void _preparePath(){
-    if(widget.filePath is Future) {
-      (widget.filePath as Future).then((address) {
-        filePath = address;
-        update();
-      });
-    }
-    else if(widget.filePath is String) {
-      filePath = widget.filePath! as String;
-    }
-  }
-
-  void _prepareDownloader(){
-    if(widget.url != null && !notSetPath) {
-      downloadNotifier = DownloadNotifier(widget.url!, '$hashCode');
-    }
-  }
+  late Widget beforeLoadWidget;
 
   @override
   void initState() {
     super.initState();
 
     cacheKey = widget.cacheKey?? '';
-    notSetPath = widget.filePath == null;
 
     _preparePath();
 
+    beforeLoadWidget = widget.beforeLoadWidget?? SizedBox(width: 2, height: 2);
   }
 
   @override
@@ -93,15 +77,34 @@ class _DownloadBuilderState extends State<DownloadBuilder>{
 
     if(widget.url != oldWidget.url || widget.filePath != oldWidget.filePath) {
       fileBytes = null;
+      filePath = null;
+      disposeDownloadNotifier();
+
       _preparePath();
     }
+  }
+  
+  @override
+  void dispose() {
+    disposeDownloadNotifier();
+
+    httpClient?.close(/*force: true*/);
+
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    if(fileBytes == null && widget.cacheManager != null){
-      if(filePath != null || widget.url != null) {
-        fileBytes = widget.cacheManager!.find((key, item) => (key == cacheKey));
+    if(fileBytes == null){
+      if(widget.cacheManager != null) {
+        if (filePath != null || widget.url != null) {
+          fileBytes = widget.cacheManager!.find((key, item) => (key == cacheKey));
+        }
+      }
+
+      if(fileBytes == null && downloadNotifier?.state == DownloadNotifierState.isDownloaded){
+        downloadNotifier?.setState(DownloadNotifierState.none);
+        startDownload();
       }
     }
 
@@ -114,58 +117,53 @@ class _DownloadBuilderState extends State<DownloadBuilder>{
     }
 
     if(filePath != null) {
-      _checkFileAndRead(filePath).then((exist) {
-        if (exist) {
-          if (widget.forceDownload) {
+      if (widget.forceDownload) {
+        startDownload();
+      }
+      else {
+        _checkFileAndRead(filePath).then((exist) {
+          if (exist) {
+            updateState();
+          }
+          else {
             startDownload();
           }
-
-          update();
-        }
-        else if(widget.url != null) {
-          startDownload();
-        }
-      });
+        });
+      }
     }
-    else if(widget.url != null) {
+    else {
       startDownload();
     }
 
     return getBeforeView();
   }
 
-  @override
-  void dispose() {
-    httpClient?.close(force: true);
-
-    if(downloadNotifier != null) {
-      if (downloadNotifier!.isIOwner('$hashCode')) {
-        if(downloadNotifier!.state == DownloadNotifierState.isDownloading) {
-          File(filePath!).delete().catchError((e){return File('');});
-        }
-
-        downloadNotifier!.setState(DownloadNotifierState.none, '$hashCode');
-        downloadNotifier!.delete('$hashCode');
-      }
-      else {
-        downloadNotifier!.removeListener(_listenToDownload);
-      }
-    }
-
-    super.dispose();
-  }
-
-  void update(){
+  void updateState(){
     if(mounted) {
       setState(() {});
+    }
+  }
+
+  void _preparePath(){
+    isSetPath = widget.filePath != null;
+
+    if(widget.filePath is Future) {
+      (widget.filePath as Future).then((address) {
+        filePath = address;
+        updateState();
+      });
+    }
+    else if(widget.filePath is String) {
+      filePath = widget.filePath! as String;
     }
   }
 
   Widget getBeforeView(){
     if(widget.beforeLoadFn != null) {
       return widget.beforeLoadFn!();
-    } else {
-      return widget.beforeLoadWidget;
+    }
+    else {
+      return beforeLoadWidget;
     }
   }
 
@@ -177,10 +175,26 @@ class _DownloadBuilderState extends State<DownloadBuilder>{
     return getBeforeView();
   }
 
-  void _listenToDownload(){
+  void _prepareDownloadNotifier(){
+    if(widget.url != null && downloadNotifier == null) {
+      downloadNotifier = DownloadNotifier(widget.url!, '$hashCode');
+      downloadNotifier!.addListener(_listenerToDownload);
+    }
+
+    if(widget.forceDownload){
+      downloadNotifier?.setState(DownloadNotifierState.none);
+    }
+  }
+
+  void disposeDownloadNotifier(){
+    downloadNotifier?.removeListener(_listenerToDownload);
+    downloadNotifier?.delete();
+    downloadNotifier = null;
+  }
+
+  void _listenerToDownload() async {
     if(downloadNotifier?.state == DownloadNotifierState.isDownloaded){
-      downloadNotifier!.removeListener(_listenToDownload);
-      update();
+      updateState();
     }
     else if(downloadNotifier?.state == DownloadNotifierState.none){
       startDownload();
@@ -194,9 +208,7 @@ class _DownloadBuilderState extends State<DownloadBuilder>{
 
     occurError = true;
     widget.onErrorFn?.call(err);
-    update();
-    downloadNotifier?.delete('$hashCode');
-    downloadNotifier = null;
+    updateState();
   }
 
   void startDownload() async {
@@ -204,73 +216,52 @@ class _DownloadBuilderState extends State<DownloadBuilder>{
       return;
     }
 
-    _prepareDownloader();
+    _prepareDownloadNotifier();
 
-    if (downloadNotifier != null && !downloadNotifier!.isIOwner('$hashCode')) {
-      if (downloadNotifier!.state == DownloadNotifierState.isDownloaded) {
+    if (downloadNotifier != null) {
+      if (downloadNotifier!.state == DownloadNotifierState.isDownloaded || downloadNotifier!.state == DownloadNotifierState.isDownloading) {
         // this is a loop: update();
         return;
       }
+    }
 
-      if (downloadNotifier!.state == DownloadNotifierState.isDownloading) {
-        downloadNotifier!.addListener(_listenToDownload);
-        return;
+    if (!isSetPath || kIsWeb) {
+      try{
+        await _downloadAsBytes(widget.url!);
+        updateState();
+      }
+      catch (e) {
+        _onError(e);
       }
     }
-
-    if (notSetPath) {
-      // ignore: unawaited_futures
-      _downloadAsBytes(widget.url!).then((value) {
-        widget.onDownloadFn?.call(fileBytes!, filePath);
-        update();
-      }).catchError((err) {
-        _onError(err);
-      });
-    }
     else {
-      if(filePath == null) {
+      if (filePath == null) {
         await (widget.filePath as Future).then((value) => filePath = value);
       }
 
-      if(filePath == null){
-        _onError(AssertionError('Image path is null to download'));
+      if (filePath == null) {
+        _onError(AssertionError('file path is null to download'));
+        return;
       }
 
-      // ignore: unawaited_futures
-      _downloadAsFile(widget.url!, filePath!).then((value) {
-        widget.onDownloadFn?.call(fileBytes!, filePath!);
-
-        update();
-        downloadNotifier?.setState(DownloadNotifierState.isDownloaded, '$hashCode');
-        downloadNotifier?.delete('$hashCode');
-        downloadNotifier = null;
-      });
+      await _downloadAndSave(widget.url!, filePath!);
     }
   }
 
   Future<dynamic> _downloadAsBytes(String url) async {
-    httpClient = HttpClient();
-    httpClient!.connectionTimeout = Duration(seconds: 30);
-    httpClient!.maxConnectionsPerHost = 2;
-
     try {
-      var httpRequest = await httpClient!.getUrl(Uri.parse(url));
-      httpRequest.followRedirects = true;
+      downloadNotifier?.setState(DownloadNotifierState.isDownloading);
+      httpClient = http.Client();
+      fileBytes = await httpClient!.readBytes(Uri.parse(url));
 
-      downloadNotifier?.setState(DownloadNotifierState.isDownloading, '$hashCode');
-      final response = await httpRequest.close();
+      if(widget.cacheManager != null) {
+        widget.cacheManager!.add(cacheKey!, fileBytes!);
+      }
+
+      downloadNotifier?.setState(DownloadNotifierState.isDownloaded);
       httpClient!.close();
 
-      if (response.statusCode == 200) {
-        fileBytes = await consolidateHttpClientResponseBytes(response);
-
-        if(widget.cacheManager != null) {
-          widget.cacheManager!.add(cacheKey!, fileBytes!);
-        }
-      }
-      else {
-        throw Exception('err: ' + response.statusCode.toString());
-      }
+      widget.onDownloadFn?.call(fileBytes!, filePath);
     }
     catch (err){
       tried++;
@@ -290,7 +281,11 @@ class _DownloadBuilderState extends State<DownloadBuilder>{
     return fileBytes!;
   }
 
-  Future<dynamic> _downloadAsFile(String url, String path) async{
+  Future<dynamic> _downloadAndSave(String url, String path) async {
+    if(kIsWeb){
+      return Future.value(null);
+    }
+
     try {
       await _downloadAsBytes(url);
     }
@@ -310,7 +305,7 @@ class _DownloadBuilderState extends State<DownloadBuilder>{
   }
 
   Future<bool> _checkFileAndRead(String? path) async{
-    if(path == null) {
+    if(kIsWeb || path == null) {
       return false;
     }
 

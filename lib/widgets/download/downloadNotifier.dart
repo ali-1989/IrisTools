@@ -8,7 +8,7 @@ enum DownloadNotifierState {
 }
 
 class DownloadNotifier extends CustomChangeNotifier {
-  static final _list = <DownloadNotifier>[];
+  static final _notifierList = <DownloadNotifier>[];
 
   late String url;
   double progress = 0;
@@ -17,8 +17,10 @@ class DownloadNotifier extends CustomChangeNotifier {
 
   DownloadNotifier._();
 
+  DownloadNotifierState get state => _state;
+
   factory DownloadNotifier(String url, String owner){
-    for(final d in _list){
+    for(final d in _notifierList){
       if(d.url == url){
         return d;
       }
@@ -28,42 +30,40 @@ class DownloadNotifier extends CustomChangeNotifier {
     d.url = url;
     d.owner = owner;
 
-    _list.add(d);
+    _notifierList.add(d);
 
     return d;
   }
-
-  DownloadNotifierState get state => _state;
 
   bool isIOwner(String tag){
     return tag == owner;
   }
 
-  void setState(DownloadNotifierState state, String tag, {double? progress}){
-    if(tag != owner){
-      return;
-    }
-
+  void setState(DownloadNotifierState state, {double? progress}){
     _state = state;
 
     if(progress != null){
       this.progress = progress;
     }
 
-    if(_list.indexWhere((element) => element.url == url) > -1) {
+    if(_notifierList.indexWhere((element) => element.url == url) > -1) {
       notifyListeners();
     }
   }
 
-  void delete(String owner){
+  void delete(){
+    _notifierList.removeWhere((element) => element.url == url);
+
+    if(!hasListeners) {
+      dispose();
+    }
+  }
+
+  /*void delete(String owner){
     _list.removeWhere((element) => element.url == url);
 
     if(this.owner == owner) {
       dispose();
     }
-  }
-
-  /*static void deleteNotifier(DownloadNotifier dn){
-    _list.removeWhere((element) => element.url == dn.url);
   }*/
 }

@@ -8,6 +8,8 @@ import 'package:http/http.dart' as http;
 
 
 class IrisImageView extends StatefulWidget {
+  static final CacheBytesManager _cacheManager = CacheBytesManager();
+
   final String? url;
   final Uint8List? bytes;
   final FutureOr<String>? imagePath;
@@ -43,7 +45,7 @@ class IrisImageView extends StatefulWidget {
     this.onLoadFn,
     this.beforeLoadFn,
     this.beforeLoadWidget,
-    this.errorWidget,// = const SizedBox(width: 2, height: 2,)
+    this.errorWidget,
     this.forceDownloadImage = false,
     this.filterQuality = FilterQuality.low,
     this.alignment = Alignment.center,
@@ -51,7 +53,7 @@ class IrisImageView extends StatefulWidget {
     this.fadeAnimation = true,
     this.tryCount = 4,
     this.shape,
-  }) : assert(cacheManager == null || cacheKey != null, 'must set cacheKey for DownloadBuilder'),
+  }) : assert(cacheManager == null || cacheKey != null, 'must set cacheKey for IrisImageView'),
         super(key : key);
 
   @override
@@ -69,7 +71,6 @@ class _IrisImageViewState extends State<IrisImageView> with TickerProviderStateM
   late AnimationController animController;
   late Animation<double> animation;
   bool _mustAnimate = false;
-  //HttpClient? httpClient;
   http.Client? httpClient;
   String? cacheKey;
   DownloadNotifier? downloadNotifier;
@@ -104,6 +105,7 @@ class _IrisImageViewState extends State<IrisImageView> with TickerProviderStateM
     if(widget.url != oldWidget.url || widget.imagePath != oldWidget.imagePath) {
       imgBytes = null;
       imgPath = null;
+      disposeDownloadNotifier();
 
       _preparePath();
     }
@@ -114,10 +116,35 @@ class _IrisImageViewState extends State<IrisImageView> with TickerProviderStateM
   }
 
   @override
+  void dispose() {
+    disposeDownloadNotifier();
+
+    if(widget.url != null) {
+      IrisImageView._cacheManager.removeCache(widget.url!, '$hashCode');
+    }
+
+    httpClient?.close(/*force: true*/);
+    animController.dispose();
+
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    if(imgBytes == null && widget.cacheManager != null){
-      if(imgPath != null || widget.url != null) {
-        imgBytes = widget.cacheManager!.find((key, item) => (key == cacheKey));
+    if(imgBytes == null){
+      if(widget.cacheManager != null) {
+        if (imgPath != null || widget.url != null) {
+          imgBytes = widget.cacheManager!.find((key, item) => (key == cacheKey));
+        }
+      }
+
+      if(imgBytes == null && widget.url != null){
+        imgBytes = IrisImageView._cacheManager.get(widget.url!, '$hashCode');
+      }
+
+      if(imgBytes == null && downloadNotifier?.state == DownloadNotifierState.isDownloaded){
+        downloadNotifier?.setState(DownloadNotifierState.none);
+        startDownload();
       }
     }
 
@@ -167,28 +194,6 @@ class _IrisImageViewState extends State<IrisImageView> with TickerProviderStateM
     }
 
     return (widget.shape == null)? getBeforeView() : clipView(getBeforeView());
-  }
-
-  @override
-  void dispose() {
-    httpClient?.close(/*force: true*/);
-    animController.dispose();
-
-    if(downloadNotifier != null) {
-      downloadNotifier!.removeListener(_listenDownloadState);
-
-      if (downloadNotifier!.isIOwner('$hashCode')) {
-        if(downloadNotifier!.state == DownloadNotifierState.isDownloading) {
-          if(!kIsWeb){
-            File(imgPath!).delete().catchError((e){return File('');});
-          }
-        }
-
-        downloadNotifier!.delete('$hashCode');
-      }
-    }
-
-    super.dispose();
   }
 
   void updateState(){
@@ -247,25 +252,24 @@ class _IrisImageViewState extends State<IrisImageView> with TickerProviderStateM
     return imgBytes != null ? getMemoryImage() : getBeforeView();
   }
 
-  void _prepareDownloader(){
-    if(widget.url != null) { // && isSetPath
+  void _prepareDownloadNotifier(){
+    if(widget.url != null && downloadNotifier == null) {
       downloadNotifier = DownloadNotifier(widget.url!, '$hashCode');
-      downloadNotifier!.addListener(_listenDownloadState);
+      downloadNotifier!.addListener(_listenerToDownload);
+    }
+
+    if(widget.forceDownloadImage){
+      downloadNotifier?.setState(DownloadNotifierState.none);
     }
   }
 
   void disposeDownloadNotifier(){
-    downloadNotifier?.removeListener(_listenDownloadState);
-    downloadNotifier?.delete('$hashCode');
+    downloadNotifier?.removeListener(_listenerToDownload);
+    downloadNotifier?.delete();
     downloadNotifier = null;
   }
 
-  void _listenDownloadState() async {
-    if(downloadNotifier?.state == DownloadNotifierState.none){
-      startDownload();
-      return;
-    }
-
+  void _listenerToDownload() async {
     if(downloadNotifier?.state == DownloadNotifierState.isDownloaded){
       if(isSetPath){
         await FileImage(File(imgPath!)).evict().catchError((err) {
@@ -276,7 +280,9 @@ class _IrisImageViewState extends State<IrisImageView> with TickerProviderStateM
 
       _mustAnimate = true;
       updateState();
-      disposeDownloadNotifier();
+    }
+    else if(downloadNotifier?.state == DownloadNotifierState.none){
+      startDownload();
     }
   }
 
@@ -285,11 +291,11 @@ class _IrisImageViewState extends State<IrisImageView> with TickerProviderStateM
       return;
     }
 
-    _mustAnimate = true;
     occurError = true;
     widget.onErrorFn?.call(err);
+
+    _mustAnimate = true;
     updateState();
-    disposeDownloadNotifier();
   }
 
   void startDownload() async {
@@ -297,9 +303,9 @@ class _IrisImageViewState extends State<IrisImageView> with TickerProviderStateM
       return;
     }
 
-    _prepareDownloader();
+    _prepareDownloadNotifier();
 
-    if (downloadNotifier != null && !downloadNotifier!.isIOwner('$hashCode')) {
+    if (downloadNotifier != null) {
       if (downloadNotifier!.state == DownloadNotifierState.isDownloaded || downloadNotifier!.state == DownloadNotifierState.isDownloading) {
         // this is a loop: update();
         return;
@@ -307,13 +313,14 @@ class _IrisImageViewState extends State<IrisImageView> with TickerProviderStateM
     }
 
     if (!isSetPath || kIsWeb) {
-      // ignore: unawaited_futures
-      _downloadImageBytes(widget.url!).then((value) {
+      try{
+        await _downloadImageBytes(widget.url!);
         _mustAnimate = true;
         updateState();
-      }).catchError((err) {
-        _onError(err);
-      });
+      }
+      catch (e) {
+        _onError(e);
+      }
     }
     else {
       if (imgPath == null) {
@@ -331,18 +338,22 @@ class _IrisImageViewState extends State<IrisImageView> with TickerProviderStateM
 
   Future<dynamic> _downloadImageBytes(String url) async {
     try {
+      downloadNotifier?.setState(DownloadNotifierState.isDownloading);
       httpClient = http.Client();
-      downloadNotifier?.setState(DownloadNotifierState.isDownloading, '$hashCode');
       imgBytes = await httpClient!.readBytes(Uri.parse(url));
 
       if(widget.cacheManager != null) {
         widget.cacheManager!.add(cacheKey!, imgBytes!);
       }
 
-      downloadNotifier?.setState(DownloadNotifierState.isDownloaded, '$hashCode');
+      if(imgBytes != null && widget.url != null){
+        IrisImageView._cacheManager.addCache(imgBytes!, widget.url!);
+      }
+
+      downloadNotifier?.setState(DownloadNotifierState.isDownloaded);
       httpClient!.close();
 
-      widget.onDownloadFn?.call(imgBytes!, imgPath!);
+      widget.onDownloadFn?.call(imgBytes!, imgPath);
     }
     catch (err){
       tried++;
@@ -361,48 +372,6 @@ class _IrisImageViewState extends State<IrisImageView> with TickerProviderStateM
 
     return imgBytes;
   }
-
-  /*Future<dynamic> _downloadAsBytes(String url) async {
-    httpClient = HttpClient();
-    httpClient!.connectionTimeout = Duration(seconds: 30);
-    httpClient!.maxConnectionsPerHost = 2;
-
-    try {
-      var httpRequest = await httpClient!.getUrl(Uri.parse(url));
-      httpRequest.followRedirects = true;
-
-      downloadNotifier?.setState(DownloadNotifierState.isDownloading, '$hashCode');
-      final response = await httpRequest.close();
-      httpClient!.close();
-
-      if (response.statusCode == 200) {
-        imgBytes = await consolidateHttpClientResponseBytes(response);
-
-        if(widget.cacheManager != null) {
-          widget.cacheManager!.add(cacheKey!, imgBytes!);
-        }
-      }
-      else {
-        throw Exception('err: ${response.statusCode}');
-      }
-    }
-    catch (err){
-      tried++;
-
-      if(!(err is HttpException || err is SocketException)) {
-        rethrow;
-      }
-
-      if(tried < widget.tryCount) {
-        return _downloadAsBytes(url);
-      }
-      else {
-        rethrow;
-      }
-    }
-
-    return imgBytes;
-  }*/
 
   Future<dynamic> _downloadAndSave(String url, String path) async {
     if(kIsWeb){
@@ -449,7 +418,65 @@ class _IrisImageViewState extends State<IrisImageView> with TickerProviderStateM
   }
 }
 
+///===================================================================================================
+class CacheBytesManager {
+  CacheBytesManager();
 
+  final Map<String, Uint8List> _cache = {};
+  final List<String> _hashHolder = [];
+  final Map<String, int> _countHolder = {};
+
+  void addCache(Uint8List bytes, String key){
+    _cache[key] = bytes;
+  }
+
+  void removeCache(String key, String hash){
+    if(_cache.containsKey(key)){
+      _unLink(key, hash);
+    }
+  }
+
+  Uint8List? get(String key, String hash){
+    if(_cache.containsKey(key)){
+
+      _link(key, hash);
+      return _cache[key];
+    }
+
+    return null;
+  }
+
+  void _link(String key, String hash){
+
+    if(_hashHolder.contains(hash)){
+      return;
+    }
+
+    _hashHolder.add(hash);
+
+    if(_countHolder.containsKey(key)) {
+      _countHolder[key] = _countHolder[key]! + 1;
+    }
+    else {
+      _countHolder[key] = 1;
+    }
+  }
+
+  void _unLink(String key, String hash){
+    if(_countHolder.containsKey(key)) {
+      final c = _countHolder[key]!;
+
+      if(c <= 1){
+        _cache.removeWhere((k, value) => key == k);
+        _countHolder[key] = 0;
+        _hashHolder.remove(hash);
+      }
+      else {
+        _countHolder[key] = _countHolder[key]! - 1;
+      }
+    }
+  }
+}
 
 
 
