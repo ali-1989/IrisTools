@@ -6,8 +6,8 @@ import 'package:iris_tools/modules/irisDialog/irisDialogWidget.dart';
 import 'package:iris_tools/modules/irisDialog/navHelper.dart';
 
 /// if return true, pop
-typedef OnButtonCallback = FutureOr<bool>? Function(BuildContext ctx);
-typedef OnAnyButtonCallback = dynamic Function(dynamic result);
+typedef OnButtonCallback = FutureOr Function(BuildContext ctx);
+typedef OnAnyButtonCallback = dynamic Function(dynamic popResult);
 ///=====================================================================================================
 class IrisDialogDecoration {
   ThemeData? themeData;
@@ -115,9 +115,10 @@ class IrisDialog {
       transitionDuration: decoration.animationDuration,
       transitionBuilder: decoration.transitionsBuilder?? buildAnimation,
       pageBuilder: (ctx, anim1, anim2){
-        void onAnyBtn(res){
+        void onAnyBtn(dynamic result){
           if(dismissOnButtons) {
-            IrisDialogNav.popByRouteName(context, routeName, result: res);
+            //Navigator.of(ctx).pop(result);
+            IrisDialogNav.popByRouteName(ctx, routeName, result: result);
           }
         }
 

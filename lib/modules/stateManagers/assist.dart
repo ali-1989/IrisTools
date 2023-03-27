@@ -494,6 +494,7 @@ class AssistController {
     temp.clear();
 
     final gTemp = [];
+
     for(final g in _groupList){
       for(final s in g.stateList){
         if(s == state) {
@@ -517,10 +518,11 @@ class AssistController {
       _groupList.remove(x);
     }
 
+    // no need
     /// means this controller is empty and no control any Assist.
-    if(_assistStateList.isEmpty){
+    /*if(_assistStateList.isEmpty){
       dispose();
-    }
+    }*/
   }
   ///........... commons ...................................................................
   /// if return false: stop

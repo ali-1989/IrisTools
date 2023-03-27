@@ -144,11 +144,10 @@ class _IrisDialogWidgetState extends State<IrisDialogWidget> {
                                             ),
                                             child: Text(widget.positiveButtonText!, style: decoration.positiveStyle,),
                                             onPressed: () {
-                                              //var close = widget.positivePress?.call(context)?? true;
                                               final res = widget.positivePress?.call(context);
 
                                               if (res != null && res is Future) {
-                                                (res as Future).then((value) {
+                                                res.then((value) {
                                                   widget.anyButtonPress?.call(value);
                                                 });
                                               }
@@ -173,7 +172,7 @@ class _IrisDialogWidgetState extends State<IrisDialogWidget> {
                                                   final res = widget.negativePress?.call(context);
 
                                                   if (res != null && res is Future) {
-                                                    (res as Future).then((value) {
+                                                    res.then((value) {
                                                       widget.anyButtonPress?.call(value);
                                                     });
                                                   }
@@ -195,7 +194,7 @@ class _IrisDialogWidgetState extends State<IrisDialogWidget> {
                                               final res = widget.threePress?.call(context);
 
                                               if (res != null && res is Future) {
-                                                (res as Future).then((value) {
+                                                res.then((value) {
                                                   widget.anyButtonPress?.call(value);
                                                 });
                                               }
@@ -246,7 +245,7 @@ class _IrisDialogWidgetState extends State<IrisDialogWidget> {
     decoration.descriptionStyle ??= decoration.themeData!.dialogTheme.contentTextStyle?.copyWith(
       fontWeight: FontWeight.w600,
     );
-    decoration.positiveStyle ??= decoration.themeData!.textTheme.button;
+    decoration.positiveStyle ??= decoration.themeData!.textTheme.labelLarge;
     decoration.negativeStyle ??= decoration.positiveStyle;
     decoration.shape ??= decoration.themeData!.dialogTheme.shape;
 

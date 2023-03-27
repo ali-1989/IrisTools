@@ -15,6 +15,7 @@ class IrisDialogNav {
 
         if(context != null){
           final elm = context as Element;
+
           if(elm.depth < dep){
             dep = elm.depth;
             ctx = context;
@@ -37,7 +38,9 @@ class IrisDialogNav {
     return Navigator.maybeOf(navigatorCtx, rootNavigator: false);
   }
 
-  static NavigatorState? getRootNavigatorBy(BuildContext context){
+  static NavigatorState? getRootNavigatorBy(BuildContext context) {
+    /// no need use: context.dirty
+
     try {
       /// for avoid: ErrorSummary("Looking up a deactivated widget's ancestor is unsafe.") in framework.dart
       if (context is StatefulElement) {
@@ -65,8 +68,8 @@ class IrisDialogNav {
     return m!.subtreeContext!;
   }
 
-  static ModalRoute? getModalRouteOf(BuildContext context){
-    /*if (context is StatefulElement) {
+  static ModalRoute? getModalRouteOfOld(BuildContext context){
+    if (context is StatefulElement) {
       if (!context.state.mounted || context.dirty) {
         return null;
       }
@@ -76,10 +79,12 @@ class IrisDialogNav {
       if (!(context.renderObject?.attached ?? false) || context.dirty) {
         return null;
       }
-    }*/
+    }
 
-    //return ModalRoute.of(context);
+    return ModalRoute.of(context);
+  }
 
+  static ModalRoute? getModalRouteOf(BuildContext context){
     final element = context as Element;
     final runType = element.widget.runtimeType.toString();
 
@@ -117,7 +122,8 @@ class IrisDialogNav {
     }
 
     //List children = nav.focusScopeNode.descendants.toList();    << exist repeat node
-    final List children = nav.focusScopeNode.children.toList();
+    //dep final List children = nav.focusScopeNode.children.toList();
+    final List children = nav.focusNode.children.toList();
 
     for(FocusNode f in children) {
       final m = getModalRouteOf(f.context!);
@@ -167,7 +173,7 @@ class IrisDialogNav {
             beforeModalScopeStatus = false;
           }
         }
-        catch (e){}
+        catch (e){/**/}
 
         func(element);
       });
