@@ -10,7 +10,7 @@ class Assist extends StatefulWidget {
   final bool? isHead;
   final bool selfControl;
   final String? id;
-  final List<String> groupIds;
+  final List<GroupId> groupIds;
   final AssistObserver? observable;
   final AssistBuilder builder;
 
@@ -369,7 +369,7 @@ class AssistController {
     }
   }
 
-  void updateGroup(String groupId, {dynamic stateData, Duration? delay}){
+  void updateGroup(GroupId groupId, {dynamic stateData, Duration? delay}){
     void fn(){
       final list = getGroups(groupId);
 
@@ -404,7 +404,7 @@ class AssistController {
     }
   }
 
-  Set<State> getGroups(String groupId){
+  Set<State> getGroups(GroupId groupId){
     for(final m in _groupList){
       if(m.groupId == groupId){
         return m.stateList;
@@ -569,7 +569,7 @@ class AssistController {
     }
   }
 
-  static void updateGroupGlobal(String groupId, {dynamic stateData, Duration? delay}){
+  static void updateGroupGlobal(GroupId groupId, {dynamic stateData, Duration? delay}){
     for(final c in _allControllers){
       c.updateGroup(groupId, stateData: stateData, delay: delay);
     }
@@ -593,7 +593,7 @@ class AssistController {
     return null;
   }
 
-  static Set<AssistController> getGroupControllers(String groupId){
+  static Set<AssistController> getGroupControllers(GroupId groupId){
     final res = <AssistController>{};
 
     for(final c in _allControllers){
@@ -609,12 +609,12 @@ class AssistController {
 }
 ///===================================================================================================
 class GroupOfAssist {
-  late String groupId;
+  late GroupId groupId;
   final stateList = <IAssistState>{};
 
   GroupOfAssist();
 
-  GroupOfAssist.fill(String id, IAssistState state){
+  GroupOfAssist.fill(GroupId id, IAssistState state){
     groupId = id;
     stateList.add(state);
   }
@@ -797,3 +797,7 @@ class AssistObserver<T> {
     _assistController.remove(controller);
   }
 }
+///===================================================================================================
+abstract class GroupId {}
+
+//enum AS implements GroupId {}
