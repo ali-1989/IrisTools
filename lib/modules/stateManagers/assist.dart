@@ -10,14 +10,14 @@ class Assist extends StatefulWidget {
   final bool? isHead;
   final bool selfControl;
   final String? id;
-  final String? groupId;
+  final List<String> groupIds;
   final AssistObserver? observable;
   final AssistBuilder builder;
 
   Assist({
     Key? key,
     this.id,
-    this.groupId,
+    this.groupIds = const [],
     this.controller,
     this.observable,
     this.isHead,
@@ -141,7 +141,7 @@ class AssistController {
   }
 
   void _add(_AssistState state, bool? isHead){
-    if(state.widget.id == null && state.widget.groupId == null && state.widget.observable == null){
+    if(state.widget.id == null && state.widget.groupIds.isEmpty && state.widget.observable == null){
       if(isHead != null && !isHead && !state.widget.selfControl/*&& _headStateRef == null*/){
         throw Exception('this assist must be a head or have (an id or an groupId or an observer) or be selfControl');
       }
@@ -170,19 +170,27 @@ class AssistController {
 
 
     /// groupId
-    if(state.widget.groupId != null) {
-      var isAddToGroup = false;
+    if(state.widget.groupIds.isNotEmpty) {
+      List<GroupOfAssist> temp = [];
 
-      for (final g in _groupList) {
-        if (g.groupId == state.widget.groupId) {
-          g.stateList.add(state);
-          isAddToGroup = true;
-          break;
+      for (final gId in state.widget.groupIds) {
+        var isAddToGroup = false;
+
+        for (final gAssist in _groupList){
+          if (gAssist.groupId == gId) {
+            gAssist.stateList.add(state);
+            isAddToGroup = true;
+            break;
+          }
+        }
+
+        if(!isAddToGroup){
+          temp.add(GroupOfAssist.fill(gId, state));
         }
       }
 
-      if(!isAddToGroup){
-        _groupList.add(GroupOfAssist.fill(state.widget.groupId!, state));
+      if(temp.isNotEmpty){
+        _groupList.addAll(temp);
       }
     }
 
@@ -590,7 +598,7 @@ class AssistController {
 
     for(final c in _allControllers){
       for(final ass in c._assistStateList){
-        if(ass.widget.groupId == groupId){
+        if(ass.widget.groupIds.contains(groupId)){
           res.add(ass._controller);
         }
       }

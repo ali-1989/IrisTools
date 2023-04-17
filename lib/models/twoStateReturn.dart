@@ -23,4 +23,8 @@ class TwoStateReturn<R1, R2> {
   bool hasResult2(){
     return result2 != null;
   }
+
+  bool isEmpty(){
+    return result1 == null && result2 == null;
+  }
 }
