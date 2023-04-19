@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:math';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:iris_tools/api/keyboard/keyboardEvent.dart';
 import 'package:iris_tools/modules/irisDialog/irisDialogWidget.dart';
@@ -117,7 +118,10 @@ class IrisDialog {
       pageBuilder: (ctx, anim1, anim2){
         void onAnyBtn(dynamic result){
           if(dismissOnButtons) {
-            //Navigator.of(ctx).pop(result);
+            if(kIsWeb){
+              Navigator.of(ctx).pop(result);
+            }
+
             IrisDialogNav.popByRouteName(ctx, routeName, result: result);
           }
         }
