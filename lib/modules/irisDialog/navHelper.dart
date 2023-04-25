@@ -312,7 +312,7 @@ class IrisDialogNav {
   static List<ModalRoute> getAllModalRoutes({BuildContext? context, bool onlyActives = true}) {
     final nav = getRootNavigator$();
     final res = <ModalRoute>[];
-print('nav: ${nav == null}' );
+
     if (nav == null) {
       return res;
     }
@@ -330,7 +330,6 @@ print('nav: ${nav == null}' );
             final mRoute = maybeModalWidget.route as ModalRoute?;
 
             if (mRoute != null) {
-              print('yesssssssssssssss $mRoute');
               if (onlyActives) {
                 if (mRoute.isActive) {
                   res.add(mRoute);
@@ -343,7 +342,6 @@ print('nav: ${nav == null}' );
           }
         }
         catch (e) {
-          print('eeeeeeeeeeeeee $e');
           /**/
         }
 
@@ -358,7 +356,7 @@ print('nav: ${nav == null}' );
 
   static ModalRoute? accessModalRouteByRouteName(BuildContext context, String name, {bool onlyActives = false}) {
     final list = getAllModalRoutes(context: context, onlyActives: onlyActives);
-print('list: ${list.length}  $list');
+
     return findRouteByName(list, name);
   }
 
@@ -721,8 +719,7 @@ print('list: ${list.length}  $list');
   static bool popByRouteName(BuildContext context, String routeName, {dynamic result}) {
     final route = accessModalRouteByRouteName(context, routeName);
 
-    print('route == null: ${route == null}    ,  route.isCurrent:${route?.isCurrent}');
-    if (route == null || !route.isCurrent) {
+    if (route == null/* || !route.isCurrent*/) {
       return false;
     }
 
