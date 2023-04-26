@@ -10,6 +10,18 @@ import 'package:flutter/material.dart';
 onTap: (){
     dCtr.manageSelection(txtCtr);
   },
+
+  ************************************************************
+
+  AutoDirection(
+    builder: (_, AutoDirectionController direction) {
+      return Align(
+        alignment: direction.getAlignment(question),
+        child: Text(
+            question,
+          textDirection: direction.getTextDirection(question),
+        ),
+      )
  */
 typedef BuildTextField = Widget Function(BuildContext context, AutoDirectionController direction);
 ///==================================================================================
