@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 
 
 /*
-  textDirection: dCtr.getTextDirection(tCtr.text),
+  textDirection: direction.getTextDirection(txtCtr.text),
   onChanged: (t){
-      dCtr.onChangeText(t);
+      direction.onChangeText(t);
     },
   ------------- selection ----------------------------
 onTap: (){
-    dCtr.manageSelection(tCtr);
+    dCtr.manageSelection(txtCtr);
   },
  */
-typedef BuildTextField = Widget Function(BuildContext context, AutoDirectionController dCtr);
+typedef BuildTextField = Widget Function(BuildContext context, AutoDirectionController direction);
 ///==================================================================================
 class AutoDirection extends StatefulWidget {
   final BuildTextField builder;
@@ -75,6 +75,17 @@ class AutoDirectionController {
     return _curDirection!;
   }
 
+  Alignment getAlignment(String? text){
+    _detectByText(text?? '');
+
+    if(_curDirection! == TextDirection.ltr){
+      return Alignment.centerLeft;
+    }
+    else {
+      return Alignment.centerRight;
+    }
+  }
+
   void onChangeText(String text){
     _detectByText(text);
 
@@ -119,7 +130,6 @@ class AutoDirectionController {
   }
 
   void manageSelection(TextEditingController ctr){
-
     if(lastTap > 0 && (DateTime.now().millisecondsSinceEpoch - lastTap) < 1000) {
       lastTap = DateTime.now().millisecondsSinceEpoch;
       return;
