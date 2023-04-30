@@ -268,6 +268,10 @@ class System {
     return ui.window.locale.countryCode;
   }
 
+  static bool isMounted(BuildContext context) {
+    return (context as Element).mounted;
+  }
+
   static void vibrate(BuildContext context) {
     switch (Theme.of(context).platform) {
       case TargetPlatform.android:
