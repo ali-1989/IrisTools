@@ -4,6 +4,10 @@ import 'package:iris_tools/api/helpers/fileHelper.dart';
 class WidgetHelper {
   WidgetHelper._();
 
+  static bool isMounted(BuildContext context) {
+    return (context as Element).mounted;
+  }
+
   static void rebuildWidget(BuildContext context) {
     (context as Element).markNeedsBuild();
   }
