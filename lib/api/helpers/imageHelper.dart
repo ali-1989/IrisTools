@@ -357,7 +357,11 @@ class ImageHelper {
         keepExif: false,
     );
 
-    return result;
+    if(result != null) {
+      return File(result.path);
+    }
+
+    return null;
   }
   //--------------------------------------------------------------------------
   static Future<Uint8List> rotateBytes(Uint8List list, int minWidth, int minHeight, int rotate,{

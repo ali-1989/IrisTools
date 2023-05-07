@@ -180,7 +180,7 @@ class System {
   }
 
   static bool isWeb(){
-    return kIsWeb;
+    return kIsWeb; // bool.fromEnvironment('dart.library.js_util')
   }
 
   static bool isWebMobile(){
