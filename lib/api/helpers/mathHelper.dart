@@ -75,7 +75,7 @@ class MathHelper {
 	}
 
 	static double percent(double whole, int per){
-		return per / 100 * whole; // == per * whole ~/ 100
+		return per * 100 / whole; // 25% of 500 => [25 * 100 / 500] = 2500/500 = 5    (5 * 100 = 500)
 	}
 
 	static double percentFixPrecision(double whole, int per){
@@ -83,7 +83,7 @@ class MathHelper {
 	}
 
 	static int percentInt(int whole, int per){
-		return (per / 100 * whole).toInt();
+		return per * 100 ~/ whole; // 1402/02/17  40x of 200x => 40*100/200 = 20%
 	}
 
 	static double degreesToRadian(double deg) {
