@@ -1,6 +1,6 @@
 name: iris_tools
 description: iris tools Library.
-version: 0.0.37+2
+version: 0.0.37+3
 homepage: https://iris.ir
 
 publish_to: 'none'
@@ -15,9 +15,8 @@ dependencies:
     sdk: flutter
   cupertino_icons: ^1.0.5
   community_material_icon: ^5.9.55      # https://materialdesignicons.com/  https://www.fluttericon.com/
-  intl: ^0.18.1
   jiffy: ^6.1.0
-  file: 6.1.4
+  file: ^6.1.4
   convert: ^3.1.1
   path: ^1.8.3                          # (path manager)
   android_path_provider: ^0.3.0         # (android directory)
@@ -28,7 +27,6 @@ dependencies:
   connectivity_plus: ^4.0.0
   photo_view: ^0.14.0
   file_picker: ^5.3.0
-  #just_audio: ^0.9.32
   audioplayers: ^4.0.1
   video_player: ^2.6.1
   gallery_saver: 2.3.2
