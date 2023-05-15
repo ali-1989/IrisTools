@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 typedef ShareTextEditingController = void Function(TextEditingController tController);
 typedef OnSearch = void Function(String text);
 ///=========================================================================================================
-class SearchBar extends StatefulWidget {
+class IrisSearchBar extends StatefulWidget {
   final bool maxWith;
   final TextDirection? textDirection;
   final BoxDecoration? decoration;
@@ -22,7 +22,7 @@ class SearchBar extends StatefulWidget {
   final TextStyle? hintStyle;
   final TextStyle? textStyle;
 
-  SearchBar({
+  IrisSearchBar({
     Key? key,
     this.searchIcon,
     this.searchEvent,
@@ -45,11 +45,11 @@ class SearchBar extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    return SearchBarState();
+    return IrisSearchBarState();
   }
 }
 ///=================================================================================================
-class SearchBarState extends State<SearchBar> {
+class IrisSearchBarState extends State<IrisSearchBar> {
   late TextEditingController controller;
   late Color _iconColor;
 

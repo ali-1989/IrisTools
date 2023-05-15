@@ -1,75 +1,70 @@
 import 'dart:typed_data';
 import 'dart:ui';
-import 'package:flutter/widgets.dart';
 
 class FlutterSystem {
 
-  static SingletonFlutterWindow getFlutterWindow(){
-    return PaintingBinding.instance.window;
+  static FlutterView getFlutterWindow(){
+    return PlatformDispatcher.instance.implicitView!;
   }
 
   static AccessibilityFeatures getAccessibilityFeatures(){
-    return PaintingBinding.instance.window.accessibilityFeatures;
+    return PlatformDispatcher.instance.accessibilityFeatures;
   }
 
   static bool use24HourFormat(){
-    return PaintingBinding.instance.window.alwaysUse24HourFormat;
+    return PlatformDispatcher.instance.alwaysUse24HourFormat;
   }
 
   static int getFrameNumber(){
-    return PaintingBinding.instance.window.frameData.frameNumber;
+    return PlatformDispatcher.instance.frameData.frameNumber;
   }
 
   static List<Locale> getLocales(){
-    return PaintingBinding.instance.window.locales;
+    return PlatformDispatcher.instance.locales;
   }
 
   static void setOnAccessibilityFeaturesChanged(Function() fn){
-    PaintingBinding.instance.window.onAccessibilityFeaturesChanged = fn;
+    PlatformDispatcher.instance.onAccessibilityFeaturesChanged = fn;
   }
 
   static void setOnLocaleChanged(Function() fn){
-    PaintingBinding.instance.window.onLocaleChanged = fn;
+    PlatformDispatcher.instance.onLocaleChanged = fn;
   }
 
   static void setOnMetricsChanged(Function() fn){
-    PaintingBinding.instance.window.onMetricsChanged = fn;
+    PlatformDispatcher.instance.onMetricsChanged = fn;
   }
 
   static void setOnBrightnessChanged(Function() fn){
-    PaintingBinding.instance.window.onPlatformBrightnessChanged = fn;
-  }
-
-  static ViewConfiguration getViewConfiguration(){
-    return PaintingBinding.instance.window.viewConfiguration;
+    PlatformDispatcher.instance.onPlatformBrightnessChanged = fn;
   }
 
   static double getDevicePixelRatio(){
-    return PaintingBinding.instance.window.viewConfiguration.devicePixelRatio;
+    return PlatformDispatcher.instance.implicitView!.devicePixelRatio;
   }
 
   static GestureSettings getGestureSettings(){
-    return PaintingBinding.instance.window.viewConfiguration.gestureSettings;
+    return PlatformDispatcher.instance.implicitView!.gestureSettings;
   }
 
-  static WindowPadding getViewPadding(){
-    return PaintingBinding.instance.window.viewConfiguration.viewPadding;
+  static ViewPadding getViewPadding(){
+    return PlatformDispatcher.instance.implicitView!.viewPadding;
   }
 
-  static WindowPadding getViewInsets(){
-    return PaintingBinding.instance.window.viewConfiguration.viewInsets;
+  static ViewPadding getViewInsets(){
+    return PlatformDispatcher.instance.implicitView!.viewInsets;
   }
 
   static PlatformDispatcher getPlatformDispatcher(){
-    return PaintingBinding.instance.window.platformDispatcher;
+    return PlatformDispatcher.instance;
   }
 
   static bool isSemanticsEnabled(){
-    return PaintingBinding.instance.window.platformDispatcher.semanticsEnabled;
+    return getPlatformDispatcher().semanticsEnabled;
   }
 
   static Iterable<FlutterView> getFlutterViews(){
-    return PaintingBinding.instance.window.platformDispatcher.views;
+    return getPlatformDispatcher().views;
   }
 
   static Future loadFont(Uint8List fontBytes, String fontFamily){

@@ -3,11 +3,10 @@ import 'dart:io';
 import 'dart:math' as math;
 import 'dart:math';
 import 'dart:ui' as ui;
-import 'dart:typed_data';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:iris_tools/api/helpers/imageHelper.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:video_compress/video_compress.dart';
 import 'package:video_player/video_player.dart';
 
@@ -82,15 +81,19 @@ class MediaHelper {
 
   static Future<Duration?> getLocalAudioDuration(String filePath) async {
     final AudioPlayer player = AudioPlayer();
-    Duration? d = await player.setFilePath(filePath);
+    await player.setSourceDeviceFile(filePath);
+    final d = await player.getDuration();
+
     player.dispose();
 
     return d;
   }
 
-  static Future<Duration?> getRemoteAudioDuration(String filePath) async {
+  static Future<Duration?> getRemoteAudioDuration(String url) async {
     final AudioPlayer player = AudioPlayer();
-    Duration? d = await player.setUrl(filePath);
+    await player.setSourceUrl(url);
+    final d = await player.getDuration();
+
     player.dispose();
 
     return d;
