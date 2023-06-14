@@ -1,6 +1,6 @@
 name: iris_tools
 description: iris tools Library.
-version: 0.1.1
+version: 0.1.2
 homepage: https://iris.ir
 
 publish_to: 'none'
@@ -15,14 +15,14 @@ dependencies:
     sdk: flutter
   cupertino_icons: ^1.0.5
   community_material_icon: ^5.9.55      # https://materialdesignicons.com/  https://www.fluttericon.com/
-  jiffy: ^6.1.0
+  jiffy: ^6.2.1
   file: ^7.0.0
   convert: ^3.1.1
   path: ^1.8.3                          # (path manager)
   android_path_provider: ^0.3.0         # (android directory)
   mime: ^1.0.4
   url_launcher: ^6.1.11
-  dio: ^5.1.2
+  dio: ^5.2.1+1
   http: ^1.0.0
   connectivity_plus: ^4.0.1
   photo_view: ^0.14.0
@@ -36,7 +36,7 @@ dependencies:
   video_compress: ^3.1.2                # no Web    (thumbnail)
   path_provider: ^2.0.15                # no Web
   disk_space: ^0.2.1                    # no Web
-  open_file: ^3.3.1                     # no Web
+  open_file: ^3.3.2                     # no Web
   flutter_image_compress: ^2.0.3        # no Web
   crypto: ^3.0.3
   collection: any
@@ -50,7 +50,7 @@ dependencies:
 dependency_overrides:
   file: ^7.0.0
   http: ^1.0.0
-  win32: ^5.0.2
+  #win32: ^5.0.2
 
 
 dev_dependencies:

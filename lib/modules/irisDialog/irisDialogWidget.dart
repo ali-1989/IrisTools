@@ -126,7 +126,7 @@ class _IrisDialogWidgetState extends State<IrisDialogWidget> {
                           descriptionView,
 
                           Builder(
-                            builder: (context) {
+                            builder: (_) {
                               if(_hasButtons()) {
                                 return Column(
                                   mainAxisSize: MainAxisSize.min,
