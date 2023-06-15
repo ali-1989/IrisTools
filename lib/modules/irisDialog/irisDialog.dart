@@ -32,7 +32,7 @@ class IrisDialogDecoration {
   ShapeBorder? shape;
   EdgeInsets? padding;
   EdgeInsets titlePadding = EdgeInsets.all(10.0);
-  double widthFactor = 0.8;
+  double widthFactor = 0.88;
   double? maxWidth;
   double elevation = 4.0;
   double messageToButtonsSpace = 20;
