@@ -146,7 +146,7 @@ class _IrisDialogWidgetState extends State<IrisDialogWidget> {
                                             onPressed: () {
                                               final res = widget.positivePress?.call(context);
 
-                                              if (res != null && res is Future) {
+                                              if (res is Future) {
                                                 res.then((value) {
                                                   widget.anyButtonPress?.call(value);
                                                 });
@@ -171,7 +171,7 @@ class _IrisDialogWidgetState extends State<IrisDialogWidget> {
                                                 onPressed: () {
                                                   final res = widget.negativePress?.call(context);
 
-                                                  if (res != null && res is Future) {
+                                                  if (res is Future) {
                                                     res.then((value) {
                                                       widget.anyButtonPress?.call(value);
                                                     });
@@ -193,7 +193,7 @@ class _IrisDialogWidgetState extends State<IrisDialogWidget> {
                                             onPressed: () {
                                               final res = widget.threePress?.call(context);
 
-                                              if (res != null && res is Future) {
+                                              if (res is Future) {
                                                 res.then((value) {
                                                   widget.anyButtonPress?.call(value);
                                                 });

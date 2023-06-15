@@ -16,7 +16,7 @@ class FocusHelper{
   FocusHelper._();
 
   static FocusScopeNode getNavigatorFocusScopeNode(BuildContext context) {
-    return Navigator.of(context).focusScopeNode;
+    return Navigator.of(context).focusNode.enclosingScope!;
   }
 
   static FocusScopeNode? getRootScopeNodeOf(BuildContext context) {
@@ -32,7 +32,7 @@ class FocusHelper{
   }
   ///...............................................................................................
   static void unFocusNavigator(BuildContext context) {
-    Navigator.of(context).focusScopeNode.unfocus();
+    Navigator.of(context).focusNode.unfocus();
   }
 
   static void unFocusRootScope(BuildContext context){
@@ -59,6 +59,11 @@ class FocusHelper{
   /// use this if has textField
   static void hideKeyboardByUnFocusRoot(){
     FocusManager.instance.primaryFocus?.unfocus();
+  }
+
+  static Future<void> hideKeyboardByUnFocusRootWait(){
+    FocusManager.instance.primaryFocus?.unfocus();
+    return Future.delayed(Duration(milliseconds: 250));
   }
 
   static void hideKeyboardByUnFocus(BuildContext context){
