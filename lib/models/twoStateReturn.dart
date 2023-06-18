@@ -16,15 +16,19 @@ class TwoStateReturn<R1, R2> {
     result2 = r2;
   }
 
+  bool isEmpty(){
+    return result1 == null && result2 == null;
+  }
+
+  bool hasTwoResults(){
+    return result1 != null && result2 != null;
+  }
+
   bool hasResult1(){
     return result1 != null;
   }
 
   bool hasResult2(){
     return result2 != null;
-  }
-
-  bool isEmpty(){
-    return result1 == null && result2 == null;
   }
 }
