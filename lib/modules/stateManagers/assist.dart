@@ -10,9 +10,11 @@ class Assist extends StatefulWidget {
   final bool? isHead;
   final bool selfControl;
   final String? id;
-  final List<GroupId> groupIds;
   final AssistObserver? observable;
   final AssistBuilder builder;
+
+  /// define a (enum or class) that implements GroupId {}
+  final List<GroupId> groupIds;
 
   Assist({
     Key? key,
