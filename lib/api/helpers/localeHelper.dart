@@ -19,7 +19,10 @@ class LocaleHelper {
 
   static bool hasRtlChar(String inp){
     var rtlChars = RegExp('[\u0600-\u06FF\u0750-\u077F\u08A0–\u08FF\uFB50–\uFBC1\uFBD3-\uFD3F\uFD50-\uFD8F\uFD92-\uFDC7\uFDF0-\uFDFD\uFE70-\uFEFC\u0660-\u0669\u06F0-\u06F9]+',
-        caseSensitive: false, multiLine: true);
+        caseSensitive: false,
+        multiLine: true,
+    );
+
     return rtlChars.hasMatch(inp);
 
     // https://en.wikipedia.org/wiki/List_of_Unicode_characters
@@ -219,25 +222,30 @@ class LocaleHelper {
     return res.toString();
   }
 
-  /*
-    onChanged: (t){
-      multiController.setState('textDirection', LocaleHelper.autoDirection(t));
-      ctr.update('chatTextInput');
-    },
+  /**
+   This method is more exact from detectDirection().
    */
-  static TextDirection autoDirection(String text) {
+
+  static TextDirection autoDirection(String text, {TextDirection defaultDirection = TextDirection.ltr}) {
     text = text.trim();
     text = removeNoneViewable(text);
 
     if (text.isNotEmpty) {
       if (LocaleHelper.hasRtlChar(text.substring(0, 1))) {
         return TextDirection.rtl;
-      } else {
-        return TextDirection.ltr;
       }
     }
 
-    return TextDirection.rtl;
+    return defaultDirection;
+  }
+
+  static TextDirection detectDirection(String text) {
+    //return intl.Bidi.detectRtlDirectionality(text);
+    if(hasRtlChar(text)) {
+      return TextDirection.rtl;
+    }
+
+    return TextDirection.ltr;
   }
 
   static Widget getCustomLocalization(BuildContext context, Locale locale, Widget child) {
@@ -254,14 +262,5 @@ class LocaleHelper {
 
   static bool isRtl(BuildContext context){
     return isRtlLocal(getLocalOf(context)?? Locale('en'));
-  }
-
-  static TextDirection detectDirection(String text) {
-    //return intl.Bidi.detectRtlDirectionality(text);
-    if(hasRtlChar(text)) {
-      return TextDirection.rtl;
-    }
-
-    return TextDirection.ltr;
   }
 }
