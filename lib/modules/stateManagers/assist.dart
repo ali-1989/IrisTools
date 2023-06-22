@@ -1,6 +1,21 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 
+/*
+enum AppAssistKeys implements GroupId {
+  voicePlayerGroupId$vocabClickable(120);
+
+  final int _number;
+
+  const AppAssistKeys(this._number);
+
+  int getNumber(){
+    return _number;
+  }
+}
+ */
+
+
 typedef AssistBuilder = Widget Function(BuildContext context, AssistController controller, dynamic sendData);
 typedef OverlayBuilder = Widget Function(BuildContext context);
 typedef NotifierUpdate = void Function(dynamic sendData);
