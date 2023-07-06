@@ -5,12 +5,42 @@ class OpenHelper {
   OpenHelper._();
 
   /// type: "text/plain"
-  static Future<OpenResult> openFileBySystem(String path, {String? type}) async {
+  static Future<OpenResult> openFile(String path, {String? type}) async {
     return OpenFile.open(path, type: type);
   }
 
-  static Future<OpenResult> openFileByOtherApp(String path){
-    return OpenFile.open(path);
+  static Future<bool> launchFile(String path) async {
+    final uri = Uri(
+      scheme: 'file',
+      path: path,
+    );
+
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(
+        uri,
+        webOnlyWindowName: ' ',
+        mode: LaunchMode.externalApplication,
+      );
+
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
+
+  static Future<bool> launchUri(Uri uri) async {
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(
+        uri,
+        mode: LaunchMode.externalApplication,
+      );
+
+      return true;
+    }
+    else {
+      return false;
+    }
   }
 
   /// url: https://flutter.dev
@@ -24,20 +54,6 @@ class OpenHelper {
         webViewConfiguration: WebViewConfiguration(
             headers: headers?? {},
         ),
-      );
-
-      return true;
-    }
-    else {
-      return false;
-    }
-  }
-
-  static Future<bool> launch(Uri uri) async {
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(
-        uri,
-        mode: LaunchMode.externalApplication,
       );
 
       return true;
@@ -70,28 +86,37 @@ class OpenHelper {
   static Future<bool> makePhoneCall(String num) async {
     final uri = Uri.parse('tel://$num');
 
-    return launch(uri);
+    return launchUri(uri);
   }
 
   static Future<bool> sendSmsTo(String num) async {
     final sms = Uri(scheme: 'sms', path: num);
 
-    return launch(sms);
+    return launchUri(sms);
   }
 
   static Future<bool> sendSmsToByBody(String num, String text) async {
-    final Uri sms = Uri(scheme: 'sms', path: num, queryParameters: {'sms_body': text});
+    final sms = Uri(
+        scheme: 'sms',
+        path: num,
+        queryParameters: {'body': text}
+    );
 
-    return launch(sms);
+    return launchUri(sms);
   }
 
   /// url:  mailto:smith@example.org?subject=News&body=New%20plugin
   static Future<bool> sendEmail(String emailAddress, String subject) async {
-    final Uri emailUri = Uri(
+    final emailUri = Uri(
         scheme: 'mailto',
         path: emailAddress,
-        queryParameters: {'subject': subject});
+        query: _encodeQueryParameters({'subject': subject, 'body': 'hi'}),
+    );
 
-    return launch(emailUri);
+    return launchUri(emailUri);
+  }
+
+  static String? _encodeQueryParameters(Map<String, String> params) {
+    return params.entries.map((e) => '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}').join('&');
   }
 }
