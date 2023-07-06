@@ -199,10 +199,6 @@ class UrlHelper {
     }
   }
 
-  static Future<bool> launchTel(String tel) async {
-    return launchLink('tel://$tel');
-  }
-
   static Future<bool> launchWeb(String url, {
     LaunchMode mode = LaunchMode.platformDefault,
     WebViewConfiguration webViewConfiguration = const WebViewConfiguration(),

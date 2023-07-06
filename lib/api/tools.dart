@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/widgets.dart';
 import 'package:gallery_saver/gallery_saver.dart';
-import 'package:open_file/open_file.dart';
 
 class Tools {
   Tools._();
@@ -26,10 +25,6 @@ class Tools {
 
   static void printWithDelimiter(Object obj){
     print('${'*' * 40}\n ${obj.toString()} \n${'*' * 50}');
-  }
-
-  static Future<OpenResult> openFileByOtherApp(String path){
-    return OpenFile.open(path);
   }
 
   static Future<bool?> saveImageToGallery(String imgPath){
