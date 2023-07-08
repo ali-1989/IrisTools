@@ -152,6 +152,8 @@ class ClickCounter {
   }
 
   bool touch(){
+    print('touch: $_step');
+
     if(_startTime == null){
       _step = 1;
       _startTime = DateTime.now();
@@ -159,6 +161,7 @@ class ClickCounter {
     }
 
     if(_startTime!.add(_duration).isAfter(DateTime.now())){
+      print('ohhhh');
       _step = 0;
       _startTime = null;
 
