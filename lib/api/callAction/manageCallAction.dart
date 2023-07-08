@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ui';
 
 class RewindCall {
   static final Map _holder = <String, RewindCall>{};
@@ -132,4 +133,47 @@ class ManageCallInDuration {
     }
   }
 }
+///===================================================================================================
+class ClickCounter {
+  final Duration _duration;
+  DateTime? _startTime;
+  int _count;
+  int _step = 0;
+  VoidCallback? _fn;
 
+  ClickCounter(Duration duration, int count): _duration = duration, _count = count;
+
+  void setFunction(VoidCallback fn){
+    _fn = fn;
+  }
+
+  int getStep(){
+    return _step;
+  }
+
+  void touch(){
+    if(_startTime == null){
+      _step = 1;
+      _startTime = DateTime.now();
+      return;
+    }
+
+    if(_startTime!.add(_duration).isAfter(DateTime.now())){
+      _step = 0;
+      _startTime = null;
+
+      return;
+    }
+
+    _step++;
+
+    if(_step < _count){
+      return;
+    }
+
+    _step = 0;
+    _startTime = null;
+
+    _fn?.call();
+  }
+}
