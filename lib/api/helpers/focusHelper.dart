@@ -114,16 +114,8 @@ class FocusHelper{
     ctx.owner?.focusManager.rootScope.requestFocus(node);
   }
 
-  static FocusNode? getFocused(BuildContext ctx){
+  static FocusNode? getFocusedChild(BuildContext ctx){
     return ctx.owner?.focusManager.rootScope.focusedChild;
-  }
-
-  static bool? hasFocus(BuildContext ctx){
-    return ctx.owner?.focusManager.rootScope.hasFocus;
-  }
-
-  static bool? hasPrimaryFocus(BuildContext ctx){
-    return ctx.owner?.focusManager.rootScope.hasPrimaryFocus;
   }
 
   static bool? nextFocus(BuildContext ctx){
@@ -136,6 +128,14 @@ class FocusHelper{
 
   static FocusNode? getParentRootScope(BuildContext ctx){
     return ctx.owner?.focusManager.rootScope.parent;
+  }
+
+  static bool? rootHasFocus(BuildContext ctx){
+    return ctx.owner?.focusManager.rootScope.hasFocus;
+  }
+
+  static bool? rootHasPrimaryFocus(BuildContext ctx){
+    return ctx.owner?.focusManager.rootScope.hasPrimaryFocus;
   }
 
   static bool isFocusInWidget(BuildContext ctx){

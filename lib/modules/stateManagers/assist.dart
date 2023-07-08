@@ -217,6 +217,10 @@ class AssistController {
     }
   }
 
+  BuildContext? getContext(){
+    return _headStateRef?.context?? _selfStateRef?.context;
+  }
+
   void addHeadListener(NotifierUpdate fn){
     if(!_notifyHeadStateUpdate.contains(fn)) {
       _notifyHeadStateUpdate.add(fn);
