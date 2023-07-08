@@ -152,7 +152,7 @@ class ClickCounter {
   }
 
   bool touch(){
-    print('touch: $_step');
+    print('touch: $_step               ${_startTime.toString()}     ,   ${_startTime!.add(_duration).toString()}');
 
     if(_startTime == null){
       _step = 1;
