@@ -151,29 +151,30 @@ class ClickCounter {
     return _step;
   }
 
-  void touch(){
+  bool touch(){
     if(_startTime == null){
       _step = 1;
       _startTime = DateTime.now();
-      return;
+      return false;
     }
 
     if(_startTime!.add(_duration).isAfter(DateTime.now())){
       _step = 0;
       _startTime = null;
 
-      return;
+      return false;
     }
 
     _step++;
 
     if(_step < _count){
-      return;
+      return false;
     }
 
     _step = 0;
     _startTime = null;
 
     _fn?.call();
+    return true;
   }
 }
