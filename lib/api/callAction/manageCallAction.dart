@@ -157,10 +157,8 @@ class ClickCounter {
       _startTime = DateTime.now();
       return false;
     }
-    print('touch: $_step               start:${_startTime.toString()}     ,   after:${_startTime!.add(_duration).toString()}');
 
     if(_startTime!.add(_duration).isBefore(DateTime.now())){
-      print('ohhhh');
       _step = 0;
       _startTime = null;
 
