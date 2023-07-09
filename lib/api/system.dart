@@ -80,6 +80,14 @@ class System {
     return Future.delayed(dur, (){});
   }
 
+  static Future wait400() {
+    return Future.delayed(Duration(milliseconds: 400), (){});
+  }
+
+  static Future wait250() {
+    return Future.delayed(Duration(milliseconds: 250), (){});
+  }
+
   static Future<T> waitThen<T>(Duration dur, T Function() fn) {
     return Future<T>.delayed(dur, fn);
     //Timer(dur, fn);
