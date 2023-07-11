@@ -228,4 +228,29 @@ class MathHelper {
 			return r % allCount;
 		}
 	}
+
+	static double between(double maxReturn, double maxRang, double minReturn, double minRang, double num, {bool symmetry = false}){
+		if(symmetry){
+			double temp = maxReturn;
+			maxReturn = minReturn;
+			minReturn = temp;
+		}
+
+		if(num >= maxRang){
+			return maxReturn;
+		}
+
+		if(num <= minRang){
+			return minReturn;
+		}
+
+		double difResult = maxReturn - minReturn;
+		double difRange = maxRang - minRang;
+
+		double percent = 100 * (num - minRang) / difRange;
+		double wPer = difResult * percent / 100;
+		double res = wPer + minReturn;
+
+		return res;
+	}
 }
