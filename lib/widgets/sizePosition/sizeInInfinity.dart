@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 
-typedef ChildBuilder = Function(BuildContext context, double? top, double? realHeight, double? height);
+typedef ChildBuilder = Widget Function(BuildContext context, double? top, double? height, double? screenHeight);
 ///=======================================================================================
 class SizeInInfinity extends StatefulWidget {
   final ChildBuilder builder;
@@ -19,8 +19,8 @@ class SizeInInfinity extends StatefulWidget {
 ///=======================================================================================
 class SizeInInfinityState extends State<SizeInInfinity> {
   double? top;
-  double? realHeight;
   double? height;
+  double? screenHeight;
 
   @override
   void initState() {
@@ -33,7 +33,7 @@ class SizeInInfinityState extends State<SizeInInfinity> {
 
   @override
   Widget build(BuildContext context) {
-    return widget.builder(context, top, realHeight, height);
+    return widget.builder(context, top, height, screenHeight);
   }
 
   @override
@@ -43,15 +43,15 @@ class SizeInInfinityState extends State<SizeInInfinity> {
 
   void _onFinishRender(){
     final x = context.findRenderObject() as RenderBox;
-    realHeight = x.size.height;
+    height = x.size.height;
 
     final g = x.localToGlobal(Offset.zero);
     final mediaQuery = MediaQuery.of(context);
 
-    double h = mediaQuery.size.height;
+    double screenHeight = mediaQuery.size.height;
 
     top = g.dy; // - kToolbarHeight - mediaQuery.padding.top
-    height = h - top!;
+    screenHeight = screenHeight - top!;
 
     setState(() {});
   }

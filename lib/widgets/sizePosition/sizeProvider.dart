@@ -9,9 +9,9 @@ class SizeProviderWidget extends StatefulWidget {
   SizeProviderWidget({Key? key, required this.onSizeDetected, required this.child}) : super(key: key);
 
   @override
-  _SizeProviderWidgetState createState() => _SizeProviderWidgetState();
+  State createState() => _SizeProviderWidgetState();
 }
-
+///=======================================================================================
 class _SizeProviderWidgetState extends State<SizeProviderWidget> {
   Widget _overlayChild = SizedBox();
 

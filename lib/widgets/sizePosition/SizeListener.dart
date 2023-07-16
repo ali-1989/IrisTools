@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-typedef ChildBuilder = Function(BuildContext context, SizeListenerController ctr);
+typedef ChildBuilder = Widget Function(BuildContext context, SizeListenerController ctr);
 //-------------------------------------------------------------------
 class SizeListener extends StatefulWidget {
   final SizeListenerController controller;
@@ -19,7 +19,7 @@ class SizeListener extends StatefulWidget {
   @override
   State<SizeListener> createState() => _SizeListenerState();
 }
-//-------------------------------------------------------------------------------------
+///-------------------------------------------------------------------------------------
 class _SizeListenerState extends State<SizeListener> {
 
   @override

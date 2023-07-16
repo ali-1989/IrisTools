@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
 typedef OnWidgetSizeChange = void Function(Size size);
-
+///===========================================================================================
 class _SizeReportRenderObject extends RenderProxyBox {
   final OnWidgetSizeChange onSizeChange;
   Size? currentSize;
@@ -28,9 +28,8 @@ class _SizeReportRenderObject extends RenderProxyBox {
     }
   }
 }
-///============================================================================================
+///===========================================================================================
 class SizeReporter extends SingleChildRenderObjectWidget {
-
   final OnWidgetSizeChange onSizeChange;
 
   const SizeReporter({
@@ -61,7 +60,7 @@ class MeasureWidget extends SingleChildRenderObjectWidget {
     return _MeasureSizeRenderObject(onChange, onlyOnce);
   }
 }
-
+///===========================================================================================
 class _MeasureSizeRenderObject extends RenderProxyBox {
   double? oldSizeH;
   double? oldSizeW;
@@ -99,14 +98,13 @@ class _MeasureSizeRenderObject extends RenderProxyBox {
 
 /*
  usage:
- MeasureWidget(
+
+ SizeReporter(
         onlyOnce: false,
         onChange: (Size size){
-          pr-int('size.width ${size.width}');
-          state.maxWidth = size.width;
+          maxWidth = size.width;
           state.update();
         },
-        child: Text('${state.user.userName}',
-          maxLines: 1,),
+        child: Text('${userName}', maxLines: 1,),
       ),
  */
