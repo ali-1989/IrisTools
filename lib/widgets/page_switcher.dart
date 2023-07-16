@@ -41,6 +41,8 @@ class _PageSwitcherState extends State<PageSwitcher> {
 class PageSwitcherController {
   late _PageSwitcherState _state;
 
+  int get index => _state.index;
+
   void _setState(_PageSwitcherState state){
     _state = state;
   }
