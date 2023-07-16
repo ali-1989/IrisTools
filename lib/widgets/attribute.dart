@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
-typedef ChildBuilder = Function(BuildContext context, AttributeController att);
+typedef ChildBuilder = Widget Function(BuildContext context, AttributeController att, Widget? child);
 ///========================================================================================================
 class Attribute extends StatefulWidget {
   final AttributeController? controller;
@@ -30,8 +30,8 @@ class AttributeState extends State<Attribute> {
   void initState() {
     super.initState();
 
-    _childBuilder = widget.childBuilder?? (context, att){
-      return widget.child;
+    _childBuilder = widget.childBuilder?? (context, att, child){
+      return widget.child?? SizedBox();
     };
 
     myController = widget.controller?? AttributeController();
@@ -40,7 +40,7 @@ class AttributeState extends State<Attribute> {
 
   @override
   Widget build(BuildContext context) {
-    return _childBuilder(context, myController);
+    return _childBuilder(context, myController, widget.child);
   }
 
   @override
@@ -63,7 +63,7 @@ class AttributeController {
       _state = s;
   }
 
-  Size? getSizeObject(){
+  Size? getSize(){
     return _state.context.size;
   }
 
@@ -184,8 +184,8 @@ class AttributeController {
     return getRenderBox()?.isRepaintBoundary;
   }
 
-  bool? hasSize(){
-    return getRenderBox()?.hasSize;
+  bool hasSize(){
+    return getRenderBox()?.hasSize?? false;
   }
 
   void update(){
@@ -206,15 +206,15 @@ class AttributeController {
     return Overlay.of(_state.context);
   }
 }
-///============================================================================================================
+
 /*
   usage:
 
 Align(
     alignment: Alignment.topCenter,
     child: Attribute(
-        controller: state.childAttribute,
-        childBuilder: (ctx, att){
+        controller: childAttribute,
+        childBuilder: (ctx, att, child){
           return Column();
           }
         )
@@ -222,8 +222,8 @@ Align(
 --------------------------------------------------------------
 SingleChildScrollView(
       child: Attribute(
-          controller: state.childAtt,
-          childBuilder: (context, att){
+          controller: childAtt,
+          childBuilder: (context, att, child){
             return Padding(
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
               child: IntrinsicHeight(
