@@ -26,7 +26,7 @@ class InputFormatter {
     return LengthLimitingTextInputFormatter(len);
   }
 
-  static TextEditingValue getTextEditingValue(String text){
+  static TextEditingValue genTextEditingValue(String text){
     return TextEditingValue(
       text: text,
       selection: TextSelection(baseOffset: text.length, extentOffset: text.length),

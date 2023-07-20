@@ -25,8 +25,8 @@ class MaskHelper {
 
   static String maskWithFormatter(TextInputFormatter formatter, TextEditingController tController){
     if(tController.text.isNotEmpty) {
-      final old = TextFieldHelper.getTextEditingValue('');
-      final te = TextFieldHelper.getTextEditingValue(tController.text);
+      final old = TextFieldHelper.genTextEditingValue('');
+      final te = TextFieldHelper.genTextEditingValue(tController.text);
       return formatter.formatEditUpdate(old, te).text;
     }
 

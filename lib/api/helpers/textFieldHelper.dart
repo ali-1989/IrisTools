@@ -7,7 +7,15 @@ class TextFieldHelper {
     ctr.selection = TextSelection(baseOffset: 0, extentOffset: ctr.text.length);
   }
 
-  static TextEditingValue getTextEditingValue(String text){
+  static void cursorToEnd(TextEditingController ctr){
+    ctr.selection = TextSelection.collapsed(offset: ctr.text.length);
+  }
+
+  static void cursorToStart(TextEditingController ctr){
+    ctr.selection = TextSelection.collapsed(offset: 0);
+  }
+
+  static TextEditingValue genTextEditingValue(String text){
     return TextEditingValue(
       text: text,
       selection: TextSelection(baseOffset: text.length, extentOffset: text.length),
