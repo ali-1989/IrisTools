@@ -1,82 +1,87 @@
 import 'package:flutter/services.dart';
 
+typedef ReceiveFromAndroid = Future<dynamic> Function(MethodCall call);
+///================================================================================
 class JavaBridge {
   JavaBridge._();
 
-  static late MethodChannel javaPlatform;
-  static bool isInitial = false;
+  late MethodChannel javaPlatform;
+  late String _channelName;  //'myApp/AndroidBridge'
+  bool isInitial = false;
 
-  static void _init(){
-    javaPlatform = MethodChannel('myApp/AndroidBridge');
+  void init(String channelName, ReceiveFromAndroid receiveFromAndroid){
+    _channelName = channelName;
+    javaPlatform = MethodChannel(_channelName);
     javaPlatform.setMethodCallHandler(receiveFromAndroid);
     isInitial = true;
   }
 
-  static Future<T> invokeMethod<T>(String methodName) async {
-    try {
-      if(!isInitial) {
-        _init();
-      }
+  Future<(T?, Exception?)> invokeMethod<T>(String methodName) async {
+    if(!isInitial) {
+      return (null, Exception('JavaBridge is not Initial.'));
+    }
 
-      return await javaPlatform.invokeMethod(methodName);
+    try {
+      return ((await javaPlatform.invokeMethod(methodName) as T), null);
     }
     //on PlatformException catch (e) {
     catch (e) {
-      return "Failed to Invoke $methodName: '$e'." as T;
+      return (null, Exception("Failed to Invoke $methodName: '$e'."));
     }
   }
 
   // invokeMethodByArgs('isInStorageSD1', ['/storage/746D-2CBD/Android'])
-  static Future<Object?> invokeMethodByArgs(String methodName, List<dynamic> args) async {
-    try {
-      if(!isInitial) {
-        _init();
-      }
-
-      return await javaPlatform.invokeMethod(methodName, args);
+  Future<Object?> invokeMethodByArgs(String methodName, List<dynamic> args) async {
+    if(!isInitial) {
+      return (null, Exception('JavaBridge is not Initial.'));
     }
-    on PlatformException catch (e) {
-      return "Failed to Invoke $methodName: '${e.message}'.";
+
+    try {
+      return ((await javaPlatform.invokeMethod(methodName, args)), null);
+    }
+    catch (e) {
+      return (null, Exception("Failed to Invoke $methodName: '$e'."));
     }
   }
-  //===========================================================================================================
-  // called from java to flutter
-  static Future<dynamic> receiveFromAndroid(MethodCall call) async {
+
+  /*Future<dynamic> receiveFromAndroid(MethodCall call) async {
     switch (call.method) {
       case 'hi':
         return Future.value('ok');
     }
-  }
-  //===========================================================================================================
-  static Future isWritableStorageCards(){
+  }*/
+
+
+
+  /*Future isWritableStorageCards(){
     return invokeMethod('isWritableStorageCards');
   }
 
-  static Future getSdPath(){
+  Future getSdPath(){
     return invokeMethod('SdPath');
   }
 
-  static Future getShareStorage(){
+  Future getShareStorage(){
     return invokeMethod('ShareStorage');
   }
 
-  static Future getSdAppDir(){
+  Future getSdAppDir(){
     return invokeMethod('SdAppDir');
   }
 
-  static Future getShareAppDir(){
+  Future getShareAppDir(){
     return invokeMethod('ShareAppDir');
   }
 
-  static Future getInternalAppDir(){
+  Future getInternalAppDir(){
     return invokeMethod('InternalAppDir');
   }
 
-  static Future<String> getDatabaseDir(){
+  Future<String> getDatabaseDir(){
     return invokeMethod('DatabaseDir');
   }
 
-  static Future createFile(String path){
+  Future createFile(String path){
     return invokeMethodByArgs('CreateFile', [path]);
-  }
+  }*/
 }

@@ -7,7 +7,6 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:iris_tools/api/helpers/imageHelper.dart';
-import 'package:video_compress/video_compress.dart';
 import 'package:video_player/video_player.dart';
 
 /// flutter_ffmpeg
@@ -54,18 +53,18 @@ class MediaHelper {
         : Point(math.min(w, maxW), math.min(h, maxHPortland));
   }
 
-  static Future<MediaInfo> getLocalVideoInfo(String vidPath) async {
+  /*static Future<MediaInfo> getLocalVideoInfo(String vidPath) async {
     return VideoCompress.getMediaInfo(vidPath);
-  }
+  }*/
 
-  static Future<VideoPlayerController> getLocalVideoInfoB(String vidPath) async {
+  static Future<VideoPlayerController> getLocalVideoInfo(String vidPath) async {
     var info = VideoPlayerController.file(File(vidPath));
     await info.initialize();
     return info;
   }
 
   static Future<VideoPlayerController> getRemoteVideoInfo(String vidLink) async {
-    var controller = VideoPlayerController.network(vidLink);
+    var controller = VideoPlayerController.networkUrl(Uri.parse(vidLink));
     await controller.initialize();
     return controller;
   }
@@ -135,7 +134,7 @@ class MediaHelper {
   }
   ///-----------------------------------------------------------------------------------------------------------------
   /// video: Url or Path
-  static Future<File?> screenshotVideoToFile(String videoPath,{
+  /*static Future<File?> screenshotVideoToFile(String videoPath,{
     int quality = 80,
     int timeMs = -1,
     }) async{
@@ -167,5 +166,5 @@ static Future<Uint8List?> screenshotVideo(String videoPath,{
         maxWidth: maxWidth,
         timeMs: timeMs,
         quality: quality);*/
-  }
+  }*/
 }
