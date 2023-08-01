@@ -1,12 +1,18 @@
-package ir.nicode.bigbango;
+package ir.iris.error_handler;
 
+import androidx.annotation.NonNull;
+
+import java.util.List;
+import java.util.Map;
+
+import io.flutter.embedding.engine.FlutterEngine;
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
 import io.flutter.plugin.common.BinaryMessenger;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 
-public class UnHandleError implements MethodCallHandler, FlutterPlugin {
+public class HandleError implements MethodCallHandler, FlutterPlugin {
     private MethodChannel channel;
 
     @Override
@@ -24,8 +30,8 @@ public class UnHandleError implements MethodCallHandler, FlutterPlugin {
     }
 
     @Override
-    public void onMethodCall(final MethodCall call, final Result result) {
-        methodHandler(call, result);
+    public void onMethodCall(@NonNull MethodCall methodCall, @NonNull MethodChannel.Result result) {
+        methodHandler(methodCall, result);
     }
 
     private void init(FlutterEngine flutterEngine){
@@ -33,19 +39,21 @@ public class UnHandleError implements MethodCallHandler, FlutterPlugin {
         //MethodChannel myChannel = new MethodChannel(view, "error_handler");
         channel = new MethodChannel(flutterEngine.getDartExecutor(), "error_handler");
 
-        channel.setMethodCallHandler((MethodCall call, Result result) -> {
-            methodHandler(call, result);
-        });
+        channel.setMethodCallHandler(this::methodHandler);
     }
 
-    private void methodHandler(final MethodCall call, final Result result) {
+    private void methodHandler(final MethodCall call, final MethodChannel.Result result) {
         List<?> args = (List<?>)call.arguments;
 
         switch (call.method) {
             case "getConfiguration": {
-                configuration = (Map<?, ?>)args.get(0);
+                Map<?, ?> configuration = (Map<?, ?>)args.get(0);
                 result.success(null);
-                invokeMethod("onConfigurationChanged", configuration);
+                //invokeMethod("onConfigurationChanged", configuration);
+                break;
+            }
+            case "echo": {
+                result.success("Echo from java");
                 break;
             }
             case "throw_error": {
@@ -60,8 +68,10 @@ public class UnHandleError implements MethodCallHandler, FlutterPlugin {
     }
 
     private void throwAnError(){
-        ;
+        double x = 0/0;
     }
+
+
 
     /*private void setDartHandler(MethodCall call, Result result){
         Long id = call.argument("handle_id");
