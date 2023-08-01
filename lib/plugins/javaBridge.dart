@@ -3,11 +3,11 @@ import 'package:flutter/services.dart';
 typedef ReceiveFromAndroid = Future<dynamic> Function(MethodCall call);
 ///================================================================================
 class JavaBridge {
-  JavaBridge._();
-
   late MethodChannel javaPlatform;
   late String _channelName;  //'myApp/AndroidBridge'
   bool isInitial = false;
+
+  JavaBridge();
 
   void init(String channelName, ReceiveFromAndroid receiveFromAndroid){
     _channelName = channelName;
