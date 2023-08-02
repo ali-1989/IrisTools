@@ -48,13 +48,14 @@ public class HandleError implements FlutterPlugin, MethodCallHandler {
         List<?> args = (List<?>) call.arguments;
 
         switch (call.method) {
+            case "echo": {
+                result.success("<---------- Echo from Java ------------>");
+                break;
+            }
+            // dart: invokeMethodByArgs('echo-arg', [{'ali': 'baq'}])
             case "echo-arg": {
                 Map<?, ?> arg1 = (Map<?, ?>) args.get(0);
                 result.success(arg1);
-                break;
-            }
-            case "echo": {
-                result.success("<---------- Echo from Java ------------>");
                 break;
             }
             default:
@@ -73,7 +74,7 @@ public class HandleError implements FlutterPlugin, MethodCallHandler {
             }
         };
 
-        timer.schedule(task, 10000L);
+        timer.schedule(task, 15000L);
     }
 
     private void throwAnError(){
