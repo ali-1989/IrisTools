@@ -4,7 +4,7 @@ typedef ReceiveFromAndroid = Future<dynamic> Function(MethodCall call);
 ///================================================================================
 class JavaBridge {
   late MethodChannel javaPlatform;
-  late String _channelName;  //'myApp/AndroidBridge'
+  late String _channelName;  // same: 'error_handler'
   bool isInitial = false;
 
   JavaBridge();

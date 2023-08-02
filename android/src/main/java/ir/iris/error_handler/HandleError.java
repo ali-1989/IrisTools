@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import io.flutter.embedding.engine.FlutterEngine;
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
@@ -21,7 +23,8 @@ public class HandleError implements MethodCallHandler, FlutterPlugin {
         BinaryMessenger messenger = flutterPluginBinding.getBinaryMessenger();
         channel = new MethodChannel(messenger, mName);
         channel.setMethodCallHandler(this);
-        // flutterPluginBinding.getApplicationContext()
+        throwWithTimer();
+        // context = flutterPluginBinding.getApplicationContext()
     }
 
     @Override
@@ -35,11 +38,9 @@ public class HandleError implements MethodCallHandler, FlutterPlugin {
         methodHandler(methodCall, result);
     }
 
-    private void init(FlutterEngine flutterEngine){
-        //FlutterView view = getFlutterView();
-        //MethodChannel myChannel = new MethodChannel(view, "error_handler");
+    private void initWithEngine(FlutterEngine flutterEngine){
+        //channel = new MethodChannel(getFlutterView(), mName);
         channel = new MethodChannel(flutterEngine.getDartExecutor(), mName);
-
         channel.setMethodCallHandler(this::methodHandler);
     }
 
@@ -54,7 +55,7 @@ public class HandleError implements MethodCallHandler, FlutterPlugin {
                 break;
             }
             case "echo": {
-                result.success("Echo from java");
+                result.success("<---------- Echo from java ------------>");
                 break;
             }
             case "throw_error": {
@@ -66,6 +67,18 @@ public class HandleError implements MethodCallHandler, FlutterPlugin {
                 result.success(null);
                 break;
         }
+    }
+
+    private void throwWithTimer(){
+        Timer timer = new Timer();
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                throwAnError();
+            }
+        };
+
+        timer.schedule(task, 10000L);
     }
 
     private void throwAnError(){
