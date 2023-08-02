@@ -33,14 +33,14 @@ class JavaBridge {
   // invokeMethodByArgs('isInStorageSD1', ['/storage/746D-2CBD/Android'])
   Future<(T?, Exception?)> invokeMethodByArgs<T>(String methodName, List<dynamic> args) async {
     if(!isInitial) {
-      return (null, Exception('JavaBridge is not Initial.'));
+      return (null, Exception('---------- JavaBridge is not Initial.'));
     }
 
     try {
       return ((await javaPlatform.invokeMethod(methodName, args) as T), null);
     }
     catch (e) {
-      return (null, Exception("Failed to Invoke $methodName: '$e'."));
+      return (null, Exception("---------- Failed to Invoke $methodName: '$e'."));
     }
   }
 
