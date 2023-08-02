@@ -1,5 +1,8 @@
 package ir.iris.android_tools;
 
+import android.os.Handler;
+import android.os.Looper;
+
 import androidx.annotation.NonNull;
 
 import java.util.List;
@@ -66,7 +69,18 @@ public class HandleError implements FlutterPlugin, MethodCallHandler {
     }
 
     private void throwWithTimer(){
-        Timer timer = new Timer();
+        Handler handler = new Handler(Looper.getMainLooper());
+
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                throwAnError();
+            }
+        };
+
+        handler.postDelayed(r, 15000L);
+
+        /*Timer timer = new Timer();
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
@@ -74,7 +88,7 @@ public class HandleError implements FlutterPlugin, MethodCallHandler {
             }
         };
 
-        timer.schedule(task, 15000L);
+        timer.schedule(task, 15000L);*/
     }
 
     private void throwAnError(){
