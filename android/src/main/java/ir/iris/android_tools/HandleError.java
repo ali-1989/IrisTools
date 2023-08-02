@@ -16,7 +16,7 @@ import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 
 public class HandleError implements FlutterPlugin, MethodCallHandler {
     private MethodChannel channel;
-    private final String mName = "android_tools";
+    private final String mName = "error_handler";
 
     @Override
     public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {

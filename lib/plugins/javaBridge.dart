@@ -18,7 +18,7 @@ class JavaBridge {
 
   Future<(T?, Exception?)> invokeMethod<T>(String methodName) async {
     if(!isInitial) {
-      return (null, Exception('JavaBridge is not Initial.'));
+      return (null, Exception('---------- JavaBridge is not Initial.'));
     }
 
     try {
@@ -26,7 +26,7 @@ class JavaBridge {
     }
     //on PlatformException catch (e) {
     catch (e) {
-      return (null, Exception("Failed to Invoke $methodName: '$e'."));
+      return (null, Exception("---------- Failed to Invoke $methodName: '$e'."));
     }
   }
 
