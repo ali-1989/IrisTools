@@ -70,13 +70,7 @@ public class HandleError implements FlutterPlugin, MethodCallHandler {
 
     private void throwWithTimer(){
         Handler handler = new Handler(Looper.getMainLooper());
-
-        Runnable r = new Runnable() {
-            @Override
-            public void run() {
-                throwAnError();
-            }
-        };
+        Runnable r = this::throwAnError;
 
         handler.postDelayed(r, 15000L);
 
