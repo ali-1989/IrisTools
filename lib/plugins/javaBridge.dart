@@ -31,27 +31,18 @@ class JavaBridge {
   }
 
   // invokeMethodByArgs('isInStorageSD1', ['/storage/746D-2CBD/Android'])
-  Future<Object?> invokeMethodByArgs(String methodName, List<dynamic> args) async {
+  Future<(T?, Exception?)> invokeMethodByArgs<T>(String methodName, List<dynamic> args) async {
     if(!isInitial) {
       return (null, Exception('JavaBridge is not Initial.'));
     }
 
     try {
-      return ((await javaPlatform.invokeMethod(methodName, args)), null);
+      return ((await javaPlatform.invokeMethod(methodName, args) as T), null);
     }
     catch (e) {
       return (null, Exception("Failed to Invoke $methodName: '$e'."));
     }
   }
-
-  /*Future<dynamic> receiveFromAndroid(MethodCall call) async {
-    switch (call.method) {
-      case 'hi':
-        return Future.value('ok');
-    }
-  }*/
-
-
 
   /*Future isWritableStorageCards(){
     return invokeMethod('isWritableStorageCards');

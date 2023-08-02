@@ -1,4 +1,4 @@
-group 'ir.iris.error_handler'
+group 'ir.iris.android_tools'
 version '1.0'
 
 buildscript {

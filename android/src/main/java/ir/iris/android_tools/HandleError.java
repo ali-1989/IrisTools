@@ -1,4 +1,4 @@
-package ir.iris.error_handler;
+package ir.iris.android_tools;
 
 import androidx.annotation.NonNull;
 
@@ -14,9 +14,9 @@ import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 
-public class HandleError implements MethodCallHandler, FlutterPlugin {
+public class HandleError implements FlutterPlugin, MethodCallHandler {
     private MethodChannel channel;
-    private String mName = "error_handler";
+    private final String mName = "android_tools";
 
     @Override
     public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
@@ -45,26 +45,21 @@ public class HandleError implements MethodCallHandler, FlutterPlugin {
     }
 
     private void methodHandler(final MethodCall call, final MethodChannel.Result result) {
-        List<?> args = (List<?>)call.arguments;
+        List<?> args = (List<?>) call.arguments;
 
         switch (call.method) {
-            case "getConfiguration": {
-                Map<?, ?> configuration = (Map<?, ?>)args.get(0);
-                result.success(null);
-                //invokeMethod("onConfigurationChanged", configuration);
+            case "echo-arg": {
+                Map<?, ?> arg1 = (Map<?, ?>) args.get(0);
+                result.success(arg1);
                 break;
             }
             case "echo": {
                 result.success("<---------- Echo from Java ------------>");
                 break;
             }
-            case "throw_error": {
-                throwAnError();
-                break;
-            }
             default:
-                //result.notImplemented();
-                result.success(null);
+                result.notImplemented();
+                //result.success(null);
                 break;
         }
     }
