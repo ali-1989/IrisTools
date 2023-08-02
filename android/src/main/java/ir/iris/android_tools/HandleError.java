@@ -26,7 +26,7 @@ public class HandleError implements FlutterPlugin, MethodCallHandler {
         BinaryMessenger messenger = flutterPluginBinding.getBinaryMessenger();
         channel = new MethodChannel(messenger, mName);
         channel.setMethodCallHandler(this);
-        throwWithTimer();
+        //throwWithTimer();
         // context = flutterPluginBinding.getApplicationContext()
     }
 
@@ -78,7 +78,7 @@ public class HandleError implements FlutterPlugin, MethodCallHandler {
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
-                throwAnError();
+                 handler.post(r);
             }
         };
 
