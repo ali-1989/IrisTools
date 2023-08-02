@@ -55,7 +55,7 @@ public class HandleError implements MethodCallHandler, FlutterPlugin {
                 break;
             }
             case "echo": {
-                result.success("<---------- Echo from java ------------>");
+                result.success("<---------- Echo from Java ------------>");
                 break;
             }
             case "throw_error": {
