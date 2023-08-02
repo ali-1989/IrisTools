@@ -51,6 +51,6 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'C:\\Users\\Nicode2\\.gradle\\caches\\modules-2\\files-2.1\\io.flutter\\flutter_embedding_debug\\1.0.0-0f359063c487ee70787e58b4b011cbb3c2f53fd6\\dde03a21a25e3fe5012246f778dbba12f956f533', include: ['*.aar', '*.jar'], exclude: [])
+    //implementation fileTree(dir: 'C:\\Users\\Nicode2\\.gradle\\caches\\modules-2\\files-2.1\\io.flutter\\flutter_embedding_debug\\1.0.0-0f359063c487ee70787e58b4b011cbb3c2f53fd6\\dde03a21a25e3fe5012246f778dbba12f956f533', include: ['*.aar', '*.jar'], exclude: [])
     implementation 'androidx.annotation:annotation-jvm:1.6.0'
 }
