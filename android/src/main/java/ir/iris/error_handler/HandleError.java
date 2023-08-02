@@ -14,11 +14,12 @@ import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 
 public class HandleError implements MethodCallHandler, FlutterPlugin {
     private MethodChannel channel;
+    private String mName = "error_handler";
 
     @Override
     public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
         BinaryMessenger messenger = flutterPluginBinding.getBinaryMessenger();
-        channel = new MethodChannel(messenger, "error_handler");
+        channel = new MethodChannel(messenger, mName);
         channel.setMethodCallHandler(this);
         // flutterPluginBinding.getApplicationContext()
     }
@@ -37,7 +38,7 @@ public class HandleError implements MethodCallHandler, FlutterPlugin {
     private void init(FlutterEngine flutterEngine){
         //FlutterView view = getFlutterView();
         //MethodChannel myChannel = new MethodChannel(view, "error_handler");
-        channel = new MethodChannel(flutterEngine.getDartExecutor(), "error_handler");
+        channel = new MethodChannel(flutterEngine.getDartExecutor(), mName);
 
         channel.setMethodCallHandler(this::methodHandler);
     }

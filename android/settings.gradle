@@ -1,2 +1,1 @@
-include ':src'
 rootProject.name = 'error_handler'
