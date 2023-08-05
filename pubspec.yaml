@@ -1,6 +1,6 @@
 name: iris_tools
 description: iris tools Library.
-version: 0.1.51
+version: 0.1.52
 homepage: https://iris.ir
 
 publish_to: 'none'
@@ -60,7 +60,7 @@ flutter:
     platforms:
       android:
         package: ir.iris.android_tools
-        pluginClass: HandleError
+        pluginClass: Assistance
 
 
 
