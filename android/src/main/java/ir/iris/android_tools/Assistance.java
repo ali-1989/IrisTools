@@ -67,6 +67,7 @@ public class Assistance implements FlutterPlugin, MethodCallHandler, ActivityAwa
                 result.success(arg1);
                 break;
             }
+            // dart: invokeMethodByArgs('throw_error', [{'delay': 15000}])
             case "throw_error": {
                 Map<String, ?> arg1 = (Map<String, ?>) argList.get(0);
                 throwWithTimer(arg1, result);
