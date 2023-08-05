@@ -18,7 +18,7 @@ import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 
-public class Assistance implements FlutterPlugin, MethodCallHandler, ActivityAware {
+public class Assistance implements FlutterPlugin, MethodCallHandler {
     private FlutterPluginBinding pluginBinding;
     private MethodChannel channel;
     private final String mName = "assistance";
@@ -69,14 +69,14 @@ public class Assistance implements FlutterPlugin, MethodCallHandler, ActivityAwa
                 throwWithTimer(call, result);
                 break;
             }
-            case "set_kv": {
+            /*case "set_kv": {
                 setKv(call, result);
                 break;
             }
             case "get_kv": {
                 getKv(call, result);
                 break;
-            }
+            }*/
             case "setAppIsRun": {
                 flutterAppIsRun = true;
                 result.success(true);
@@ -86,14 +86,14 @@ public class Assistance implements FlutterPlugin, MethodCallHandler, ActivityAwa
                 result.success(flutterAppIsRun);
                 break;
             }
-            case "dismiss_notification": {
+            /*case "dismiss_notification": {
                 dismissNotification(call, result);
                 break;
             }
             case "move_app_to_back": {
                 moveTaskToBack(call, result);
                 break;
-            }
+            }*/
             default:
                 result.notImplemented();
                 //result.success(null);
@@ -129,7 +129,7 @@ public class Assistance implements FlutterPlugin, MethodCallHandler, ActivityAwa
         double x = 0/0;
     }
 
-    private void moveTaskToBack(MethodCall call, MethodChannel.Result result){
+    /*private void moveTaskToBack(MethodCall call, MethodChannel.Result result){
         if (activity != null) {
             activity.moveTaskToBack(true);
             result.success(true);
@@ -138,8 +138,8 @@ public class Assistance implements FlutterPlugin, MethodCallHandler, ActivityAwa
             result.success(false);
         }
     }
-
-    private void setKv(MethodCall call, MethodChannel.Result result){
+*/
+   /* private void setKv(MethodCall call, MethodChannel.Result result){
         String key = call.argument("key");
         String type = call.argument("type");
         Object value = call.argument("value");
@@ -186,15 +186,15 @@ public class Assistance implements FlutterPlugin, MethodCallHandler, ActivityAwa
 
 
     }
-
-    private void dismissNotification(MethodCall call, MethodChannel.Result result){
+*/
+    /*private void dismissNotification(MethodCall call, MethodChannel.Result result){
         Integer id = call.argument("notification_id");
         NotificationHelper.dismissNotification(pluginBinding.getApplicationContext(), id);
         result.success(true);
     }
-
+*/
     ///==================================================== ActivityAware
-    @Override
+   /* @Override
     public void onAttachedToActivity(@NonNull ActivityPluginBinding activityPluginBinding) {
         activity = activityPluginBinding.getActivity();
     }
@@ -212,5 +212,5 @@ public class Assistance implements FlutterPlugin, MethodCallHandler, ActivityAwa
     @Override
     public void onDetachedFromActivity() {
         activity = null;
-    }
+    }*/
 }
