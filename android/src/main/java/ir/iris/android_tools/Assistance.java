@@ -6,6 +6,7 @@ import android.app.Activity;
 
 import androidx.annotation.NonNull;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -23,7 +24,7 @@ public class Assistance implements FlutterPlugin, MethodCallHandler, ActivityAwa
     private MethodChannel channel;
     private final String mName = "assistance";
     static boolean flutterAppIsRun = false;
-    private static Activity activity;
+    private Activity activity;
 
     @Override
     public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
@@ -52,7 +53,7 @@ public class Assistance implements FlutterPlugin, MethodCallHandler, ActivityAwa
     }
 
     private void methodHandler(final MethodCall call, final MethodChannel.Result result) {
-        List<?> args = (List<?>) call.arguments;
+        List<?> argList = (List<?>) call.arguments;
 
         switch (call.method) {
             case "echo": {
@@ -61,21 +62,26 @@ public class Assistance implements FlutterPlugin, MethodCallHandler, ActivityAwa
             }
             // dart: invokeMethodByArgs('echo_arg', [{'ali': 'baq'}])
             case "echo_arg": {
-                Map<?, ?> arg1 = (Map<?, ?>) args.get(0);
+                Map<?, ?> arg1 = (Map<?, ?>) argList.get(0);
+                //Collections.<String, Object>unmodifiableMap(arg1);
                 result.success(arg1);
                 break;
             }
             case "throw_error": {
-                Map<String, ?> arg1 = (Map<String, ?>) args.get(0);
+                Map<String, ?> arg1 = (Map<String, ?>) argList.get(0);
                 throwWithTimer(arg1, result);
                 break;
             }
             case "set_kv": {
-                setKv(call, result);
+                Map<?, ?> arg1 = (Map<?, ?>) argList.get(0);
+                Map<String, Object> kv = castMap(arg1);
+                setKv(kv, result);
                 break;
             }
             case "get_kv": {
-                getKv(call, result);
+                Map<?, ?> arg1 = (Map<?, ?>) argList.get(0);
+                Map<String, Object> kv = castMap(arg1);
+                getKv(kv, result);
                 break;
             }
             case "setAppIsRun": {
@@ -88,11 +94,13 @@ public class Assistance implements FlutterPlugin, MethodCallHandler, ActivityAwa
                 break;
             }
             case "dismiss_notification": {
-                dismissNotification(call, result);
+                Map<?, ?> arg1 = (Map<?, ?>) argList.get(0);
+                Map<String, Object> kv = castMap(arg1);
+                dismissNotification(kv, result);
                 break;
             }
             case "move_app_to_back": {
-                moveTaskToBack(call, result);
+                moveTaskToBack(result);
                 break;
             }
             default:
@@ -132,7 +140,7 @@ public class Assistance implements FlutterPlugin, MethodCallHandler, ActivityAwa
         double x = 0/0;
     }
 
-    private void moveTaskToBack(MethodCall call, MethodChannel.Result result){
+    private void moveTaskToBack(MethodChannel.Result result){
         if (activity != null) {
             activity.moveTaskToBack(true);
             result.success(true);
@@ -142,56 +150,73 @@ public class Assistance implements FlutterPlugin, MethodCallHandler, ActivityAwa
         }
     }
 
-    private void setKv(MethodCall call, MethodChannel.Result result){
-        String key = call.argument("key");
-        String type = call.argument("type");
-        Object value = call.argument("value");
+    private Map<String, Object> castMap(Map<?, ?> input){
+        Map<String, Object> newMap = new HashMap<>();
+
+        for(Object strKey: input.keySet()) {
+            newMap.put(String.valueOf(strKey), input.get(strKey));
+        }
+
+        /*for (Map.Entry<?, ?> entry : input.entrySet()) {
+            if (entry.getKey() instanceof String) {
+                newMap.put((String) entry.getKey(), entry.getValue());
+            }
+        }*/
+
+        return newMap;
+    }
+
+    private void setKv(Map<String, Object> kv, MethodChannel.Result result){
+        String key = kv.get("key").toString();
+        Object typeOrg = kv.get("type");
+        String type = typeOrg == null? null : typeOrg.toString();
+        Object value = kv.get("value");
+        String valueString = value == null? null : value.toString();
 
         if(type == null || type.equals("String")) {
-            SharedPreferenceHelper.setString(pluginBinding.getApplicationContext(), key, value.toString());
+            SharedPreferenceHelper.setString(pluginBinding.getApplicationContext(), key, valueString);
         }
 
-        if(type.equals("long")) {
-            SharedPreferenceHelper.setLong(pluginBinding.getApplicationContext(), key, Long.parseLong(value.toString()));
+        else if(type.equals("long")) {
+            SharedPreferenceHelper.setLong(pluginBinding.getApplicationContext(), key, valueString == null? null :Long.parseLong(valueString));
         }
 
-        if(type.equals("int")) {
-            SharedPreferenceHelper.setInt(pluginBinding.getApplicationContext(), key, Integer.parseInt(value.toString()));
+        else if(type.equals("int")) {
+            SharedPreferenceHelper.setInt(pluginBinding.getApplicationContext(), key, valueString == null? null :Integer.parseInt(valueString));
         }
 
-        if(type.equals("bool")) {
-            SharedPreferenceHelper.setBoolean(pluginBinding.getApplicationContext(), key, Boolean.parseBoolean(value.toString()));
+        else if(type.equals("bool")) {
+            SharedPreferenceHelper.setBoolean(pluginBinding.getApplicationContext(), key, Boolean.parseBoolean(valueString));
         }
 
         result.success(true);
     }
 
-    private void getKv(MethodCall call, MethodChannel.Result result){
-        String key = call.argument("key");
-        String type = call.argument("type");
+    private void getKv(Map<String, Object> kv, MethodChannel.Result result){
+        String key = kv.get("key").toString();
+        Object typeOrg = kv.get("type");
+        String type = typeOrg == null? null : typeOrg.toString();
 
 
         if(type == null || type.equals("String")) {
             result.success(SharedPreferenceHelper.getString(pluginBinding.getApplicationContext(), key));
         }
 
-        if(type.equals("long")) {
+        else if(type.equals("long")) {
             result.success(SharedPreferenceHelper.getLong(pluginBinding.getApplicationContext(), key));
         }
 
-        if(type.equals("int")) {
+        else if(type.equals("int")) {
             result.success(SharedPreferenceHelper.getInt(pluginBinding.getApplicationContext(), key));
         }
 
-        if(type.equals("bool")) {
+        else if(type.equals("bool")) {
             result.success(SharedPreferenceHelper.getBool(pluginBinding.getApplicationContext(), key));
         }
-
-
     }
 
-    private void dismissNotification(MethodCall call, MethodChannel.Result result){
-        Integer id = call.argument("notification_id");
+    private void dismissNotification(Map<String, Object> kv, MethodChannel.Result result){
+        int id = (int) kv.get("notification_id");
         NotificationHelper.dismissNotification(pluginBinding.getApplicationContext(), id);
         result.success(true);
     }
