@@ -31,20 +31,6 @@ public class NotificationHelper {
         }
     }
 
-    static void showNotification(Context context, String msg) {
-        Notification notification = new NotificationCompat.Builder(context, CHANNEL_ID)
-                .setDefaults(Notification.DEFAULT_ALL)
-                //.setSmallIcon(R.mipmap.ic_launcher)
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setContentTitle(msg)
-                .setColor(Color.BLUE)
-                .setAutoCancel(true)
-                .setOnlyAlertOnce(true)
-                .build();
-
-        NotificationManagerCompat.from(context).notify(NOTIFICATION_ID, notification);
-    }
-
     static void dismissNotification(Context context, int notificationId) {
         NotificationManagerCompat.from(context).cancel(null, notificationId);
     }
