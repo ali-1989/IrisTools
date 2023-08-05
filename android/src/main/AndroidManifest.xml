@@ -2,5 +2,7 @@
 	xmlns:android="http://schemas.android.com/apk/res/android"
   package="ir.iris.android_tools">
 
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 </manifest>
 
