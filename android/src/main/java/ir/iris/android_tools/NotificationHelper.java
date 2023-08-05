@@ -34,7 +34,7 @@ public class NotificationHelper {
     static void showNotification(Context context, String msg) {
         Notification notification = new NotificationCompat.Builder(context, CHANNEL_ID)
                 .setDefaults(Notification.DEFAULT_ALL)
-                .setSmallIcon(R.mipmap.ic_launcher)
+                //.setSmallIcon(R.mipmap.ic_launcher)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setContentTitle(msg)
                 .setColor(Color.BLUE)
