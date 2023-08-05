@@ -66,7 +66,8 @@ public class Assistance implements FlutterPlugin, MethodCallHandler, ActivityAwa
                 break;
             }
             case "throw_error": {
-                throwWithTimer(call, result);
+                Map<String, ?> arg1 = (Map<String, ?>) args.get(0);
+                throwWithTimer(arg1, result);
                 break;
             }
             case "set_kv": {
@@ -101,11 +102,13 @@ public class Assistance implements FlutterPlugin, MethodCallHandler, ActivityAwa
         }
     }
 
-    private void throwWithTimer(MethodCall call, MethodChannel.Result result){
-        Long dur = call.argument("delay");
+    private void throwWithTimer(Map<String, ?> arg, MethodChannel.Result result){
+        Long dur =  10000L;
 
-        if(dur == null){
-            dur = 10000L;
+        Object delay = arg.get("delay");
+
+        if(delay != null){
+            dur = Long.parseLong(delay.toString());
         }
 
         Handler handler = new Handler(Looper.getMainLooper());
