@@ -106,6 +106,7 @@ class IrisDialog {
       child: child,
       scale: tween.animate(anim1),
     );
+
     ///.......... show ..................................
     final res = showGeneralDialog<T>(
       context: context,
@@ -117,7 +118,7 @@ class IrisDialog {
       transitionBuilder: decoration.transitionsBuilder?? buildAnimation,
       pageBuilder: (ctx, anim1, anim2){
         void onAnyBtn(dynamic result){
-          if(dismissOnButtons) {
+          if(ctx.mounted && context.mounted && dismissOnButtons) {
             if(kIsWeb){
               Navigator.of(ctx).pop(result);
             }
@@ -179,4 +180,4 @@ class IrisDialog {
     return res;
   }
 }
-///=====================================================================================================
+
