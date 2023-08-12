@@ -37,9 +37,18 @@ class CircleContainer extends StatelessWidget {
 
 /*
 CustomCard(
-    color: Colors.cyan,
-    padding: EdgeInsets.symmetric(horizontal:10, vertical: 2),
-    radius: 40,
-    child: Text('1'),
-  ),
+  color: Colors.cyan,
+  padding: EdgeInsets.symmetric(horizontal:10, vertical: 2),
+  radius: 40,
+  child: Text('1'),
+),
+  -------------------------------------------------------
+  Material(
+  color: Colors.white.withAlpha(50),
+	type: MaterialType.circle,
+	child: Icon(isPlaying() ? AppIcons.pause : AppIcons.playArrow,
+	  color: Colors.white,
+	  size: 40 *pw,
+	),
+)
  */
