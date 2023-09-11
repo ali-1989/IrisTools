@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:iris_tools/widgets/path/dash_path.dart';
 
-part 'dashPainter.dart';
+part 'dash_painter.dart';
 
 
 enum BorderType {

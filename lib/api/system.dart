@@ -1,11 +1,10 @@
 import 'dart:io' show Platform, exit;
-import 'dart:ui' as ui;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/gestures.dart';
-import 'package:iris_tools/api/webTools.dart';
+import 'package:iris_tools/api/web_tools.dart';
 
 class System {
   System._();
@@ -246,7 +245,7 @@ class System {
   }
 
   static List<Locale>? getPlatformLocales() {
-    return getWidgetsBinding()?.window.locales;
+    return PlatformDispatcher.instance.locales;
   }
 
   static Locale? getCurrentLocalizationsLocale(BuildContext context) {
@@ -269,11 +268,11 @@ class System {
   }
 
   static String getFlutterLanguageCode(BuildContext context) {
-    return ui.window.locale.languageCode;
+    return PlatformDispatcher.instance.locale.languageCode;
   }
 
   static String? getFlutterCountryCode(BuildContext context) {
-    return ui.window.locale.countryCode;
+    return PlatformDispatcher.instance.locale.countryCode;
   }
 
   static void vibrate(BuildContext context) {

@@ -1,6 +1,6 @@
 import 'dart:ui' show Path;
 
-import 'package:iris_tools/widgets/path/pathParsing.dart';
+import 'package:iris_tools/widgets/path/path_parsing.dart';
 
 Path parseSvgPathData(String svg) {
   if (svg == '') {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iris_tools/widgets/attribute.dart';
-import 'package:iris_tools/widgets/icon/circularIcon.dart';
+import 'package:iris_tools/widgets/icon/circular_icon.dart';
 
 class OutsideButton extends StatefulWidget {
   final TextDirection? textDirection;

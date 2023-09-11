@@ -32,7 +32,6 @@ public class Assistance implements FlutterPlugin, MethodCallHandler, ActivityAwa
         BinaryMessenger messenger = flutterPluginBinding.getBinaryMessenger();
         channel = new MethodChannel(messenger, mName);
         channel.setMethodCallHandler(this);
-        // context = flutterPluginBinding.getApplicationContext()
     }
 
     @Override

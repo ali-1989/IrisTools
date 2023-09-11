@@ -1,4 +1,5 @@
-import 'webToolsStub.dart' if (dart.library.html) 'dart:html' as html;
+import 'web_tools_stub.dart' if (dart.library.html) 'dart:html' as html;
+//import 'dart:html' as html;
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 //import 'package:universal_io/io.dart';//''dart:io';
@@ -119,5 +120,16 @@ class WebTools {
     }
 
     return TargetPlatform.fuchsia;
+  }
+
+  static Future<List<String>> deviceLocales() async {
+    List<String> result = [];
+    html.window.navigator.languages?.forEach(result.add);
+
+    return result;
+  }
+
+  static Future<String> deviceLocale() async {
+    return html.window.navigator.language;
   }
 }

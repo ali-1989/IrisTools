@@ -8,4 +8,6 @@ class Window {
 class Navigator {
   String? platform = '';
   String userAgent = '';
+  List<String>? languages;
+  String language = 'en';
 }

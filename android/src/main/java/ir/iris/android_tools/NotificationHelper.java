@@ -13,18 +13,14 @@ import androidx.core.app.NotificationManagerCompat;
 //import android.content.Intent;
 
 public class NotificationHelper {
-    static private final String CHANNEL_ID = "c_01";
-    static private final String CHANNEL_NAME = "flutter_app";
-    static private final int NOTIFICATION_ID = 101;
-
-    static void createChannel(Context context) {
+    static void createChannel(Context context, String channelId, String channelName) {
         NotificationManagerCompat manager = NotificationManagerCompat.from(context);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, importance);
+            NotificationChannel channel = new NotificationChannel(channelId, channelName, importance);
             channel.setDescription("channel");
-            channel.enableVibration(false);
+            channel.enableVibration(true);
             channel.enableLights(true);
 
             manager.createNotificationChannel(channel);

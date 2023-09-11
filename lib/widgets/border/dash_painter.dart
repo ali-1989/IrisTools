@@ -1,4 +1,4 @@
-part of 'dottedBorder.dart';
+part of 'dotted_border.dart';
 
 typedef PathBuilder = Path Function(Size);
 
