@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 
-class MaxWidth extends StatelessWidget{
+class MinWidth extends StatelessWidget{
   final Widget child;
   final double minWidth;
   final double? widthFactor;
@@ -8,7 +8,7 @@ class MaxWidth extends StatelessWidget{
   final bool apply;
   final AlignmentGeometry alignment;
 
-  MaxWidth({
+  MinWidth({
     Key? key,
     required this.minWidth,
     required this.child,
