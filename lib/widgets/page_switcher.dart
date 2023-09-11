@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class PageSwitcher extends StatefulWidget {
   final PageSwitcherController controller;
   final List<Widget> pages;
+  final Map<int, String> indexName;
   final int? initialIndex;
 
   const PageSwitcher({
@@ -10,6 +11,7 @@ class PageSwitcher extends StatefulWidget {
     required this.controller,
     required this.pages,
     this.initialIndex = 0,
+    this.indexName = const {},
   }) : super(key: key);
 
   @override
@@ -49,5 +51,22 @@ class PageSwitcherController {
 
   void changePageTo(int index){
     _state.changePageTo(index);
+  }
+
+  void next(){
+    changePageTo(index+1);
+  }
+
+  void previous(){
+    changePageTo(index-1);
+  }
+
+  void changePageByName(String name){
+    for (final cou in _state.widget.indexName.entries) {
+      if(cou.value == name){
+        changePageTo(cou.key);
+        break;
+      }
+    }
   }
 }

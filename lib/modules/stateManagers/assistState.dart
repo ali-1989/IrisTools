@@ -16,9 +16,8 @@ enum AppAssistKeys implements GroupId {
  */
 
 
-typedef AssistBuilderFn = Widget Function(BuildContext context, AssistController controller, dynamic sendData);
+typedef AssistBuilderFn = Widget Function(BuildContext context, AssistController controller, dynamic stateData);
 typedef AssistOverlayBuilder = Widget Function(BuildContext context, AssistController controller);
-typedef AssistNotifier = void Function(dynamic sendData);
 ///===================================================================================================
 class AssistBuilder<T extends Assist, E extends EventScope> extends StatefulWidget {
   final String? id;
