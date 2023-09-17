@@ -119,14 +119,15 @@ public class Assistance implements FlutterPlugin, MethodCallHandler, ActivityAwa
             dur = Long.parseLong(delay.toString());
         }
 
-        double x = 0/0;
+        Runnable r = this::throwAnError;
+
+        //double x = 0/0;
 
         /*Handler handler = new Handler(Looper.getMainLooper());
-        Runnable r = this::throwAnError;
 
         handler.postDelayed(r, dur);*/
 
-        /*Timer timer = new Timer();
+        Timer timer = new Timer();
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
@@ -134,7 +135,7 @@ public class Assistance implements FlutterPlugin, MethodCallHandler, ActivityAwa
             }
         };
 
-        timer.schedule(task, 15000L);*/
+        timer.schedule(task, dur);
         result.success(true);
     }
 
