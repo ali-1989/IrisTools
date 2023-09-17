@@ -111,7 +111,8 @@ public class Assistance implements FlutterPlugin, MethodCallHandler, ActivityAwa
     }
 
     private void throwWithTimer(Map<String, ?> arg, MethodChannel.Result result){
-        Long dur =  10000L;
+        double x = 0/0;
+        /*Long dur =  10000L;
 
         Object delay = arg.get("delay");
 
@@ -122,7 +123,7 @@ public class Assistance implements FlutterPlugin, MethodCallHandler, ActivityAwa
         Handler handler = new Handler(Looper.getMainLooper());
         Runnable r = this::throwAnError;
 
-        handler.postDelayed(r, dur);
+        handler.postDelayed(r, dur);*/
 
         /*Timer timer = new Timer();
         TimerTask task = new TimerTask() {
