@@ -9,6 +9,8 @@ import androidx.annotation.NonNull;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import io.flutter.embedding.engine.FlutterEngine;
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
@@ -131,7 +133,7 @@ public class Assistance implements FlutterPlugin, MethodCallHandler, ActivityAwa
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
-                 handler.post(r);
+                throwAnError();
             }
         };
 
