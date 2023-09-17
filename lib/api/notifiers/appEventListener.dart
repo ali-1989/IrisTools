@@ -7,6 +7,7 @@ class AppEventListener extends WidgetsBindingObserver {
 	final List<FutureOr Function()> _resumeCallBackList = [];
 	final List<Function> _pauseCallBackList = [];
 	final List<Function> _detachedCallBackList = [];
+	final List<Function> _hiddenCallBackList = [];
 
 	AppEventListener();
 
@@ -40,6 +41,16 @@ class AppEventListener extends WidgetsBindingObserver {
 		_detachedCallBackList.remove(fn);
 	}
 
+	void addDHiddenListener(Function() fn){
+		if(!_hiddenCallBackList.contains(fn)){
+			_hiddenCallBackList.add(fn);
+		}
+	}
+
+	void removeHiddenListener(Function() fn){
+		_hiddenCallBackList.remove(fn);
+	}
+
 	@override
 	Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
 		switch (state) {
@@ -55,6 +66,8 @@ class AppEventListener extends WidgetsBindingObserver {
 			case AppLifecycleState.resumed:
 				_resumeCallBack();
 				break;
+			case AppLifecycleState.hidden:
+				_hiddenCallBack();
 		}
 	}
 
@@ -81,8 +94,18 @@ class AppEventListener extends WidgetsBindingObserver {
 	}
 
 	Future _resumeCallBack() async{
+		for(final fn in _resumeCallBackList){
+			try{
+				fn();
+			}
+			catch(e){}
+		}
 
-		for(var fn in _resumeCallBackList){
+		return Future.value(true);
+	}
+
+	Future _hiddenCallBack() async{
+		for(final fn in _resumeCallBackList){
 			try{
 				fn();
 			}

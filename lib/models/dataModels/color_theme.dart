@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:iris_tools/api/helpers/colorHelper.dart';
 
 class ColorTheme {
-  String themeName = 'theme_' + Random().nextInt(1000).toString();
+  String themeName = 'theme_${Random().nextInt(1000)}';
   double fontSize = 12;
   double buttonIconSize = 20;
   late HSLColor primaryHsl; // in Init
@@ -78,7 +78,6 @@ class ColorTheme {
 
     buttonsColorScheme = ColorScheme.fromSwatch(
       primarySwatch: primarySwatch,
-      primaryColorDark: ColorHelper.darkIfIsLight(primaryColor),
       // buttons are use this color for btnText (accentColor)
       accentColor: buttonTextColor,
       backgroundColor: buttonBackColor,
