@@ -20,7 +20,7 @@ class Tools {
   }
 
   static void verboseStackTrace(){
-    verbosePrint(StackTrace.current);
+    verboseLog(StackTrace.current);
   }
 
   static void printWithDelimiter(Object obj){
