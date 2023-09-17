@@ -7,7 +7,7 @@ import 'package:flutter/widgets.dart';
 class Tools {
   Tools._();
 
-  static void verbosePrint(dynamic obj){
+  static void verboseLog(dynamic obj){
     if(obj == null){
       return;
     }

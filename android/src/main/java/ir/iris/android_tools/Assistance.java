@@ -121,12 +121,10 @@ public class Assistance implements FlutterPlugin, MethodCallHandler, ActivityAwa
             dur = Long.parseLong(delay.toString());
         }
 
+        /* if use this, crash app
         Runnable r = this::throwAnError;
 
-        //double x = 0/0;
-
-        /*Handler handler = new Handler(Looper.getMainLooper());
-
+        Handler handler = new Handler(Looper.getMainLooper());
         handler.postDelayed(r, dur);*/
 
         Timer timer = new Timer();
