@@ -6,7 +6,7 @@ class CustomCard extends StatelessWidget {
   final Color? color;
   final double? radius;
   final BoxBorder? border;
-  final BorderRadius? borderRadius;
+  final BorderRadiusGeometry? borderRadius;
 
   const CustomCard({
     required this.child,
