@@ -2,12 +2,12 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 /*
-enum AppAssistKeys implements GroupId {
+enum Keys implements GroupId {
   voicePlayerGroupId$vocabClickable(120);
 
   final int _number;
 
-  const AppAssistKeys(this._number);
+  const Keys(this._number);
 
   int getNumber(){
     return _number;
@@ -16,21 +16,22 @@ enum AppAssistKeys implements GroupId {
  */
 
 
-typedef AssistBuilderFn = Widget Function(BuildContext context, AssistController controller, dynamic stateData);
-typedef AssistOverlayBuilder = Widget Function(BuildContext context, AssistController controller);
+typedef UpdaterBuilderFn = Widget Function(BuildContext context, UpdaterController controller, dynamic stateData);
+typedef UpdaterOverlayBuilder = Widget Function(BuildContext context, UpdaterController controller);
+typedef GroupIds<T extends UpdaterGroupId> = T;
 ///===================================================================================================
-class AssistBuilder<T extends Assist, E extends EventScope> extends StatefulWidget {
+class UpdaterBuilder<T extends Updater, E extends EventScope> extends StatefulWidget {
   final String? id;
   /// define a (enum or class) that implements GroupId {}
-  final List<GroupId> groupIds;
+  final List<GroupIds> groupIds;
   final List<EventScope> eventScopes;//todo. <E>
-  final AssistObserve? observable;
-  final AssistBuilderFn builder;
-  final AssistOverlayBuilder? overlayBuilder;
+  final UpdaterObserve? observable;
+  final UpdaterBuilderFn builder;
+  final UpdaterOverlayBuilder? overlayBuilder;
   final T? _typeDetector = null;
 
 
-  AssistBuilder({
+  UpdaterBuilder({
     Key? key,
     this.id,
     this.groupIds = const [],
@@ -43,17 +44,17 @@ class AssistBuilder<T extends Assist, E extends EventScope> extends StatefulWidg
 
   @override
   State<StatefulWidget> createState() {
-    return _AssistBuilderState();
+    return _UpdaterBuilderState();
   }
 }
 ///===================================================================================================
-abstract class IAssistState<w extends StatefulWidget> extends State<w> {
+abstract class IUpdaterState<w extends StatefulWidget> extends State<w> {
   void update({dynamic data});
   void disposeWidget();
 }
 ///===================================================================================================
-class _AssistBuilderState extends IAssistState<AssistBuilder> {
-  late AssistController _controller;
+class _UpdaterBuilderState extends IUpdaterState<UpdaterBuilder> {
+  late UpdaterController _controller;
   late ValueNotifier<int> _overlayNotifier;
   dynamic _lastData;
 
@@ -64,12 +65,12 @@ class _AssistBuilderState extends IAssistState<AssistBuilder> {
     super.initState();
 
     _overlayNotifier = ValueNotifier(0);
-    _controller = AssistController();
+    _controller = UpdaterController();
     _controller._add(this);
   }
 
   @override
-  void didUpdateWidget(AssistBuilder oldWidget) {
+  void didUpdateWidget(UpdaterBuilder oldWidget) {
     super.didUpdateWidget(oldWidget);
   }
 
@@ -115,23 +116,23 @@ class _AssistBuilderState extends IAssistState<AssistBuilder> {
   }
 }
 ///===================================================================================================
-class AssistController<S> {
-  /// public list of all assists
-  static final List<AssistController> _allControllers = [];
+class UpdaterController<S> {
+  /// public list of all updater
+  static final List<UpdaterController> _allControllers = [];
 
-  late _AssistBuilderState _stateRef;
-  final _stateManager = AssistStateManager<S>();
+  late _UpdaterBuilderState _stateRef;
+  final _stateManager = UpdaterStateManager<S>();
   final KeyValueManager _kvManager = KeyValueManager();
   final String _stateShareSection = '_stateShareSection';
 
-  AssistController();
+  UpdaterController();
 
-  void _add(_AssistBuilderState state){
+  void _add(_UpdaterBuilderState state){
     if(state.widget.id != null) {
-      final sameId = AssistController.forId(state.widget.id!);
+      final sameId = UpdaterController.forId(state.widget.id!);
 
       if (sameId != null) {
-        throw Exception('this id [${state.widget.id}] exist in Assist, use other id');
+        throw Exception('this id [${state.widget.id}] exist in Updater, use other id');
       }
     }
 
@@ -144,9 +145,9 @@ class AssistController<S> {
     return _stateRef.context;
   }
 
-  static AssistController? forId(String assistId){
+  static UpdaterController? forId(String updaterId){
     for(final c in _allControllers){
-      if(c._stateRef.widget.id == assistId){
+      if(c._stateRef.widget.id == updaterId){
         return c;
       }
     }
@@ -154,8 +155,8 @@ class AssistController<S> {
     return null;
   }
 
-  static Set<AssistController> forType<T extends Assist>({List<EventScope>? scopes}){
-    final res = <AssistController>{};
+  static Set<UpdaterController> forType<T extends Updater>({List<EventScope>? scopes}){
+    final res = <UpdaterController>{};
 
     for(final c in _allControllers){
       if(c._stateRef.widget._typeDetector.runtimeType == T){
@@ -176,8 +177,8 @@ class AssistController<S> {
     return res;
   }
 
-  static Set<AssistController> forGroup(GroupId groupId){
-    final res = <AssistController>{};
+  static Set<UpdaterController> forGroup(UpdaterGroupId groupId){
+    final res = <UpdaterController>{};
 
     for(final c in _allControllers){
       if(c._stateRef.widget.groupIds.contains(groupId)){
@@ -188,17 +189,17 @@ class AssistController<S> {
     return res;
   }
 
-  static void updateById(String assistId, {dynamic stateData, Duration? delay}){
-    forId(assistId)?.update(stateData: stateData, delay: delay);
+  static void updateById(String updaterId, {dynamic stateData, Duration? delay}){
+    forId(updaterId)?.update(stateData: stateData, delay: delay);
   }
 
-  static void updateByGroup(GroupId groupId, {dynamic stateData, Duration? delay}){
+  static void updateByGroup(UpdaterGroupId groupId, {dynamic stateData, Duration? delay}){
     forGroup(groupId).forEach((element) {
       element.update(stateData: stateData, delay: delay);
     });
   }
 
-  static void updateByType<T extends Assist>({List<EventScope>? scopes, dynamic stateData, Duration? delay}){
+  static void updateByType<T extends Updater>({List<EventScope>? scopes, dynamic stateData, Duration? delay}){
     forType(scopes: scopes).forEach((element) {
       element.update(stateData: stateData, delay: delay);
     });
@@ -298,30 +299,30 @@ class AssistController<S> {
     _kvManager.clear();
   }
 
-  void _widgetIsDisposed(IAssistState state){
+  void _widgetIsDisposed(IUpdaterState state){
     dispose();
   }
 }
 ///===================================================================================================
-mixin class Assist {
+mixin class Updater {
 
-  void emit<T extends Assist>({List<EventScope>? scopes, dynamic data}){
-    AssistController.updateByType<T>(scopes: scopes, stateData: data);
+  void emit<T extends Updater>({List<EventScope>? scopes, dynamic data}){
+    UpdaterController.updateByType<T>(scopes: scopes, stateData: data);
   }
 }
 
 abstract class EventScope {}
 ///===================================================================================================
-abstract class GroupId {}
+abstract class UpdaterGroupId {}
 //enum Or Class implements GroupId {}
 ///---------------------------------------
-class GroupOfAssist {
-  late GroupId groupId;
-  final stateList = <IAssistState>{};
+class _GroupOfUpdater {
+  late UpdaterGroupId groupId;
+  final stateList = <IUpdaterState>{};
 
-  GroupOfAssist();
+  _GroupOfUpdater();
 
-  GroupOfAssist.fill(GroupId id, IAssistState state){
+  _GroupOfUpdater.fill(UpdaterGroupId id, IUpdaterState state){
     groupId = id;
     stateList.add(state);
   }
@@ -392,10 +393,10 @@ class KeyValueManager<T> {
   }
 }
 ///===================================================================================================
-class AssistStateManager<T> {
+class UpdaterStateManager<T> {
   final Map<String, Set<T>> _objList = {};
 
-  AssistStateManager();
+  UpdaterStateManager();
 
   void addState(String section, T state){
     if(existSection(section)){
@@ -463,11 +464,11 @@ class AssistStateManager<T> {
   }
 }
 ///===================================================================================================
-class AssistObserve<T> {
+class UpdaterObserve<T> {
   T? _value;
-  final List<AssistController> _observers = []; // = listeners
+  final List<UpdaterController> _observers = []; // = listeners
 
-  AssistObserve([T? value]) :_value = value;
+  UpdaterObserve([T? value]) :_value = value;
 
   T? get value => _value;
 
@@ -476,8 +477,8 @@ class AssistObserve<T> {
   }
 
   void notify(){
-    for(final assist in _observers){
-      assist.update();
+    for(final ob in _observers){
+      ob.update();
     }
   }
 
@@ -490,17 +491,17 @@ class AssistObserve<T> {
     return _observers.isNotEmpty;
   }
 
-  List<AssistController> get listeners {
+  List<UpdaterController> get listeners {
     return _observers;
   }
 
-  void _add(AssistController controller){
+  void _add(UpdaterController controller){
     if(!_observers.contains(controller)){
       _observers.add(controller);
     }
   }
 
-  void _remove(AssistController controller){
+  void _remove(UpdaterController controller){
     _observers.remove(controller);
   }
 }
