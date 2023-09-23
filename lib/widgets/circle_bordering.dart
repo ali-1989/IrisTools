@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-class CircleBorder extends StatelessWidget {
+class CircleBordering extends StatelessWidget {
   final Widget child;
   final Color borderColor;
   final double width;
   final EdgeInsets padding;
 
-  const CircleBorder({
+  const CircleBordering({
     required this.child,
     required this.borderColor,
     required this.width,
