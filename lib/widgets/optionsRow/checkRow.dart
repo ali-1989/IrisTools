@@ -14,6 +14,8 @@ class CheckBoxRow extends StatefulWidget {
   final EdgeInsets? padding;
   final Color? borderColor;
   final Color? tickColor;
+  final OutlinedBorder? shape;
+  final BorderSide? borderSide;
 
   CheckBoxRow({
     Key? key,
@@ -25,6 +27,8 @@ class CheckBoxRow extends StatefulWidget {
     this.padding,
     this.borderColor,
     this.tickColor,
+    this.shape,
+    this.borderSide,
     this.mainAxisAlignment = MainAxisAlignment.start,
     this.mainAxisSize = MainAxisSize.min,
   })
@@ -68,6 +72,8 @@ class RadioRawState<S> extends State<CheckBoxRow> {
                   value: (!widget.treeState && widget.value == null)? false: widget.value,
                   onChanged: widget.onChanged,
                   tristate: widget.treeState,
+                  shape: widget.shape,
+                  side: widget.borderSide,
                   materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   visualDensity: VisualDensity.comfortable,
                   checkColor: widget.tickColor?? widget.borderColor?? Colors.white,//theme.primaryColor
