@@ -32,16 +32,19 @@ class FutureCache {
           for(final x in handlerList!){
             x.complete(value);
           }
+
+          handlerList.clear();
+          _cacheHolder.deleteCash(handlerKey);
         });
       }
       else {
         for(final x in handlerList){
           x.complete(res);
         }
-      }
 
-      handlerList.clear();
-      _cacheHolder.deleteCash(handlerKey);
+        handlerList.clear();
+        _cacheHolder.deleteCash(handlerKey);
+      }
     }
 
     return completer.future;
@@ -49,7 +52,7 @@ class FutureCache {
 }
 
 
-
+/*
 typedef StreamSinkHandler = Function(String key, StreamController streamCtr);
 ///========================================================================================
 class StreamCache {
@@ -92,4 +95,4 @@ class StreamCache {
 
     return completer.future;
   }
-}
+}*/

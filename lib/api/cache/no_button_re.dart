@@ -1,3 +1,5 @@
+import 'dart:async';
+
 class NoButtonRe {
   Future? _future;
   Duration? _duration;
@@ -6,15 +8,18 @@ class NoButtonRe {
   bool _isCalled = false;
 
   static final List<_NoButtonReItem> _list = [];
+  static Timer? _timer;
 
   static NoButtonRe? get(String id){
-      for(final i in _list){
-        if(i.id == id){
-          return i.noButtonRe;
-        }
-      }
+    _checkTimer();
 
-     return null;
+    for(final i in _list){
+      if(i.id == id){
+        return i.noButtonRe;
+      }
+    }
+
+    return null;
   }
 
   static NoButtonRe build({
@@ -64,7 +69,7 @@ class NoButtonRe {
 
     i._function = function;
 
-      return i;
+    return i;
   }
 
   static NoButtonRe buildFuture({
@@ -128,21 +133,26 @@ class NoButtonRe {
   void releaseButton(){
     _isCalled = false;
     _onActionCall?.call();
-    
-    Future.delayed(Duration(seconds: 2), (){
-      _list.removeWhere((element) {
-        print('remove ${_list.length}');
+  }
 
-        if(element.noButtonRe == this){
-          print('yeessssssssss ');
-        }
-        else {
-          print('noooooo');
-        }
-
-        return element.noButtonRe == this;
-      });
+  static void _checkTimer(){
+    if(_timer == null || !_timer!.isActive){
+      if(_list.isNotEmpty){
+        _timer = Timer.periodic(Duration(minutes: 5), (timer) {
+          clear();
+        });
+      }
+    }
+  }
+  static void clear(){
+    _list.removeWhere((element) {
+      return element.noButtonRe._isCalled == false;
     });
+
+    if(_list.isEmpty && _timer != null && _timer!.isActive){
+      _timer!.cancel();
+      _timer = null;
+    }
   }
 
   NoButtonRe._({
