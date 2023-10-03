@@ -2,6 +2,7 @@ class NoButtonRe {
   Future? _future;
   Duration? _duration;
   void Function()? _function;
+  void Function()? _onActionCall;
   bool _isCalled = false;
 
   static final List<_NoButtonReItem> _list = [];
@@ -19,17 +20,17 @@ class NoButtonRe {
   static NoButtonRe build({
     required String id,
     void Function()? function,
+    void Function()? onActionsCall,
   }){
 
     late NoButtonRe i;
-
     final find = get(id);
 
     if(find != null){
       i = find;
     }
     else {
-      i = NoButtonRe._();
+      i = NoButtonRe._(onActionCall: onActionsCall);
       final r = _NoButtonReItem(id, i);
 
       _list.add(r);
@@ -44,10 +45,10 @@ class NoButtonRe {
     required String id,
     Duration duration = const Duration(milliseconds: 1300),
     void Function()? function,
+    void Function()? onActionsCall,
   }){
 
     late NoButtonRe i;
-
     final find = get(id);
 
     if(find != null){
@@ -55,7 +56,7 @@ class NoButtonRe {
       i._duration = duration;
     }
     else {
-      i = NoButtonRe._duration(duration);
+      i = NoButtonRe._duration(duration, onActionCall: onActionsCall);
       final r = _NoButtonReItem(id, i);
 
       _list.add(r);
@@ -70,10 +71,10 @@ class NoButtonRe {
     required String id,
     required Future future,
     void Function()? function,
+    void Function()? onActionsCall,
   }){
 
     late NoButtonRe i;
-
     final find = get(id);
 
     if(find != null){
@@ -81,7 +82,7 @@ class NoButtonRe {
       i._future = future;
     }
     else {
-      i = NoButtonRe._future(future);
+      i = NoButtonRe._future(future, onActionCall: onActionsCall);
       final r = _NoButtonReItem(id, i);
 
       _list.add(r);
@@ -106,16 +107,17 @@ class NoButtonRe {
 
       if(_duration != null){
         Future.delayed(_duration!, (){
-          _isCalled = false;
+          releaseButton();
         });
       }
       else if(_future != null){
         _future!.then((value) {
-          _isCalled = false;
+          releaseButton();
         });
       }
 
       _function!.call();
+      _onActionCall?.call();
     }
 
     return res;
@@ -125,19 +127,23 @@ class NoButtonRe {
 
   void releaseButton(){
     _isCalled = false;
+    _onActionCall?.call();
   }
 
   NoButtonRe._({
     void Function()? function,
-  }): _function = function;
+    void Function()? onActionCall,
+  }): _function = function, _onActionCall = onActionCall;
 
  NoButtonRe._duration(this._duration, {
     void Function()? function,
-  }): _function = function;
+    void Function()? onActionCall,
+  }): _function = function, _onActionCall = onActionCall;
 
   NoButtonRe._future(this._future, {
     void Function()? function,
-  }) : _function = function;
+    void Function()? onActionCall,
+  }) : _function = function, _onActionCall = onActionCall;
 }
 ///=============================================================================
 class _NoButtonReItem {
