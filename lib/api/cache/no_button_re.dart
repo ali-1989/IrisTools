@@ -128,6 +128,19 @@ class NoButtonRe {
   void releaseButton(){
     _isCalled = false;
     _onActionCall?.call();
+    
+    Future.delayed(Duration(seconds: 2), (){
+      _list.removeWhere((element) {
+        if(element.noButtonRe == this){
+          print('yeessssssssss');
+        }
+        else {
+          print('fallllllllllll');
+        }
+
+        return element.noButtonRe == this;
+      });
+    });
   }
 
   NoButtonRe._({
