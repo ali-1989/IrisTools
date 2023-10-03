@@ -100,6 +100,7 @@ class NoButtonRe {
 
     void res(){
       if(_isCalled){
+        print('no--- is called before');
         return;
       }
 
@@ -129,7 +130,7 @@ class NoButtonRe {
     _isCalled = false;
     _onActionCall?.call();
     
-    Future.delayed(Duration(seconds: 2), (){
+    /*Future.delayed(Duration(seconds: 2), (){
       _list.removeWhere((element) {
         if(element.noButtonRe == this){
           print('yeessssssssss');
@@ -140,7 +141,7 @@ class NoButtonRe {
 
         return element.noButtonRe == this;
       });
-    });
+    });*/
   }
 
   NoButtonRe._({

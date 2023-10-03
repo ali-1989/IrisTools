@@ -34,7 +34,7 @@ class MemoryCache<T> {
       return false;
     }
 
-    var ci = CacheItem<T?>(value: null);
+    final ci = CacheItem<T?>(value: null);
     _itemList[key] = ci;
 
     return true;

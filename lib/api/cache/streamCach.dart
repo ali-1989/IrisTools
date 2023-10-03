@@ -1,6 +1,52 @@
 import 'dart:async';
 import 'memoryCache.dart';
 
+typedef Handler<T> = FutureOr<T?> Function(String key);
+///========================================================================================
+class FutureCache {
+  FutureCache._();
+
+  static final MemoryCache<List<Completer>> _cacheHolder = MemoryCache();
+
+  static Future<T?> get<T>(String key, Handler<T> handler) {
+    var handlerList = _cacheHolder.getValue(key);
+    final handlerKey = '${key}_fn';
+
+    /// if not exist Handler list, create once and add it.
+    if(handlerList == null){
+      handlerList = <Completer>[];
+      _cacheHolder.addOrReplace(key, CacheItem(value: handlerList));
+    }
+
+    final completer = Completer<T?>();
+    handlerList.add(completer);
+
+    /// if not exist handler, add this
+    if(!_cacheHolder.existCash(handlerKey)) {
+      _cacheHolder.addKey(handlerKey);
+
+      final res = handler.call(key);
+
+      if(res is Future){
+        (res as Future).then((value) {
+          for(final x in handlerList!){
+            x.complete(value);
+          }
+        });
+      }
+      else {
+        for(final x in handlerList){
+          x.complete(res);
+        }
+      }
+    }
+
+    return completer.future;
+  }
+}
+
+
+
 typedef StreamSinkHandler = Function(String key, StreamController streamCtr);
 ///========================================================================================
 class StreamCache {
