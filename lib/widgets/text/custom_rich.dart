@@ -46,3 +46,17 @@ class CustomRich extends StatelessWidget {
     return WidgetSpan(child: w, alignment: alignment);
   }
 }
+
+/*
+CustomRich(
+	children: [
+	  TextSpan(
+		  text: AppMessages.acceptTerm,
+		  style: AppThemes.instance.currentTheme.textUnderlineStyle,
+		  recognizer: TapGestureRecognizer()..onTap = gotoTermPage
+	  ),
+
+	  Text(AppMessages.acceptTermDescription),
+	],
+  ),
+*/
