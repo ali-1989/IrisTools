@@ -16,7 +16,7 @@ class NoButtonRe {
      return null;
   }
 
-  static NoButtonRe? build({
+  static NoButtonRe build({
     required String id,
     void Function()? function,
   }){
@@ -40,7 +40,7 @@ class NoButtonRe {
     return i;
   }
 
-  static NoButtonRe? buildDuration({
+  static NoButtonRe buildDuration({
     required String id,
     Duration duration = const Duration(milliseconds: 1300),
     void Function()? function,
@@ -66,7 +66,7 @@ class NoButtonRe {
       return i;
   }
 
-  static NoButtonRe? buildFuture({
+  static NoButtonRe buildFuture({
     required String id,
     required Future future,
     void Function()? function,
