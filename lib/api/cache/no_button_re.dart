@@ -43,7 +43,7 @@ class NoButtonRe {
 
   static NoButtonRe buildDuration({
     required String id,
-    Duration duration = const Duration(milliseconds: 1300),
+    Duration duration = const Duration(milliseconds: 1600),
     void Function()? function,
     void Function()? onActionsCall,
   }){
@@ -100,7 +100,6 @@ class NoButtonRe {
 
     void res(){
       if(_isCalled){
-        print('no--- is called before');
         return;
       }
 
@@ -130,18 +129,20 @@ class NoButtonRe {
     _isCalled = false;
     _onActionCall?.call();
     
-    /*Future.delayed(Duration(seconds: 2), (){
+    Future.delayed(Duration(seconds: 2), (){
       _list.removeWhere((element) {
+        print('remove ${_list.length}');
+
         if(element.noButtonRe == this){
-          print('yeessssssssss');
+          print('yeessssssssss ');
         }
         else {
-          print('fallllllllllll');
+          print('noooooo');
         }
 
         return element.noButtonRe == this;
       });
-    });*/
+    });
   }
 
   NoButtonRe._({

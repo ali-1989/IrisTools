@@ -39,6 +39,9 @@ class FutureCache {
           x.complete(res);
         }
       }
+
+      handlerList.clear();
+      _cacheHolder.deleteCash(handlerKey);
     }
 
     return completer.future;
