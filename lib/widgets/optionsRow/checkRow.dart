@@ -12,7 +12,7 @@ class CheckBoxRow extends StatefulWidget {
   final Widget description;
   final Checkbox? checkbox;
   final EdgeInsets? padding;
-  final Color? borderColor;
+  final Color? fillColor;
   final Color? tickColor;
   final OutlinedBorder? shape;
   final BorderSide? borderSide;
@@ -25,7 +25,7 @@ class CheckBoxRow extends StatefulWidget {
     this.checkbox,
     this.treeState = false,
     this.padding,
-    this.borderColor,
+    this.fillColor,
     this.tickColor,
     this.shape,
     this.borderSide,
@@ -49,7 +49,7 @@ class RadioRawState<S> extends State<CheckBoxRow> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    //final theme = Theme.of(context);
 
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
@@ -76,8 +76,8 @@ class RadioRawState<S> extends State<CheckBoxRow> {
                   side: widget.borderSide,
                   materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   visualDensity: VisualDensity.comfortable,
-                  checkColor: widget.tickColor?? widget.borderColor?? Colors.white,//theme.primaryColor
-                  fillColor: MaterialStateProperty.all(widget.borderColor?? theme.primaryColor),
+                  checkColor: widget.tickColor,
+                  fillColor: widget.fillColor != null? MaterialStateProperty.all(widget.fillColor) : null,
                 ),
               ),
 
