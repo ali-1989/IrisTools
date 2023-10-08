@@ -1,6 +1,6 @@
 name: iris_tools
 description: iris tools Library.
-version: 0.1.87
+version: 0.1.88
 homepage: https://iris.ir
 
 publish_to: 'none'
@@ -44,7 +44,7 @@ dependencies:
     git: https://github.com/ali-1989/IrisDB.git
 
 
-dependency_overrides:
+#dependency_overrides:
 #file: ^7.0.0
 
 

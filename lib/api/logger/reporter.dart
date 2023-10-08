@@ -180,7 +180,7 @@ extension TypeOfCalendarExtension on ReportType {
 }
 ///=================================================================================================
 class Report {
-  DateTime reportTs = DateHelper.getNowToUtc();
+  DateTime reportTs = DateHelper.nowMinusUtcOffset();
   ReportType type = ReportType.appInfo;
   String description = 'none';
 

@@ -11,97 +11,88 @@ import 'package:iris_tools/dateSection/dateFormatter/date_format.dart';
 class DateHelper {
 	DateHelper._();
 
-	static DateTime parseUtc(String utcTz){
-		return DateFormat().parseUtc(utcTz);
+	static DateTime parseTimezone(String dateTimezone){
+		return DateFormat().parseUtc(dateTimezone);
 	}
 
-	static DateTime getNow(){
+	static DateTime parse(String date){
+		return DateTime.parse(date);
+	}
+
+	static String datetimeToTimestamp(DateTime date){
+		/*String s = '${date.year}-${date.month}-${date.day}T${date.hour}:${date.minute}:${date.second}.${date.millisecond}';
+
+		if(!date.isUtc){ or timeZoneOffset != 0
+			s += 'Z';
+		}
+
+		return s;*/
+		return date.toIso8601String();
+	}
+
+	static DateTime now(){
 		return DateTime.now();
 	}
 
-	static int getNowAsMillis(){
-		return DateTime.now().millisecondsSinceEpoch;
-	}
-
-	static DateTime getNowToUtc(){
+	static DateTime nowMinusUtcOffset(){
 		final now = DateTime.now();
 		final offset = now.timeZoneOffset.inMilliseconds;
 
 		return DateTime.fromMillisecondsSinceEpoch(now.millisecondsSinceEpoch - offset);
 	}
 
-	static DateTime getNowAsUtcZ(){
-		return DateTime.now().toUtc();
+	static DateTime nowAsUtcTz(){
+		return DateTime.now().toUtc(); // same DateTime.timestamp()
 	}
 
-	static int getNowToUtcAsMillis(){
-		final now = DateTime.now();
-		final offset = now.timeZoneOffset.inMilliseconds;
-		return now.millisecondsSinceEpoch - offset;
-	}
-
-	static String getNowTimestamp(){
+	static String nowToTimestamp(){
 		final now = DateTime.now();
 		return DF.formatDate(now, [DF.yyyy, '-', DF.mm, '-', DF.dd, ' ', DF.HH, ':', DF.nn, ':', DF.ss, '.', DF.SSS]);
 	}
 
-	static String getNowTimestampToUtc(){
-		final now = getNowToUtc();
+	static String nowAsUtcTzToTimestamp(){
+		final now = nowAsUtcTz();
 		return DF.formatDate(now, [DF.yyyy, '-', DF.mm, '-', DF.dd, ' ', DF.HH, ':', DF.nn, ':', DF.ss, '.', DF.SSS]);
 	}
 
-	static String getTimestampUtcWithoutMill(){
-		final now = getNowToUtc();
-		return DF.formatDate(now, [DF.yyyy, '-', DF.mm, '-', DF.dd, ' ', DF.HH, ':', DF.nn, ':', DF.ss, '.000']);
-	}
-
-	static String toTimestamp(DateTime src, {bool isLocal = false}){
-		if(isLocal) {
+	/// withTZ is same toUtc()
+	static String toTimestamp(DateTime src, {bool withTZ = false}){
+		if(withTZ) {
 		  return DF.formatDate(src, [DF.yyyy, '-', DF.mm, '-', DF.dd, ' ', DF.HH, ':', DF.nn, ':', DF.ss, '.', DF.SSS, DF.z]);
 		} else {
 		  return DF.formatDate(src, [DF.yyyy, '-', DF.mm, '-', DF.dd, ' ', DF.HH, ':', DF.nn, ':', DF.ss, '.', DF.SSS]);
 		}
 	}
 
-	static String toTimestampDate(DateTime src){
+	static String toTimestampDateOnly(DateTime src){
 		return DF.formatDate(src, [DF.yyyy, '-', DF.mm, '-', DF.dd]);
 	}
 
-	static String? toTimestampNullable(DateTime? src, {bool isLocal = false}){
+	static String? toTimestampNullable(DateTime? src, {bool withTZ = false}){
 		if(src == null) {
 		  return null;
 		}
 
-		return toTimestamp(src, isLocal: isLocal);
+		return toTimestamp(src, withTZ: withTZ);
 	}
 
-	static String toTimestampWithoutTimezone(DateTime src){
-		return DF.formatDate(src, [DF.yyyy, '-', DF.mm, '-', DF.dd, ' ', DF.HH, ':', DF.nn, ':', DF.ss, '.', DF.SSS]);
-	}
 
-	static String dateOnlyToStamp(DateTime src){
-		return DF.formatDate(src, [DF.yyyy, '-', DF.mm, '-', DF.dd]);
-	}
-
-	static String toYmdHmStamp(DateTime src){
+	static String toYmdHmTimestamp(DateTime src){
 		return DF.formatDate(src, [DF.yyyy, '-', DF.mm, '-', DF.dd, ' ', DF.HH, ':', DF.nn]);
 	}
 
-	static DateTime milToDateTime(int mil) {
+	static DateTime millToDateTime(int mil) {
 		return DateTime.fromMillisecondsSinceEpoch(mil);
 	}
 
-	static String milToTimestamp(int mil, {bool isLocal = false}){
-		final now = DateTime.fromMillisecondsSinceEpoch(mil);
-		if(isLocal) {
-		  return DF.formatDate(now, [DF.yyyy, '-', DF.mm, '-', DF.dd, ' ', DF.HH, ':', DF.nn, ':', DF.ss, '.', DF.SSS]);
-		} else {
-		  return DF.formatDate(now, [DF.yyyy, '-', DF.mm, '-', DF.dd, ' ', DF.HH, ':', DF.nn, ':', DF.ss, '.', DF.SSS, DF.z]);
-		}
+	static String millToTimestamp(int mil, {bool withTZ = false}){
+		final now = millToDateTime(mil);
+
+		return toTimestamp(now, withTZ: withTZ);
 	}
 
-	static String todayUtcDirectoryName(){
-		final now = getNowToUtc();
+	static String directoryName(){
+		final now = nowAsUtcTz();
 		return DF.formatDate(now, [DF.yyyy, '_', DF.mm, '_', DF.dd]);
 	}
 
@@ -167,7 +158,7 @@ class DateHelper {
 		return locale.add(timeDiff);
 	}
 
-	static String localToUtcTs(DateTime inp){
+	static String localToUtcAsTimestamp(DateTime inp){
 		return toTimestamp(localToUtc(inp));
 	}
 
@@ -235,7 +226,7 @@ class DateHelper {
 	}
 
 	static bool isToday(DateTime date, {bool utc = false}){
-		return isSameYmd(date,utc? getNowToUtc(): getNow());
+		return isSameYmd(date,utc? nowMinusUtcOffset(): now());
 	}
 
 	static bool isSameY(DateTime d1, DateTime d2){
@@ -287,7 +278,7 @@ class DateHelper {
 	}
 
 	static bool isBeforeTodayUtc(DateTime d){
-		final today = DateHelper.getNowToUtc();
+		final today = DateHelper.nowMinusUtcOffset();
 
 		return (today.year > d.year
 				|| (today.year == d.year && today.month > d.month)
@@ -295,7 +286,7 @@ class DateHelper {
 	}
 
 	static bool isBeforeEqualTodayUtc(DateTime d){
-		final today = DateHelper.getNowToUtc();
+		final today = DateHelper.nowMinusUtcOffset();
 
 		return (today.year > d.year
 				|| (today.year == d.year && today.month > d.month)
@@ -303,7 +294,7 @@ class DateHelper {
 	}
 
 	static bool isAfterTodayUtc(DateTime d){
-		final today = DateHelper.getNowToUtc();
+		final today = DateHelper.nowMinusUtcOffset();
 
 		return (today.year < d.year
 				|| (today.year == d.year && today.month < d.month)
@@ -312,7 +303,7 @@ class DateHelper {
 
 	// minus: today < d   plus: today > d
 	static int getTodayDifferentDayUtc(DateTime d){
-		final today = DateHelper.getNowToUtc();
+		final today = DateHelper.nowMinusUtcOffset();
 
 		return today.difference(d).inDays;
 	}
