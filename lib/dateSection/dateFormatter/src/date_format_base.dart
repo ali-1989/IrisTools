@@ -29,11 +29,11 @@ class DF{
   static const String s = 's';
   static const String SSS = 'SSS';
   static const String S = 'S';
-  static const String uuu = 'uuu';
+  static const String uuu = 'uuu'; // microsecond
   static const String u = 'u';
   static const String am = 'am';
-  static const String z = 'z'; //timeZone offset
-  static const String Z = 'Z'; //timeZoneName
+  static const String z = 'z'; // timeZone offset
+  static const String Z = 'Z'; // timeZone Name
 
   /// use: formatDate(DateTime.now(), [yyyy, '-', mm, '-', dd, ' ', HH, ':', nn, ':', ss, ".", SSS]);
   /// use: formatDate(DateTime.now(), [yyyy, '-', mm, '-', dd, ' ', HH, ':', nn, ':', ss, ".", SSS, z]);
@@ -103,11 +103,11 @@ class DF{
           sb.write('Z');
         } else {
           if (date.timeZoneOffset.isNegative) {
-            sb.write('-');
+            sb.write('+');
             sb.write(_digits((-date.timeZoneOffset.inHours) % 24, 2));
             sb.write(_digits((-date.timeZoneOffset.inMinutes) % 60, 2));
           } else {
-            sb.write('+');
+            sb.write('-');
             sb.write(_digits(date.timeZoneOffset.inHours % 24, 2));
             sb.write(_digits(date.timeZoneOffset.inMinutes % 60, 2));
           }
