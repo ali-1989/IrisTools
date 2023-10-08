@@ -28,7 +28,7 @@ class MediaModel {
     width = map['width'];
     height = map['height'];
     extra = map['extra'];
-    date = DateHelper.tsToSystemDate(map['date']);
+    date = DateHelper.timestampToSystem(map['date']);
   }
 
   Map<String, dynamic> toMap(){

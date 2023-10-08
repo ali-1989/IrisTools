@@ -11,15 +11,11 @@ import 'package:iris_tools/dateSection/dateFormatter/date_format.dart';
 class DateHelper {
 	DateHelper._();
 
-	static DateTime parseTimezone(String dateTimezone){
-		return DateFormat().parseUtc(dateTimezone);
-	}
-
 	static DateTime parse(String date){
 		return DateTime.parse(date);
 	}
 
-	static String datetimeToTimestamp(DateTime date){
+	static String toTimestampIso8601(DateTime date){
 		/*String s = '${date.year}-${date.month}-${date.day}T${date.hour}:${date.minute}:${date.second}.${date.millisecond}';
 
 		if(!date.isUtc){ or timeZoneOffset != 0
@@ -28,6 +24,10 @@ class DateHelper {
 
 		return s;*/
 		return date.toIso8601String();
+	}
+
+	static DateTime parseTimezone(String dateTimezone){
+		return DateFormat().parseUtc(dateTimezone);
 	}
 
 	static DateTime now(){
@@ -47,19 +47,25 @@ class DateHelper {
 
 	static String nowToTimestamp(){
 		final now = DateTime.now();
-		return DF.formatDate(now, [DF.yyyy, '-', DF.mm, '-', DF.dd, ' ', DF.HH, ':', DF.nn, ':', DF.ss, '.', DF.SSS]);
+		return toTimestamp(now);
+	}
+
+	static String nowMinusUtcOffsetToTimestamp(){
+		final now = nowMinusUtcOffset();
+		return toTimestamp(now);
 	}
 
 	static String nowAsUtcTzToTimestamp(){
 		final now = nowAsUtcTz();
-		return DF.formatDate(now, [DF.yyyy, '-', DF.mm, '-', DF.dd, ' ', DF.HH, ':', DF.nn, ':', DF.ss, '.', DF.SSS]);
+		return toTimestamp(now, withTZ: true);
 	}
 
 	/// withTZ is same toUtc()
 	static String toTimestamp(DateTime src, {bool withTZ = false}){
 		if(withTZ) {
 		  return DF.formatDate(src, [DF.yyyy, '-', DF.mm, '-', DF.dd, ' ', DF.HH, ':', DF.nn, ':', DF.ss, '.', DF.SSS, DF.z]);
-		} else {
+		}
+		else {
 		  return DF.formatDate(src, [DF.yyyy, '-', DF.mm, '-', DF.dd, ' ', DF.HH, ':', DF.nn, ':', DF.ss, '.', DF.SSS]);
 		}
 	}
@@ -114,7 +120,7 @@ class DateHelper {
 		return DateTime.now().timeZoneOffset.inMilliseconds;
 	}
 
-	static DateTime? tsToSystemDate(String? ts){
+	static DateTime? timestampToSystem(String? ts){
 		if(ts == null){
 			return null;
 		}
@@ -127,7 +133,7 @@ class DateHelper {
 		}
 	}
 
-	static DateTime? tsToSystemDateToLocale(String? ts){
+	static DateTime? timestampToSystemToLocale(String? ts){
 		try {
 			return utcToLocal(DateTime.parse(ts?? ''));
 		}
@@ -137,8 +143,6 @@ class DateHelper {
 	}
 
 	static DateTime utcToLocal(DateTime utc){
-		//var utcD = DateTime.now();
-
 		final timezoneOffset = utc.timeZoneOffset;
 		final timeDiff = Duration(milliseconds: timezoneOffset.inMilliseconds);
 
@@ -149,9 +153,12 @@ class DateHelper {
 		final tzLocalOffset = locale.timeZoneOffset;
 		var d = tzLocalOffset.inMilliseconds;
 
-		if(locale.month == 9 && locale.day == 22){ //is bug,   2:30 -> 3:30
+		/* no need
+		//is bug,   2:30 -> 3:30
+		if(locale.month == 9 && locale.day == 22){
 			d += 3600000;
 		}
+		*/
 
 		final timeDiff = Duration(milliseconds: -d);
 
@@ -329,8 +336,8 @@ class DateHelper {
 	}
 
 	static int compareDatesTs(String? d1, String? d2, {bool asc = true}){
-		final s1 = tsToSystemDate(d1);
-		final s2 = tsToSystemDate(d2);
+		final s1 = timestampToSystem(d1);
+		final s2 = timestampToSystem(d2);
 
 		return compareDates(s1, s2, asc: asc);
 	}
