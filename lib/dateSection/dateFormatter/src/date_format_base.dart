@@ -103,11 +103,11 @@ class DF{
           sb.write('Z');
         } else {
           if (date.timeZoneOffset.isNegative) {
-            sb.write('+');
+            sb.write('+'); // me change this from '-' to '+' in 1402-07-16
             sb.write(_digits((-date.timeZoneOffset.inHours) % 24, 2));
             sb.write(_digits((-date.timeZoneOffset.inMinutes) % 60, 2));
           } else {
-            sb.write('-');
+            sb.write('-'); // me change this from '+' to '-' in 1402-07-16
             sb.write(_digits(date.timeZoneOffset.inHours % 24, 2));
             sb.write(_digits(date.timeZoneOffset.inMinutes % 60, 2));
           }
