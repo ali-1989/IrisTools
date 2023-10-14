@@ -1,6 +1,6 @@
 name: iris_tools
 description: iris tools Library.
-version: 0.1.91
+version: 0.1.92
 homepage: https://iris.ir
 
 publish_to: 'none'
@@ -23,7 +23,7 @@ dependencies:
   url_launcher: ^6.1.14
   dio: ^5.3.3
   http: ^1.1.0
-  connectivity_plus: ^5.0.0
+  connectivity_plus: 4.0.2
   photo_view: ^0.14.0
   file_picker: ^6.0.0
   audioplayers: ^5.2.0
