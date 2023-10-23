@@ -12,14 +12,12 @@ class FontsManager {
   final Set<Font> _fontList = {};
   late Font _platformDefaultFont;
 
-  FontsManager({this.startFontSize, this.maximumAppFontSize = 14, this.minimumAppFontSize = 11}){
+  FontsManager({this.startFontSize, this.maximumAppFontSize = 14, this.minimumAppFontSize = 11, this.webScreenWidth}){
     _init();
   }
 
-  FontsManager.relativeSize({this.maximumAppFontSize = 14, this.minimumAppFontSize = 11, double? webWidth}){
-    webScreenWidth = webWidth;
-    startFontSize = Font.genScreenRelativeFontSize(minSize: minimumAppFontSize, maxSize: maximumAppFontSize, webMaxWidthSize: webWidth);
-    _init();
+  void calcFontSize(){
+    startFontSize = Font.genScreenRelativeFontSize(minSize: minimumAppFontSize, maxSize: maximumAppFontSize, webMaxWidthSize: webScreenWidth);
   }
 
   void _init(){
@@ -231,7 +229,7 @@ class Font {
       pixelRatio = realPixelHeight / (webMaxWidthSize ?? realPixelWidth);
     }
 
-    final factor = MathHelper.between(14, 3.2, 11, 1.1, pixelRatio);
+    final factor = MathHelper.between(15, 3.3, 10.5, 1.0, pixelRatio);
     final minNum =  max(minSize, factor);
 
     return min(maxSize, minNum);
