@@ -113,7 +113,7 @@ public class Assistance implements FlutterPlugin, MethodCallHandler, ActivityAwa
     }
 
     private void throwWithTimer(Map<String, ?> arg, MethodChannel.Result result){
-        Long dur =  10000L;
+        long dur = 10000L;
 
         Object delay = arg.get("delay");
 

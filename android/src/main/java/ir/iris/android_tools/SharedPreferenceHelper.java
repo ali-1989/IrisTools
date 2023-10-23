@@ -17,7 +17,7 @@ public class SharedPreferenceHelper {
         editor.apply();
     }
 
-    static void setInt(Context context, String key, int value) {
+    static void setInt(Context context, String key, Integer value) {
         SharedPreferences.Editor editor = getSharedPreferences(context).edit();
         editor.putInt(key, value);
         editor.apply();
