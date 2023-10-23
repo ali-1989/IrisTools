@@ -139,7 +139,7 @@ class FontsManager {
     return _platformDefaultFont;
   }
 
-  Font? getEnglishFont(){
+  Font? getEnglishRegularFont(){
     return defaultFontFor('en', FontUsage.regular);
   }
 
