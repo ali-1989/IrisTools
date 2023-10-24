@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-typedef TextFieldMessageBuilder = Widget? Function(BuildContext context, TextEditingController controller);
+typedef TextFieldMessageBuilder = Widget? Function(BuildContext context, TextEditingController controller, TextField textField);
 
 class TextFieldWrapper extends StatefulWidget {
-  final Widget child;
+  final TextField child;
   final TextEditingController controller;
   final TextFieldMessageBuilder messageBuilder;
 
@@ -31,7 +31,7 @@ class TextFieldWrapperState extends State<TextFieldWrapper> {
   }
 
   Widget genMessage(){
-    final res = widget.messageBuilder.call(context, widget.controller);
+    final res = widget.messageBuilder.call(context, widget.controller, widget.child);
 
     return res ?? const SizedBox();
   }
