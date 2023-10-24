@@ -253,4 +253,18 @@ class MathHelper {
 
 		return res;
 	}
+
+	/// relativeOf(10, 10, 1, 0.1)  $return : 1
+	/// relativeOf(20, 10, 1, 0.1)  $return : 2
+	/// relativeOf(620, 570, 10, 0.1)  $return : 1.5
+	static double relativeOf(double num, double minNum, double numStep, double unitStep){
+		if(num <= minNum){
+			return 1.0;
+		}
+
+		final dif = num - minNum;
+		final c = dif / numStep;
+
+		return 1 + c * unitStep;
+	}
 }
