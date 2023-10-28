@@ -123,7 +123,7 @@ class ShadowPainter extends CustomPainter {
     final p = Paint();
     p.maskFilter = MaskFilter.blur(BlurStyle.inner, 4);
     p.style = PaintingStyle.fill;
-    p.strokeWidth = 1;
+    p.strokeWidth = 0;
 
     //canvas.clipRect(Rect.fromLTWH(0.0, 0.0, size.width, size.height));
 
