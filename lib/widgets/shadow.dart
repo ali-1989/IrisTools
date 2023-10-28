@@ -76,16 +76,45 @@ class ShadowPath extends StatelessWidget {
   }
 }
 ///=============================================================================
+class ShadowBuilder extends StatelessWidget {
+  final Widget child;
+  final PathBuilder pathBuilder;
+  final Color? shadowColor;
+  final List<Shadow> shadows;
+
+
+  ShadowBuilder({
+    super.key,
+    this.shadowColor,
+    required this.child,
+    required this.pathBuilder,
+    required this.shadows,
+  }) : super();
+
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      painter: ShadowPainter(
+        pathBuilder: pathBuilder,
+        shadows: shadows,
+        shapeColor: shadowColor
+      ),
+      child: child,
+    );
+  }
+}
+///=============================================================================
 typedef PathBuilder = Path Function(Size size);
 typedef Painter = void Function(Canvas canvas, Size size);
 
 class ShadowPainter extends CustomPainter {
   final PathBuilder pathBuilder;
   final Painter? painter;
-  final Color shapeColor;
+  final Color? shapeColor;
   final List<Shadow> shadows;
 
-  ShadowPainter({required this.pathBuilder, this.painter, required this.shapeColor, required this.shadows});
+  ShadowPainter({required this.pathBuilder, this.painter, this.shapeColor, required this.shadows});
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -100,7 +129,13 @@ class ShadowPainter extends CustomPainter {
       canvas.restore();
     }
 
-    //canvas.drawPath(shape, _paint);
+    final p = Paint();
+    p.color = shapeColor?? Colors.transparent;
+    p.maskFilter = MaskFilter.blur(BlurStyle.normal, 5);
+    p.style = PaintingStyle.fill;
+    p.strokeWidth = 1;
+
+    canvas.drawPath(shape, p);
     painter?.call(canvas, size);
   }
 
