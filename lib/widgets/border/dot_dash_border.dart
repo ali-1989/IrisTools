@@ -1,7 +1,6 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:iris_tools/widgets/path/dash_path.dart';
 import 'package:iris_tools/widgets/path/paths.dart';
 
 part 'dash_painter.dart';
@@ -42,6 +41,25 @@ class DotDashBorder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return CustomPaint(
+      painter: DotDashPainter(
+        strokeWidth: strokeWidth,
+        radius: radius,
+        color: color,
+        borderType: borderType,
+        dashPattern: dashPattern,
+        customPath: customPath,
+        strokeCap: strokeCap,
+      ),
+      child: Padding(
+        padding: padding,
+        child: child,
+      ),
+    );
+  }
+
+  /*
+    old build:
     return Stack(
       children: <Widget>[
         Positioned.fill(
@@ -64,8 +82,7 @@ class DotDashBorder extends StatelessWidget {
         ),
       ],
     );
-  }
-
+   */
   bool _isValidDashPattern(List<double>? dashPattern) {
     Set<double>? dashSet = dashPattern?.toSet();
 
