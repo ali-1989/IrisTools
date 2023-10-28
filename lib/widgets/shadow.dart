@@ -121,7 +121,7 @@ class ShadowPainter extends CustomPainter {
     final shape = pathBuilder.call(size);
 
     final p = Paint();
-    //p.maskFilter = MaskFilter.blur(BlurStyle.inner, 1);
+    p.maskFilter = MaskFilter.blur(BlurStyle.inner, 10);
     p.style = PaintingStyle.fill;
     p.strokeMiterLimit = 0;
     p.strokeWidth = 0;
@@ -134,7 +134,8 @@ class ShadowPainter extends CustomPainter {
       canvas.save();
       canvas.translate(sh.offset.dx, sh.offset.dy);
       canvas.drawPath(shape, p);
-      canvas.drawShadow(shape, sh.color, sqrt(sh.blurRadius), false);
+      //canvas.drawShadow(shape, sh.color, sqrt(sh.blurRadius), sh.color.alpha != 0xFF);
+      canvas.drawShadow(shape, sh.color, sh.blurRadius, sh.color.alpha != 0xFF);
       canvas.restore();
     }
 
