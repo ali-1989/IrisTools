@@ -14,8 +14,8 @@ class Tools {
 
     final txt = obj.toString();
 
-    for(int i = 0; i< txt.length; i+= 500){
-      print(txt.substring(i, min(i+500, txt.length)));
+    for(int i = 0; i< txt.length; i+= 1000){
+      print(txt.substring(i, min(i+1000, txt.length)));
     }
   }
 
@@ -23,7 +23,7 @@ class Tools {
     verboseLog(StackTrace.current);
   }
 
-  static void printWithDelimiter(Object obj){
+  static void logWithDelimiter(Object obj){
     print('${'*' * 40}\n ${obj.toString()} \n${'*' * 50}');
   }
 

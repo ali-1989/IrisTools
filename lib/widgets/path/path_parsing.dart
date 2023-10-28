@@ -74,19 +74,15 @@ const double _twoPiFloat = math.pi * 2.0;
 const double _piOverTwoFloat = math.pi / 2.0;
 
 class SvgPathStringSource {
-  SvgPathStringSource(this._string)
-      : assert(_string != null), // ignore: unnecessary_null_comparison
-        _previousCommand = SvgPathSegType.unknown,
-        _idx = 0,
-        _length = _string.length {
-    _skipOptionalSvgSpaces();
-  }
-
   final String _string;
-
   SvgPathSegType _previousCommand;
   int _idx;
   final int _length;
+
+  SvgPathStringSource(this._string)
+      :_previousCommand = SvgPathSegType.unknown, _idx = 0, _length = _string.length {
+    _skipOptionalSvgSpaces();
+  }
 
   bool _isHtmlSpace(int character) {
     // Histogram from Apple's page load test combined with some ad hoc browsing

@@ -1,8 +1,8 @@
-part of 'dotted_border.dart';
+part of 'dot_dash_border.dart';
 
 typedef PathBuilder = Path Function(Size);
 
-class _DashPainter extends CustomPainter {
+class DotDashPainter extends CustomPainter {
   final double strokeWidth;
   final List<double> dashPattern;
   final Color color;
@@ -11,7 +11,7 @@ class _DashPainter extends CustomPainter {
   final StrokeCap strokeCap;
   final PathBuilder? customPath;
 
-  _DashPainter({
+  DotDashPainter({
     this.strokeWidth = 2,
     this.dashPattern = const <double>[3, 1],
     this.color = Colors.black,
@@ -31,23 +31,25 @@ class _DashPainter extends CustomPainter {
       ..strokeCap = strokeCap
       ..style = PaintingStyle.stroke;
 
-    Path _path;
+    Path path;
 
     if (customPath != null) {
-      _path = dashPath(
+      path = Paths.buildDashPath(
         customPath!(size),
         dashArray: CircularIntervalList(dashPattern),
       );
-    } else {
-      _path = _getPath(size);
+    }
+    else {
+      path = _getPath(size);
     }
 
-    canvas.drawPath(_path, paint);
+    canvas.drawPath(path, paint);
   }
 
   /// Returns a [Path] based on the the [borderType] parameter
   Path _getPath(Size size) {
     Path path;
+
     switch (borderType) {
       case BorderType.circle:
         path = _getCirclePath(size);
@@ -63,7 +65,7 @@ class _DashPainter extends CustomPainter {
         break;
     }
 
-    return dashPath(path, dashArray: CircularIntervalList(dashPattern));
+    return Paths.buildDashPath(path, dashArray: CircularIntervalList(dashPattern));
   }
 
   /// Returns a circular path of [size]
@@ -129,10 +131,65 @@ class _DashPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(_DashPainter oldDelegate) {
-    return oldDelegate.strokeWidth != this.strokeWidth ||
-        oldDelegate.color != this.color ||
-        oldDelegate.dashPattern != this.dashPattern ||
-        oldDelegate.borderType != this.borderType;
+  bool shouldRepaint(DotDashPainter oldDelegate) {
+    return oldDelegate.strokeWidth != strokeWidth ||
+        oldDelegate.color != color ||
+        oldDelegate.dashPattern != dashPattern ||
+        oldDelegate.borderType != borderType;
+  }
+}
+///=============================================================================
+class CenterDashLine extends CustomPainter {
+  final double progress;
+  final double strokeWidth;
+  final List<double> dashPattern;
+  final Color color;
+  final Radius radius;
+  final StrokeCap strokeCap;
+
+  CenterDashLine({
+    required this.progress,
+    this.strokeWidth = 2,
+    this.dashPattern = const <double>[3, 1],
+    this.color = Colors.black,
+    this.radius = const Radius.circular(0),
+    this.strokeCap = StrokeCap.butt,
+  });
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    Paint paint = Paint()
+      ..strokeWidth = strokeWidth
+      ..color = color
+      ..strokeCap = strokeCap
+      ..strokeJoin = StrokeJoin.round
+      ..style = PaintingStyle.stroke;
+
+    var path = Path()
+      ..moveTo(0, size.height / 2)
+      ..lineTo(size.width * progress, size.height / 2);
+
+    Path dashPath = Path();
+
+    double dashWidth = 10.0;
+    double dashSpace = 5.0;
+    double distance = 0.0;
+
+    for (PathMetric pathMetric in path.computeMetrics()) {
+      while (distance < pathMetric.length) {
+        dashPath.addPath(
+          pathMetric.extractPath(distance, distance + dashWidth),
+          Offset.zero,
+        );
+        distance += dashWidth;
+        distance += dashSpace;
+      }
+    }
+    canvas.drawPath(dashPath, paint);
+  }
+
+  @override
+  bool shouldRepaint(CenterDashLine oldDelegate) {
+    return oldDelegate.progress != progress;
   }
 }

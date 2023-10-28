@@ -1,5 +1,8 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:iris_tools/widgets/path/dash_path.dart';
+import 'package:iris_tools/widgets/path/paths.dart';
 
 part 'dash_painter.dart';
 
@@ -10,8 +13,8 @@ enum BorderType {
   rect,
   oval
 }
-///=====================================================================================================
-class DottedBorder extends StatelessWidget {
+///=============================================================================
+class DotDashBorder extends StatelessWidget {
   final Widget child;
   final EdgeInsets padding;
   final double strokeWidth;
@@ -22,7 +25,8 @@ class DottedBorder extends StatelessWidget {
   final StrokeCap strokeCap;
   final PathBuilder? customPath;
 
-  DottedBorder({Key? key,
+  DotDashBorder({
+    super.key,
     required this.child,
     this.color = Colors.black,
     this.strokeWidth = 1,
@@ -32,7 +36,7 @@ class DottedBorder extends StatelessWidget {
     this.radius = const Radius.circular(0),
     this.strokeCap = StrokeCap.butt,
     this.customPath,
-  }) : super(key: key) {
+  }) : super() {
     assert(_isValidDashPattern(dashPattern), 'Invalid dash pattern');
   }
 
@@ -42,7 +46,7 @@ class DottedBorder extends StatelessWidget {
       children: <Widget>[
         Positioned.fill(
           child: CustomPaint(
-            painter: _DashPainter(
+            painter: DotDashPainter(
               strokeWidth: strokeWidth,
               radius: radius,
               color: color,
@@ -63,15 +67,15 @@ class DottedBorder extends StatelessWidget {
   }
 
   bool _isValidDashPattern(List<double>? dashPattern) {
-    Set<double>? _dashSet = dashPattern?.toSet();
+    Set<double>? dashSet = dashPattern?.toSet();
 
-    if (_dashSet == null) {
+    if (dashSet == null) {
       return false;
     }
-    if (_dashSet.length == 1 && _dashSet.elementAt(0) == 0.0) {
+    if (dashSet.length == 1 && dashSet.elementAt(0) == 0.0) {
       return false;
     }
-    if (_dashSet.isEmpty) {
+    if (dashSet.isEmpty) {
       return false;
     }
 

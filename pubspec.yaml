@@ -1,6 +1,6 @@
 name: iris_tools
 description: iris tools Library.
-version: 0.1.99
+version: 0.1.100
 homepage: https://iris.ir
 
 publish_to: 'none'
@@ -20,7 +20,7 @@ dependencies:
   path: ^1.8.3                          # (path manager)
   android_path_provider: ^0.3.0         # (android directory)
   mime: ^1.0.4
-  url_launcher: ^6.1.14
+  url_launcher: ^6.2.1
   dio: ^5.3.3
   http: ^1.1.0
   connectivity_plus: 4.0.2

@@ -41,3 +41,48 @@ class TextFieldWrapperState extends State<TextFieldWrapper> {
     return message == null? null : '';
   }
 }
+
+
+/*
+TextFieldWrapper(
+    messageBuilder: messageBuilder,
+    controller: nameCtr,
+    builder: (_, c, err){
+      return TextField(
+        controller: nameCtr,
+        decoration: AppDecoration.outlineBordersInputDecoration
+            .copyWith(
+          errorStyle: const TextStyle(fontSize: -10),
+          errorText: err,
+        ),
+      );
+    },
+  ),
+ */
+
+
+// or ---------------------------------------------------------
+
+/*
+TextField(
+    controller: nameCtr,
+    decoration: AppDecoration.outlineBordersInputDecoration
+        .copyWith(
+          error: textErrorBuilder(nameCtr),
+    ),
+  )
+
+
+  String? textErrorBuilder(controller){
+    if(controller == nameCtr){
+      if(){
+        return '';
+      }
+    }
+
+   }
+
+
+   final can = cList.every((element) => canVerifyInformation(element));
+
+ */

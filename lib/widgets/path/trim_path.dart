@@ -5,29 +5,29 @@ enum PathTrimOrigin {
   begin, /// Specifies that trimming should start from the first point in a segment.
   end /// Specifies that trimming should start from the last point in a segment.
 }
-///=================================================================================================
+///=============================================================================
 Path trimPath(
   Path source,
   double percentage, {
   bool firstOnly = true,
   PathTrimOrigin origin = PathTrimOrigin.begin,
 }) {
-  assert(percentage != null); // ignore: unnecessary_null_comparison
-  assert(firstOnly != null); // ignore: unnecessary_null_comparison
-  assert(origin != null); // ignore: unnecessary_null_comparison
-
   percentage = percentage.clamp(0.0, 1.0);
+
   if (percentage == 1.0) {
     return Path();
   }
+
   if (percentage == 0.0) {
     return Path.from(source);
   }
+
   if (origin == PathTrimOrigin.end) {
     percentage = 1.0 - percentage;
   }
 
   final Path dest = Path();
+
   for (final PathMetric metric in source.computeMetrics()) {
     switch (origin) {
       case PathTrimOrigin.end:
@@ -43,6 +43,7 @@ Path trimPath(
         );
         break;
     }
+
     if (firstOnly) {
       break;
     }

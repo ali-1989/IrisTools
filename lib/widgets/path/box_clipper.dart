@@ -18,5 +18,4 @@ class BoxClipper extends CustomClipper<Rect> {
   bool shouldReclip(covariant CustomClipper oldClipper) {
     return true;
   }
-
 }
