@@ -121,7 +121,7 @@ class ShadowPainter extends CustomPainter {
     final shape = pathBuilder.call(size);
 
     final p = Paint();
-    p.maskFilter = MaskFilter.blur(BlurStyle.inner, 1);
+    //p.maskFilter = MaskFilter.blur(BlurStyle.inner, 1);
     p.style = PaintingStyle.fill;
     p.strokeWidth = 0;
 
