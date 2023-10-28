@@ -79,13 +79,13 @@ class ShadowPath extends StatelessWidget {
 class ShadowBuilder extends StatelessWidget {
   final Widget child;
   final PathBuilder pathBuilder;
-  final Color? shadowColor;
+  final Color? fillColor;
   final List<Shadow> shadows;
 
 
   ShadowBuilder({
     super.key,
-    this.shadowColor,
+    this.fillColor,
     required this.child,
     required this.pathBuilder,
     required this.shadows,
@@ -98,7 +98,7 @@ class ShadowBuilder extends StatelessWidget {
       painter: ShadowPainter(
         pathBuilder: pathBuilder,
         shadows: shadows,
-        shapeColor: shadowColor
+        shapeColor: fillColor
       ),
       child: child,
     );
@@ -120,22 +120,22 @@ class ShadowPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final shape = pathBuilder.call(size);
 
+    final p = Paint();
+    p.color = shapeColor?? Colors.transparent;
+    p.maskFilter = MaskFilter.blur(BlurStyle.inner, 4);
+    p.style = PaintingStyle.fill;
+    p.strokeWidth = 1;
+
     //canvas.clipRect(Rect.fromLTWH(0.0, 0.0, size.width, size.height));
 
     for (final sh in shadows) {
       canvas.save();
       canvas.translate(sh.offset.dx, sh.offset.dy);
       canvas.drawShadow(shape, sh.color, sqrt(sh.blurRadius), false);
+      canvas.drawPath(shape, p);
       canvas.restore();
     }
 
-    final p = Paint();
-    p.color = shapeColor?? Colors.transparent;
-    p.maskFilter = MaskFilter.blur(BlurStyle.normal, 5);
-    p.style = PaintingStyle.fill;
-    p.strokeWidth = 1;
-
-    canvas.drawPath(shape, p);
     painter?.call(canvas, size);
   }
 
