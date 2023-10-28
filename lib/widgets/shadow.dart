@@ -79,13 +79,13 @@ class ShadowPath extends StatelessWidget {
 class ShadowBuilder extends StatelessWidget {
   final Widget child;
   final PathBuilder pathBuilder;
-  final Color? fillColor;
+  final bool transparentFill;
   final List<Shadow> shadows;
 
 
   ShadowBuilder({
     super.key,
-    this.fillColor,
+    this.transparentFill = false,
     required this.child,
     required this.pathBuilder,
     required this.shadows,
@@ -98,7 +98,7 @@ class ShadowBuilder extends StatelessWidget {
       painter: ShadowPainter(
         pathBuilder: pathBuilder,
         shadows: shadows,
-        shapeColor: fillColor
+        transparentFill: transparentFill
       ),
       child: child,
     );
@@ -111,10 +111,10 @@ typedef Painter = void Function(Canvas canvas, Size size);
 class ShadowPainter extends CustomPainter {
   final PathBuilder pathBuilder;
   final Painter? painter;
-  final Color? shapeColor;
+  final bool transparentFill;
   final List<Shadow> shadows;
 
-  ShadowPainter({required this.pathBuilder, this.painter, this.shapeColor, required this.shadows});
+  ShadowPainter({required this.pathBuilder, this.painter, this.transparentFill = false, required this.shadows});
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -123,12 +123,13 @@ class ShadowPainter extends CustomPainter {
     final p = Paint();
     //p.maskFilter = MaskFilter.blur(BlurStyle.inner, 1);
     p.style = PaintingStyle.fill;
+    p.strokeMiterLimit = 0;
     p.strokeWidth = 0;
 
     //canvas.clipRect(Rect.fromLTWH(0.0, 0.0, size.width, size.height));
 
     for (final sh in shadows) {
-      p.color = shapeColor?? sh.color;
+      p.color = transparentFill? Colors.transparent : sh.color;
 
       canvas.save();
       canvas.translate(sh.offset.dx, sh.offset.dy);
@@ -144,7 +145,7 @@ class ShadowPainter extends CustomPainter {
   bool shouldRepaint(covariant ShadowPainter oldDelegate) {
    return oldDelegate.shadows != shadows ||
     oldDelegate.shadows.length != shadows.length ||
-    oldDelegate.shapeColor != shapeColor;
+    oldDelegate.transparentFill != transparentFill;
   }
 }
 
