@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 
-/*
+/* Hlp:
 enum Keys implements GroupId {
   voicePlayerGroupId$vocabClickable(120);
 
@@ -19,7 +19,7 @@ enum Keys implements GroupId {
 typedef UpdaterBuilderFn = Widget Function(BuildContext context, UpdaterController controller, dynamic stateData);
 typedef UpdaterOverlayBuilder = Widget Function(BuildContext context, UpdaterController controller);
 typedef GroupIds<T extends UpdaterGroupId> = T;
-///===================================================================================================
+///=============================================================================
 class UpdaterBuilder<T extends Updater, E extends EventScope> extends StatefulWidget {
   final String? id;
   /// define a (enum or class) that implements GroupId {}
@@ -32,7 +32,7 @@ class UpdaterBuilder<T extends Updater, E extends EventScope> extends StatefulWi
 
 
   UpdaterBuilder({
-    Key? key,
+    super.key,
     this.id,
     this.groupIds = const [],
     this.eventScopes = const [],
@@ -40,19 +40,19 @@ class UpdaterBuilder<T extends Updater, E extends EventScope> extends StatefulWi
     this.overlayBuilder,
     required this.builder,
   })
-      : super(key: key);
+      : super();
 
   @override
   State<StatefulWidget> createState() {
     return _UpdaterBuilderState();
   }
 }
-///===================================================================================================
+///=============================================================================
 abstract class IUpdaterState<w extends StatefulWidget> extends State<w> {
   void update({dynamic data});
   void disposeWidget();
 }
-///===================================================================================================
+///=============================================================================
 class _UpdaterBuilderState extends IUpdaterState<UpdaterBuilder> {
   late UpdaterController _controller;
   late ValueNotifier<int> _overlayNotifier;
@@ -63,7 +63,6 @@ class _UpdaterBuilderState extends IUpdaterState<UpdaterBuilder> {
   @override
   void initState() {
     super.initState();
-
     _overlayNotifier = ValueNotifier(0);
     _controller = UpdaterController();
     _controller._add(this);
@@ -115,7 +114,7 @@ class _UpdaterBuilderState extends IUpdaterState<UpdaterBuilder> {
     dispose();
   }
 }
-///===================================================================================================
+///=============================================================================
 class UpdaterController<S> {
   /// public list of all updater
   static final List<UpdaterController> _allControllers = [];
@@ -132,7 +131,15 @@ class UpdaterController<S> {
       final sameId = UpdaterController.forId(state.widget.id!);
 
       if (sameId != null) {
-        throw Exception('this id [${state.widget.id}] exist in Updater, use other id');
+        final elem = (sameId._stateRef.context as Element);
+
+        /// if UpdaterBuilder be wrapping in other Widget when coding, must ignore else on SetState take error.
+        if(elem.dirty){
+          sameId.dispose();
+        }
+        else {
+          throw Exception('this id [${state.widget.id}] exist in Updater, use other id');
+        }
       }
     }
 
@@ -292,7 +299,7 @@ class UpdaterController<S> {
   void clearKeyValues(){
     return _kvManager.clear();
   }
-  ///..............................................................................
+  ///...........................................................................
   void dispose() {
     _allControllers.remove(this);
     _stateRef.widget.observable?._remove(this);
@@ -303,7 +310,7 @@ class UpdaterController<S> {
     dispose();
   }
 }
-///===================================================================================================
+///=============================================================================
 mixin class Updater {
 
   void emit<T extends Updater>({List<EventScope>? scopes, dynamic data}){
@@ -312,7 +319,7 @@ mixin class Updater {
 }
 
 abstract class EventScope {}
-///===================================================================================================
+///=============================================================================
 abstract class UpdaterGroupId {}
 //enum Or Class implements GroupId {}
 ///---------------------------------------
@@ -327,7 +334,7 @@ class _GroupOfUpdater {
     stateList.add(state);
   }
 }
-///===================================================================================================
+///=============================================================================
 class KeyValueManager<T> {
   final Set<MapEntry> _objList = {};
 
@@ -392,7 +399,7 @@ class KeyValueManager<T> {
     _objList.clear();
   }
 }
-///===================================================================================================
+///=============================================================================
 class UpdaterStateManager<T> {
   final Map<String, Set<T>> _objList = {};
 
@@ -463,7 +470,7 @@ class UpdaterStateManager<T> {
     _objList.clear();
   }
 }
-///===================================================================================================
+///=============================================================================
 class UpdaterObserve<T> {
   T? _value;
   final List<UpdaterController> _observers = []; // = listeners

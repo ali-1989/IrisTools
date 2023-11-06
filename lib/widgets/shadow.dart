@@ -171,4 +171,23 @@ PhysicalShape(
       child: const ColoredSpace(width: 63, height: 63),
     ),
   )
+
+  ------------------------------------------------
+  ShadowPath(
+        shadowColor: Colors.black,
+        elevation: 5,
+        clipper: PathClipper(
+            builder: (siz){
+              return Paths.buildSquareFatSide(siz,  20);
+            }
+        ),
+        child: ClipPath(
+          clipper: PathClipper(
+              builder: (siz){
+                return Paths.buildSquareFatSide(siz,  20);
+              }
+          ),
+          child: const ColoredSpace(width: 63, height: 63),
+        ),
+      )
  */
