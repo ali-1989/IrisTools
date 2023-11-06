@@ -8,8 +8,12 @@ class CancelableFuture<T> {
   CancelableFuture(Future<T> future){
     future
         .then((value) {
-      if(!_isCancelled && !_completer.isCompleted){
-        _completer.complete(value);
+          if(!_isCancelled && !_completer.isCompleted){
+            _completer.complete(value);
+          }
+    }).onError((error, stackTrace) {
+      if (!_isCancelled && !_completer.isCompleted) {
+        _completer.completeError(error!, stackTrace);
       }
     });
   }
@@ -29,6 +33,10 @@ class CancelableFuture<T> {
           if(!_isCancelled && !_completer.isCompleted){
             _completer.complete(value);
           }
+      }).onError((error, stackTrace) {
+        if(!_isCancelled && !_completer.isCompleted){
+          _completer.completeError(error!, stackTrace);
+        }
     });
   }
 
