@@ -32,7 +32,7 @@ class CancelableFuture<T> {
     });
   }
 
-  Future get future => _completer.future;
+  Future<T?> get future => _completer.future;
 
   bool get isCanceled => _isCancelled;
 
