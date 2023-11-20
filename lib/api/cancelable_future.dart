@@ -49,3 +49,29 @@ class CancelableFuture<T> {
     _completer.complete(null);
   }
 }
+
+/*------------------------------
+Future<int> tenCounter() async {
+    int i = 0;
+
+    while(i < 10){
+      i++;
+      print('i: $i');
+      await Future.delayed(const Duration(seconds: 1));
+
+      if(i == 4){
+        throw Exception(' ohh ');
+      }
+    }
+
+    return i;
+  }
+
+
+
+  final i = await tenCounter()
+          .timeout(Duration(seconds: 8), onTimeout: () {
+        print('timeooooooooout');
+        return -1;
+      });
+ */

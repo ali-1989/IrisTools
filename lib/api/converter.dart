@@ -170,24 +170,56 @@ class Converter {
     }
   }
 
-  static T correctType<T>(dynamic inp, T sample){
-    if(sample is int){
-      return int.tryParse(inp.toString()) as T;
+  static T? correctType<T>(dynamic input){
+    if(input == null){
+      return null;
     }
 
-    if(sample is double){
-      return double.tryParse(inp.toString()) as T;
+    if(input.runtimeType is T){
+      return input as T;
     }
 
-    if(sample is bool){
-      return BoolHelper.itemToBool(inp) as T;
+    if(T is String){
+      // bool, int, double,
+      return input.toString() as T;
     }
 
-    if(sample is String){
-      return inp.toString() as T;
+    if(T is int){
+      if(input is num){
+        return input.toInt() as T;
+      }
+
+      if(input is bool){
+        return (input == true? 1 : 0) as T;
+      }
+
+      return int.tryParse(input.toString()) as T;
     }
 
-    return inp;
+    if(T is double){
+      if(input is num){
+        return input.toDouble() as T;
+      }
+
+      if(input is bool){
+        return (input == true? 1.0 : 0.0) as T;
+      }
+
+      return double.tryParse(input.toString()) as T;
+    }
+
+    if(T is bool){
+      /*if(input is num){
+        return (input != 0) as T;
+      }
+
+      final b = input.toString();
+      return (b == 'true') as T;*/
+      return BoolHelper.itemToBool(input) as T;
+    }
+
+    //return null;
+    return input;
   }
 
   // List<int>? allIdsMap = Converter.correctList<int>(js['all_ticket_ids']);
