@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 class KeepAliveWrap extends StatefulWidget {
   final Widget child;
 
-  const KeepAliveWrap({required this.child, Key? key}) : super(key: key);
+  const KeepAliveWrap({required this.child, super.key});
 
   @override
   State<KeepAliveWrap> createState() => _KeepAliveWrapState();
 }
-///===================================================================================
+///=============================================================================
 class _KeepAliveWrapState extends State<KeepAliveWrap> with AutomaticKeepAliveClientMixin {
 
   @override

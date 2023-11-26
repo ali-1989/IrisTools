@@ -118,6 +118,7 @@ class _UpdaterBuilderState extends IUpdaterState<UpdaterBuilder> {
 class UpdaterController<S> {
   /// public list of all updater
   static final List<UpdaterController> _allControllers = [];
+  static final List<_GroupListenerHolder> _allGroupListenerFn = [];
 
   late _UpdaterBuilderState _stateRef;
   final _stateManager = UpdaterStateManager<S>();
@@ -204,6 +205,12 @@ class UpdaterController<S> {
     forGroup(groupId).forEach((element) {
       element.update(stateData: stateData, delay: delay);
     });
+
+    for(final i in _allGroupListenerFn){
+      if(i.hasGroupId(groupId)){
+        i.fn.call(groupId);
+      }
+    }
   }
 
   static void updateByType<T extends Updater>({List<EventScope>? scopes, dynamic stateData, Duration? delay}){
@@ -211,11 +218,29 @@ class UpdaterController<S> {
       element.update(stateData: stateData, delay: delay);
     });
   }
-  ///............. Overlay ......................................................
+  ///............. group listener ..............................................
+  static void addGroupListener(List<UpdaterGroupId> ids, void Function(UpdaterGroupId) fn){
+    for(final i in _allGroupListenerFn){
+      if(i.isSame(ids, fn)){
+        return;
+      }
+    }
+
+    final lis = _GroupListenerHolder();
+    lis.groupIds = ids;
+    lis.fn = fn;
+
+    _allGroupListenerFn.add(lis);
+  }
+
+  static void removeGroupListener(void Function(UpdaterGroupId) fn){
+    _allGroupListenerFn.removeWhere((element) => element.fn == fn);
+  }
+  ///............. Overlay .....................................................
   void updateOverlay(){
     _stateRef._overlayNotifier.value++;
   }
-  ///............. states ........................................................
+  ///............. states .......................................................
   bool hasState(S state, {String? scopeId}){
     return _stateManager.existState(scopeId?? _stateShareSection, state);
   }
@@ -322,18 +347,6 @@ abstract class EventScope {}
 ///=============================================================================
 abstract class UpdaterGroupId {}
 //enum Or Class implements GroupId {}
-///---------------------------------------
-class _GroupOfUpdater {
-  late UpdaterGroupId groupId;
-  final stateList = <IUpdaterState>{};
-
-  _GroupOfUpdater();
-
-  _GroupOfUpdater.fill(UpdaterGroupId id, IUpdaterState state){
-    groupId = id;
-    stateList.add(state);
-  }
-}
 ///=============================================================================
 class KeyValueManager<T> {
   final Set<MapEntry> _objList = {};
@@ -510,5 +523,18 @@ class UpdaterObserve<T> {
 
   void _remove(UpdaterController controller){
     _observers.remove(controller);
+  }
+}
+///=============================================================================
+class _GroupListenerHolder {
+  List<UpdaterGroupId> groupIds = [];
+  late void Function(UpdaterGroupId groupId) fn;
+
+  bool hasGroupId(UpdaterGroupId groupId){
+    return groupIds.contains(groupId);
+  }
+
+  bool isSame(List<UpdaterGroupId> ids, void Function(UpdaterGroupId p1) fn) {
+    return this.fn == fn && groupIds.length == ids.length && groupIds.every((element) => ids.contains(element));
   }
 }
