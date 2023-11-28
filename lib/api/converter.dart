@@ -98,7 +98,7 @@ class Converter {
     return val.toString();
   }
 
-  ///-------------------------------------------------------------------------------------------------------------
+  ///---------------------------------------------------------------------------
   static String? millsToTime(dynamic input, {withSec = true, withMill = false}) {
     if (input == null) {
       return null;
@@ -170,21 +170,26 @@ class Converter {
     }
   }
 
+  static bool isSameType(Type t1, Type t2){
+    return t1.hashCode == t2.hashCode;
+    // T.hashCode == ((int).hashCode)
+  }
+
   static T? correctType<T>(dynamic input){
     if(input == null){
       return null;
     }
 
-    if(input.runtimeType is T){
+    if(input.runtimeType == T){
       return input as T;
     }
 
-    if(T is String){
+    if(isSameType(T, String)){
       // bool, int, double,
       return input.toString() as T;
     }
 
-    if(T is int){
+    if(isSameType(T, int)){
       if(input is num){
         return input.toInt() as T;
       }
@@ -196,7 +201,7 @@ class Converter {
       return int.tryParse(input.toString()) as T;
     }
 
-    if(T is double){
+    if(isSameType(T, double)){
       if(input is num){
         return input.toDouble() as T;
       }
@@ -208,18 +213,11 @@ class Converter {
       return double.tryParse(input.toString()) as T;
     }
 
-    if(T is bool){
-      /*if(input is num){
-        return (input != 0) as T;
-      }
-
-      final b = input.toString();
-      return (b == 'true') as T;*/
+    if(isSameType(T, bool)){
       return BoolHelper.itemToBool(input) as T;
     }
 
-    //return null;
-    return input;
+    return null;
   }
 
   // List<int>? allIdsMap = Converter.correctList<int>(js['all_ticket_ids']);

@@ -21,7 +21,7 @@ class CustomCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-        borderRadius: BorderRadius.circular(radius?? 8),
+        borderRadius: borderRadius?? BorderRadius.circular(radius?? 8),
         child: DecoratedBox(
           decoration: BoxDecoration(
               shape: BoxShape.rectangle,

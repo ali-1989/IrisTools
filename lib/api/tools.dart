@@ -47,15 +47,6 @@ class Tools {
         || link.contains('youtu.be'));
   }
   ///..... Toggle btn .....................................................................................
-  static List<Widget> generateToggleButtonChildren(Map<String, bool> items, {TextStyle? style}){
-    List<Widget> res = [];
-
-    for(var i in items.entries){
-      res.add(Text(i.key, style: style,));
-    }
-
-    return res;
-  }
 
   static List<bool> getTogglesSelected(Map<String, bool> items){
     var res = <bool>[];
@@ -107,6 +98,5 @@ class Tools {
   }
 
 }
-///******************************************************************************************************************
 
 ///******************************************************************************************************************

@@ -110,6 +110,14 @@ class JsonHelper {
     return json.encode(cas);
   }
 
+  static Map<I,J> clone<I,J>(Map<I, J> src){
+    return Map.from(src);
+    //return {...src};
+    //return src.map((key, value) => MapEntry(key, value));
+
+    //return []..addAll(originalList);
+  }
+
   static Map<I,J> updateMap<I,J>(Map<I, J>? src, I/*String*/ key, J/*dynamic*/ value){
     if(src == null) {
       return {key: value};
@@ -124,6 +132,7 @@ class JsonHelper {
       return {key: value};
     }
 
+    //final res = clone(src);
     final res = Clone.cloneShallow(src);
 
     res[key] = value;

@@ -26,7 +26,7 @@ class CircularIcon extends StatelessWidget {
       height: size,
       decoration: BoxDecoration(
         color: bgColor,
-        borderRadius: BorderRadius.all(Radius.circular(size)),
+        borderRadius: BorderRadius.all(Radius.circular(30)),
       ),
       child: Center(
         child: icon == null
@@ -39,7 +39,7 @@ class CircularIcon extends StatelessWidget {
     );
   }
 }
-///-----------------------------------------------------------------------------------------------------
+///-----------------------------------------------------------------------------
 class EmptyIcon extends Icon {
   const EmptyIcon({Key? key}) : super(Icons.hourglass_empty, key: key,);
 
