@@ -1,5 +1,7 @@
+import 'package:g_json/g_json.dart';
 import 'package:iris_db/iris_db.dart';
 import 'package:iris_tools/api/logger/logger.dart';
+
 export 'package:g_json/g_json.dart';
 
 class DatabaseHelper {
@@ -57,8 +59,8 @@ class DatabaseHelper {
     );
   }
 
-  dynamic queryFirst(String tbName,Conditions? conditions, {List path = const [],}) {
-    return _irisDB.first(tbName, conditions, path: path);
+  dynamic queryFirst(String tbName,Conditions? conditions, {int Function(JSON, JSON)? orderBy, List path = const [],}) {
+    return _irisDB.first(tbName, conditions, orderBy: orderBy, path: path);
   }
 
   Future<int> insert(String tbName, Map<dynamic, dynamic> value) {
