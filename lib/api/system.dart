@@ -210,10 +210,6 @@ class System {
     return getWidgetsBinding()?.focusManager;
   }
 
-  static ViewConfiguration? getViewConfiguration(){
-    return getWidgetsBinding()?.createViewConfiguration();
-  }
-
   static AccessibilityFeatures? getAccessibilityFeatures(){
     return getWidgetsBinding()?.accessibilityFeatures;
   }

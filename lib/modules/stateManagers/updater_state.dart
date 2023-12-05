@@ -24,6 +24,7 @@ class UpdaterBuilder<T extends Updater, E extends EventScope> extends StatefulWi
   final String? id;
   /// define a (enum or class) that implements GroupId {}
   final List<GroupIds> groupIds;
+  //final dynamic groupScope;
   final List<EventScope> eventScopes;//todo. <E>
   final UpdaterObserve? observable;
   final UpdaterBuilderFn builder;
@@ -104,7 +105,9 @@ class _UpdaterBuilderState extends IUpdaterState<UpdaterBuilder> {
   void update({dynamic data}) {
     _lastData = data;
 
-    if(mounted) {
+    final elem = (context as Element);
+
+    if(mounted && !elem.dirty) {
       setState(() {});
     }
   }
@@ -119,6 +122,8 @@ class UpdaterController<S> {
   /// public list of all updater
   static final List<UpdaterController> _allControllers = [];
   static final List<_GroupListenerHolder> _allGroupListenerFn = [];
+  static final Map<UpdaterGroupId, dynamic> _updaterDataHolder = {};
+  static final _ItemCache<int> _idsCache = _ItemCache();
 
   late _UpdaterBuilderState _stateRef;
   final _stateManager = UpdaterStateManager<S>();
@@ -129,7 +134,7 @@ class UpdaterController<S> {
 
   void _add(_UpdaterBuilderState state){
     if(state.widget.id != null) {
-      final sameId = UpdaterController.forId(state.widget.id!);
+      final sameId = UpdaterController._forId(state.widget.id!);
 
       if (sameId != null) {
         final elem = (sameId._stateRef.context as Element);
@@ -147,15 +152,27 @@ class UpdaterController<S> {
     _stateRef = state;
     _allControllers.add(this);
     state.widget.observable?._add(this);
+
+    _idsCache.add(state.hashCode);
   }
 
   BuildContext? getContext(){
     return _stateRef.context;
   }
 
-  static UpdaterController? forId(String updaterId){
+  static UpdaterController? _forId(String updaterId){
     for(final c in _allControllers){
       if(c._stateRef.widget.id == updaterId){
+        return c;
+      }
+    }
+
+    return null;
+  }
+
+  static UpdaterController? forId(String updaterId){
+    for(final c in _allControllers){
+      if(c._stateRef.widget.id == updaterId && !_idsCache.exist(c.hashCode)){
         return c;
       }
     }
@@ -167,7 +184,7 @@ class UpdaterController<S> {
     final res = <UpdaterController>{};
 
     for(final c in _allControllers){
-      if(c._stateRef.widget._typeDetector.runtimeType == T){
+      if(c._stateRef.widget._typeDetector.runtimeType == T && !_idsCache.exist(c.hashCode)){
         if(scopes == null || c._stateRef.widget.eventScopes.isEmpty){
           res.add(c);
         }
@@ -185,32 +202,43 @@ class UpdaterController<S> {
     return res;
   }
 
-  static Set<UpdaterController> forGroup(UpdaterGroupId groupId){
+  static Set<UpdaterController> forGroup(UpdaterGroupId groupId, {dynamic gScope}){
     final res = <UpdaterController>{};
 
     for(final c in _allControllers){
-      if(c._stateRef.widget.groupIds.contains(groupId)){
+      if(c._stateRef.widget.groupIds.contains(groupId) && !_idsCache.exist(c.hashCode)){
         res.add(c);
       }
     }
 
     return res;
+    // if(c._stateRef.widget.groupScope != null){ if(c._stateRef.widget.groupScope == gScope)
   }
 
   static void updateById(String updaterId, {dynamic stateData, Duration? delay}){
     forId(updaterId)?.update(stateData: stateData, delay: delay);
   }
 
-  static void updateByGroup(UpdaterGroupId groupId, {dynamic stateData, Duration? delay}){
-    forGroup(groupId).forEach((element) {
-      element.update(stateData: stateData, delay: delay);
-    });
+  static void updateByGroup(UpdaterGroupId groupId, {dynamic groupScope, dynamic data, Duration? delay}){
+    _updaterDataHolder[groupId] = data;
 
     for(final i in _allGroupListenerFn){
       if(i.hasGroupId(groupId)){
         i.fn.call(groupId);
       }
     }
+
+    forGroup(groupId, gScope: groupScope).forEach((element) {
+      element.update(stateData: data, delay: delay);
+    });
+  }
+
+  static dynamic lastGroupDataFor(UpdaterGroupId groupId){
+    return _updaterDataHolder[groupId];
+  }
+
+  static dynamic deleteGroupDataFor(UpdaterGroupId groupId){
+    return _updaterDataHolder.remove(groupId);
   }
 
   static void updateByType<T extends Updater>({List<EventScope>? scopes, dynamic stateData, Duration? delay}){
@@ -298,7 +326,7 @@ class UpdaterController<S> {
       Timer(delay, (){fn();});
     }
   }
-  ///............. shareDataManager ......................................................
+  ///............. shareDataManager ............................................
   void setKeyValue(String key, dynamic value){
     _kvManager.set(key, value);
   }
@@ -337,7 +365,6 @@ class UpdaterController<S> {
 }
 ///=============================================================================
 mixin class Updater {
-
   void emit<T extends Updater>({List<EventScope>? scopes, dynamic data}){
     UpdaterController.updateByType<T>(scopes: scopes, stateData: data);
   }
@@ -536,5 +563,41 @@ class _GroupListenerHolder {
 
   bool isSame(List<UpdaterGroupId> ids, void Function(UpdaterGroupId p1) fn) {
     return this.fn == fn && groupIds.length == ids.length && groupIds.every((element) => ids.contains(element));
+  }
+}
+///=============================================================================
+class _ItemCache<T> {
+  _ItemCache();
+
+  final Map<T, DateTime> _list = {};
+  Timer? _timer;
+
+  void add(T itm){
+    if(!_list.keys.contains(itm)){
+      _list[itm] = DateTime.now();
+    }
+
+    _startTimer();
+  }
+
+  bool exist(int id){
+    return _list.keys.contains(id);
+  }
+
+  void _startTimer(){
+    if(_timer == null || !_timer!.isActive){
+      _timer = Timer.periodic(Duration(milliseconds: 100), (timer) {
+        final nowTime = DateTime.now().subtract(Duration(milliseconds: 100));
+
+        _list.removeWhere((key, value) {
+          return value.isAfter(nowTime);
+        });
+
+        if(_list.isEmpty){
+          _timer?.cancel();
+          _timer = null;
+        }
+      });
+    }
   }
 }

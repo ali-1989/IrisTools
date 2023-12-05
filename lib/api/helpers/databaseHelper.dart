@@ -83,6 +83,7 @@ class DatabaseHelper {
   }
 
   /// replace value for whole (key or row)
+  /// AppDB.db.replace(AppDB.tbClientData, 50, con, path: ['data']);   row: {'id: 1, 'data': 10}
   Future<int> replace(String tbName, dynamic value, Conditions? conditions, {List path = const []}) {
     return _irisDB.replace(tbName, value, conditions, path: path);
   }
