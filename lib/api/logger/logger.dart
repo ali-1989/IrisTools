@@ -19,8 +19,8 @@ class Logger {
 
   Logger(this.dirPath, {String? logName}): fileName = logName?? 'log';
 
-  Future logToAll(String text, {String type = ''}){
-    logToScreen(text, type: type);
+  Future logToAll(String text, {String type = '', bool isError = false}){
+    logToScreen(text, type: type, isError: isError);
     return logToFile(text, type: type);
   }
 
@@ -32,13 +32,21 @@ class Logger {
     return _log(text, type);
   }
 
-  void logToScreen(String text, {String type = ''}){
+  void logToScreen(String text, {String type = '', bool isError = false}){
+    String txt;
+
     if(type.isNotEmpty) {
-      print('======> LOG:[$type] $text');
+      txt = '======> LOG:[$type] $text';
     }
     else {
-      print('======> LOG: $text');
+      txt = '======> LOG: $text';
     }
+
+    if(isError){
+      txt = '\x1B[31m$txt\x1B[0m';
+    }
+
+    print(txt);
   }
 
   Future<bool> _log(String text, String type) async {
