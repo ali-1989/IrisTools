@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:iris_tools/api/helpers/fileHelper.dart';
 
@@ -46,7 +47,13 @@ class Logger {
       txt = '\x1B[31m$txt\x1B[0m';
     }
 
-    print(txt);
+    _verboseLog(txt);
+  }
+
+  void _verboseLog(String txt){
+    for(int i = 0; i< txt.length; i+= 1000){
+      print(txt.substring(i, min(i+1000, txt.length)));
+    }
   }
 
   Future<bool> _log(String text, String type) async {
