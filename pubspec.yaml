@@ -1,6 +1,6 @@
 name: iris_tools
 description: iris tools Library.
-version: 0.1.129
+version: 0.1.130
 homepage: https://iris.ir
 
 publish_to: 'none'
@@ -14,7 +14,7 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.6
-  jiffy: ^6.2.1
+  jiffy: ^6.2.2
   file: ^7.0.0
   convert: ^3.1.1
   path: ^1.9.0                          # (path manager)

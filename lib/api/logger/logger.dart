@@ -51,8 +51,8 @@ class Logger {
   }
 
   void _verboseLog(String txt){
-    for(int i = 0; i< txt.length; i+= 1000){
-      print(txt.substring(i, min(i+1000, txt.length)));
+    for(int i = 0; i< txt.length; i+= 700){
+      print(txt.substring(i, min(i+700, txt.length)));
     }
   }
 

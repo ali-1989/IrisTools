@@ -35,7 +35,7 @@ class CircleContainer extends StatelessWidget {
 }
 
 
-/*
+/* -- for background circle
 CustomCard(
   color: Colors.cyan,
   padding: EdgeInsets.symmetric(horizontal:10, vertical: 2),

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
 typedef ChildBuilder = Widget Function(BuildContext context, AttributeController att, Widget? child);
-///========================================================================================================
+///=============================================================================
 class Attribute extends StatefulWidget {
   final AttributeController? controller;
   final ChildBuilder? childBuilder;
@@ -21,7 +21,7 @@ class Attribute extends StatefulWidget {
     return AttributeState();
   }
 }
-///========================================================================================================
+///=============================================================================
 class AttributeState extends State<Attribute> {
   late AttributeController myController;
   late ChildBuilder _childBuilder;

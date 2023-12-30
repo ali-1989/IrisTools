@@ -262,7 +262,7 @@ class UpdaterController<S> {
   }
 
   static void removeGroupListener(void Function(UpdaterGroupId) fn){
-    _allGroupListenerFn.removeWhere((element) => element.fn == fn);
+    _allGroupListenerFn.removeWhere((element) => element.fn.hashCode == fn.hashCode);
   }
   ///............. Overlay .....................................................
   void updateOverlay(){

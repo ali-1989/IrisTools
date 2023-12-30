@@ -171,7 +171,8 @@ class Converter {
   }
 
   static bool isSameType(Type t1, Type t2){
-    return t1.hashCode == t2.hashCode;
+    /// 2th section is for nullable (int? == int)
+    return t1.hashCode == t2.hashCode || (t1).toString().replaceFirst('?', '') == (t2).toString();
     // T.hashCode == ((int).hashCode)
   }
 

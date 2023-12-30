@@ -232,7 +232,7 @@ class WidgetHelper {
     return (context.findRenderObject() as RenderBox).constraints;
   }
 
-  /// for shadow,...
+  /// is same of renderBox.size
   static Rect getPaintBounds(BuildContext context) {
     return (context.findRenderObject() as RenderBox).paintBounds;
   }
@@ -268,6 +268,10 @@ class WidgetHelper {
   static RenderBox? getRenderBox(BuildContext context) {
     return getElement(context).renderObject as RenderBox;
   }
+
+  /*static RenderBox getRenderBox(BuildContext context) {
+    return (context.findRenderObject() as RenderBox);
+  }*/
 
   static Element? getParentElement(BuildContext context) {
     Element? parent;
