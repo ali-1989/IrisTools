@@ -1,46 +1,65 @@
 import 'dart:async';
 
-/*
-  if(!AppManager.timeoutCache.addTimeout('getUtcTimeOfServer', Duration(seconds: 5))){
-      return Future.value(false);
-    }
- */
+import 'package:iris_tools/api/couple.dart';
 
 class TimeoutCache {
-  final List<MapEntry<String, dynamic>> _timers = [];
+  final List<Couple<String, dynamic>> _couples = [];
 
   TimeoutCache();
 
   void clearAll(){
-    _timers.clear();
+    _couples.clear();
   }
 
   void deleteTimeout(String key){
-    _timers.removeWhere((element) => element.key == key);
+    _couples.removeWhere((element) => element.key == key);
   }
 
   bool addTimeout(String key, Duration dur, {dynamic value}){
-    for(final x in _timers){
+    for(final x in _couples){
       if(x.key == key) {
         return false;
       }
     }
 
-    _timers.add(MapEntry<String, dynamic>(key, value));
+    _couples.add(Couple.kv(key, value));
 
     Timer(dur, (){
-      _timers.removeWhere((element) => element.key == key);
+      _couples.removeWhere((element) => element.key == key);
     });
 
     return true;
   }
 
   bool existTimeout(String key){
-    for(final x in _timers){
+    for(final x in _couples){
       if(x.key == key) {
         return true;
       }
     }
+
+    return false;
+  }
+
+  dynamic getValue(String key){
+    for(final x in _couples){
+      if(x.key == key) {
+        return x.value;
+      }
+    }
+
+    return null;
+  }
+
+  bool changeValue(String key, newValue){
+    for(final x in _couples){
+      if(x.key == key) {
+        x.value = newValue;
+        return true;
+      }
+    }
+
     return false;
   }
 }
+

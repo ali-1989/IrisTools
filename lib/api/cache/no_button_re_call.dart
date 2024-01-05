@@ -1,16 +1,16 @@
 import 'dart:async';
 
-class NoButtonRe {
+class NoButtonReCall {
+  static final List<_NoButtonReItem> _list = [];
   Future? _future;
   Duration? _duration;
   void Function()? _function;
-  void Function()? _onActionCall;
+  final void Function()? _onActionCall;
   bool _isCalled = false;
 
-  static final List<_NoButtonReItem> _list = [];
   static Timer? _timer;
 
-  static NoButtonRe? get(String id){
+  static NoButtonReCall? get(String id){
     _checkTimer();
 
     for(final i in _list){
@@ -22,20 +22,20 @@ class NoButtonRe {
     return null;
   }
 
-  static NoButtonRe build({
+  static NoButtonReCall build({
     required String id,
     void Function()? function,
     void Function()? onActionsCall,
   }){
 
-    late NoButtonRe i;
+    late NoButtonReCall i;
     final find = get(id);
 
     if(find != null){
       i = find;
     }
     else {
-      i = NoButtonRe._(onActionCall: onActionsCall);
+      i = NoButtonReCall._(onActionCall: onActionsCall);
       final r = _NoButtonReItem(id, i);
 
       _list.add(r);
@@ -46,14 +46,14 @@ class NoButtonRe {
     return i;
   }
 
-  static NoButtonRe buildDuration({
+  static NoButtonReCall buildDuration({
     required String id,
     Duration duration = const Duration(milliseconds: 1600),
     void Function()? function,
     void Function()? onActionsCall,
   }){
 
-    late NoButtonRe i;
+    late NoButtonReCall i;
     final find = get(id);
 
     if(find != null){
@@ -61,7 +61,7 @@ class NoButtonRe {
       i._duration = duration;
     }
     else {
-      i = NoButtonRe._duration(duration, onActionCall: onActionsCall);
+      i = NoButtonReCall._duration(duration, onActionCall: onActionsCall);
       final r = _NoButtonReItem(id, i);
 
       _list.add(r);
@@ -72,14 +72,14 @@ class NoButtonRe {
     return i;
   }
 
-  static NoButtonRe buildFuture({
+  static NoButtonReCall buildFuture({
     required String id,
     required Future future,
     void Function()? function,
     void Function()? onActionsCall,
   }){
 
-    late NoButtonRe i;
+    late NoButtonReCall i;
     final find = get(id);
 
     if(find != null){
@@ -87,7 +87,7 @@ class NoButtonRe {
       i._future = future;
     }
     else {
-      i = NoButtonRe._future(future, onActionCall: onActionsCall);
+      i = NoButtonReCall._future(future, onActionCall: onActionsCall);
       final r = _NoButtonReItem(id, i);
 
       _list.add(r);
@@ -155,17 +155,17 @@ class NoButtonRe {
     }
   }
 
-  NoButtonRe._({
+  NoButtonReCall._({
     void Function()? function,
     void Function()? onActionCall,
   }): _function = function, _onActionCall = onActionCall;
 
- NoButtonRe._duration(this._duration, {
+ NoButtonReCall._duration(this._duration, {
     void Function()? function,
     void Function()? onActionCall,
   }): _function = function, _onActionCall = onActionCall;
 
-  NoButtonRe._future(this._future, {
+  NoButtonReCall._future(this._future, {
     void Function()? function,
     void Function()? onActionCall,
   }) : _function = function, _onActionCall = onActionCall;
@@ -173,7 +173,7 @@ class NoButtonRe {
 ///=============================================================================
 class _NoButtonReItem {
   String id;
-  NoButtonRe noButtonRe;
+  NoButtonReCall noButtonRe;
 
   _NoButtonReItem(this.id, this.noButtonRe);
 }
