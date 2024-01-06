@@ -22,12 +22,12 @@ class OverlayDialog {
 			useRootNavigator: false, // if true:error in internal Navigator
 			barrierDismissible: canBack,
 			barrierColor: background,
-			routeSettings: RouteSettings(name: view.routeName),
+			//routeSettings: RouteSettings(name: '/${view.routeName}'),
 			builder: (BuildContext context) {
 				if(canBack) {
 				  return view;
 				} else {
-				  return WillPopScope(child: view, onWillPop: () async {return false;});
+				  return PopScope(canPop: false, child: view);
 				}
 			},
 		);
@@ -97,7 +97,7 @@ class OverlayDialog {
 			useSafeArea: false,
 			barrierDismissible: true,
 			barrierColor: dimColor,
-			routeSettings: RouteSettings(name: view.routeName),
+			//routeSettings: RouteSettings(name: '/${view.routeName}'),
 			builder: (BuildContext context) {
 				return view;
 			},

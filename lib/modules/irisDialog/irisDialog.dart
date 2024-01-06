@@ -80,7 +80,6 @@ class IrisDialog {
         String? title,
         String? descriptionText,
         Widget? descriptionWidget,
-        String? pageRouteName,
         String? positiveButtonText,
         String? negativeButtonText,
         String? threeButtonText,
@@ -91,6 +90,7 @@ class IrisDialog {
         OnButtonCallback? threePress,
         bool canDismissible = false,
         bool dismissOnButtons = true,
+        RouteSettings? routeSettings,
         IrisDialogDecoration? decoration,
     })
   {
@@ -98,7 +98,7 @@ class IrisDialog {
 
     decoration ??= IrisDialogDecoration();
     decoration.dimColor ??= Colors.black.withAlpha(120);
-    final routeName = pageRouteName?? _generateId(10);
+    routeSettings ??= RouteSettings(name: '/${_generateId(10)}');
     //............................................
     final tween = Tween<double>(begin: 0.0, end: 1.0).chain(CurveTween(curve: Curves.easeIn));
 
@@ -112,8 +112,8 @@ class IrisDialog {
       context: context,
       barrierColor: decoration.dimColor!,
       barrierDismissible: canDismissible,
-      barrierLabel: routeName,
-      routeSettings: RouteSettings(name: routeName),
+      barrierLabel: routeSettings.name,
+      routeSettings: routeSettings,
       transitionDuration: decoration.animationDuration,
       transitionBuilder: decoration.transitionsBuilder?? buildAnimation,
       pageBuilder: (ctx, anim1, anim2){
@@ -123,7 +123,7 @@ class IrisDialog {
               Navigator.of(ctx).pop(result);
             }
 
-            IrisDialogNav.popByRouteName(ctx, routeName, result: result);
+            IrisDialogNav.popByRouteName(ctx, routeSettings!.name?? '-', result: result);
           }
         }
 
