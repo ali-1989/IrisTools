@@ -292,7 +292,7 @@ class WidgetHelper {
 
   static List<BuildContext> _getAllPages(BuildContext context) {
     final nav = Navigator.of(context);
-    final List children = nav.focusScopeNode.children.toList();
+    final List children = nav.focusNode.children.toList();
     final res = <BuildContext>[];
 
     for (FocusNode f in children) {

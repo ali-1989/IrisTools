@@ -136,7 +136,7 @@ class NavigatorHelper {
     }
 
     //List children = nav.focusScopeNode.descendants.toList();    << exist repeat node
-    final List children = nav.focusScopeNode.children.toList();
+    final List children = nav.focusNode.children.toList();
 
     for(FocusNode f in children) {
       final m = getModalRouteOf(f.context!);
