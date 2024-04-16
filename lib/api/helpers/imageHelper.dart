@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:image_size_getter/file_input.dart';
 import 'package:image_size_getter/image_size_getter.dart';
+import 'package:image/image.dart' as image_pkg;
 //import 'package:pic/pic.dart' as pic;   native - slow
 //import 'package:pic/src/exif_data.dart';
 //import 'package:pic/src/icc_profile_data.dart';
@@ -153,6 +154,17 @@ class ImageHelper {
 
   static bool isJpgBytes(Uint8List bytes) {
     return ImageSizeGetter.isJpg(MemoryInput(bytes));
+  }
+
+  static Uint8List jpgToPng(Uint8List bytes) {
+    final jpgImage = image_pkg.decodeImage(bytes);
+    /*final pngImage = image_pkg.copyResize(
+      jpgImage!,
+      width: jpgImage.width,
+      height: jpgImage.height,
+    );*/
+
+    return Uint8List.fromList(image_pkg.encodePng(jpgImage!));
   }
   //--------------------------------------------------------------------------
   static num degreesToRadian(num deg) {
