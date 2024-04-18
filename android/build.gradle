@@ -23,6 +23,8 @@ rootProject.allprojects {
 apply plugin: 'com.android.library'
 
 android {
+    namespace "ir.iris.android_tools"
+    android.buildFeatures.buildConfig true
     compileSdk 34
 
     defaultConfig {
