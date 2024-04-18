@@ -5,33 +5,44 @@ class NetManager {
   NetManager._();
 
   static StreamSubscription? _listener;
-  static final List<void Function(ConnectivityResult connectivityResult)> _listeners = [];
+  static final List<void Function(List<ConnectivityResult> connectivityResult)> _listeners = [];
 
 
   static Future<bool> isConnected() async {
     //if(!kReleaseMode)
     //return true;
 
-    var connectivityResult = await Connectivity().checkConnectivity();
-    return Future.value(connectivityResult != ConnectivityResult.none);
+    final connectivityResult = await Connectivity().checkConnectivity();
+
+    return Future.value(!connectivityResult.contains(ConnectivityResult.none));
   }
 
-  static Future<ConnectivityResult> getConnection() async {
+  static Future<List<ConnectivityResult>> getConnections() async {
     var connectivityResult = await Connectivity().checkConnectivity();
     return Future.value(connectivityResult);
   }
 
   static Future<bool> isMobileDataConnected() async {
     var connectivityResult = await Connectivity().checkConnectivity();
-    return Future.value(connectivityResult == ConnectivityResult.mobile);
+    return Future.value(connectivityResult.contains(ConnectivityResult.mobile));
   }
 
   static Future<bool> isWifiConnected() async {
     var connectivityResult = await Connectivity().checkConnectivity();
-    return Future.value(connectivityResult == ConnectivityResult.wifi);
+    return Future.value(connectivityResult.contains(ConnectivityResult.wifi));
   }
 
-  static void addChangeListener(void Function(ConnectivityResult connectivityResult) listener) async {
+  static Future<bool> isVpn() async {
+    var connectivityResult = await Connectivity().checkConnectivity();
+    return Future.value(connectivityResult.contains(ConnectivityResult.vpn));
+  }
+
+  static Future<bool> isBluetooth() async {
+    var connectivityResult = await Connectivity().checkConnectivity();
+    return Future.value(connectivityResult.contains(ConnectivityResult.bluetooth));
+  }
+
+  static void addChangeListener(void Function(List<ConnectivityResult> connectivityResult) listener) async {
     if (!_listeners.contains(listener)) {
       _listeners.add(listener);
     }
@@ -54,8 +65,8 @@ class NetManager {
 
     _listener?.cancel();
 
-    _listener = Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
-      for (var lis in _listeners) {
+    _listener = Connectivity().onConnectivityChanged.listen((List<ConnectivityResult> result) {
+      for (final lis in _listeners) {
         try {
           lis(result);
         } catch (e) {}
@@ -70,7 +81,7 @@ class NetManager {
     _listener = null;
   }
 }
-///===============================================================================================
+///=============================================================================
 typedef OnConnected = void Function(bool isWifi);
 typedef OnDisConnected = void Function();
 
@@ -113,7 +124,7 @@ class NetListener {
     //if (_isPurge) throw Exception('this NetListener is purge.');
 
     _isActive = true;
-    ConnectivityResult r = await NetManager.getConnection();
+    final r = await NetManager.getConnections();
 
     NetManager.addChangeListener(_onChangeConnection);
     _onChangeConnection(r);
