@@ -7,6 +7,7 @@ class AppEventListener extends WidgetsBindingObserver {
 	final List<FutureOr Function()> _resumeCallBackList = [];
 	final List<Function> _pauseCallBackList = [];
 	final List<Function> _detachedCallBackList = [];
+	final List<Function> _inActiveCallBackList = [];
 	final List<Function> _hiddenCallBackList = [];
 
 	AppEventListener();
@@ -41,7 +42,7 @@ class AppEventListener extends WidgetsBindingObserver {
 		_detachedCallBackList.remove(fn);
 	}
 
-	void addDHiddenListener(Function() fn){
+	void addHiddenListener(Function() fn){
 		if(!_hiddenCallBackList.contains(fn)){
 			_hiddenCallBackList.add(fn);
 		}
@@ -51,10 +52,22 @@ class AppEventListener extends WidgetsBindingObserver {
 		_hiddenCallBackList.remove(fn);
 	}
 
+	void addInactiveListener(Function() fn){
+		if(!_inActiveCallBackList.contains(fn)){
+			_inActiveCallBackList.add(fn);
+		}
+	}
+
+	void removeInactiveListener(Function() fn){
+		_inActiveCallBackList.remove(fn);
+	}
+
 	@override
 	Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
 		switch (state) {
 			case AppLifecycleState.inactive:
+				_inactiveCallBack();
+				break;
 			case AppLifecycleState.paused:
 				/// screenOff, homeKeyPress, closeApp
 				_pauseCallBack();
@@ -71,7 +84,7 @@ class AppEventListener extends WidgetsBindingObserver {
 		}
 	}
 
-	Future _pauseCallBack(){
+	FutureOr _pauseCallBack(){
 		for(Function fn in _pauseCallBackList){
 			try{
 				fn();
@@ -79,10 +92,21 @@ class AppEventListener extends WidgetsBindingObserver {
 			catch(e){}
 		}
 
-		return Future.value(true);
+		return true;
 	}
 
-	Future _detachedCallBack(){
+	FutureOr _inactiveCallBack(){
+		for(Function fn in _inActiveCallBackList){
+			try{
+				fn();
+			}
+			catch(e){}
+		}
+
+		return true;
+	}
+
+	FutureOr _detachedCallBack(){
 		for(Function fn in _detachedCallBackList){
 			try{
 				fn();
@@ -90,10 +114,10 @@ class AppEventListener extends WidgetsBindingObserver {
 			catch(e){}
 		}
 
-		return Future.value(true);
+		return true;
 	}
 
-	Future _resumeCallBack() async{
+	FutureOr _resumeCallBack() async{
 		for(final fn in _resumeCallBackList){
 			try{
 				fn();
@@ -101,7 +125,7 @@ class AppEventListener extends WidgetsBindingObserver {
 			catch(e){}
 		}
 
-		return Future.value(true);
+		return true;
 	}
 
 	Future _hiddenCallBack() async{

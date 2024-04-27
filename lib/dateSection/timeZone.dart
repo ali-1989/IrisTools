@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:iris_tools/api/system.dart';
 
 class TimeZone {
@@ -38,7 +37,7 @@ class TimeZone {
 
   static String? windowsTzToLinuxTz(String windows){
     for(final m in _windowsTzToLinuxTz){
-      var win = m['windows'];
+      final win = m['windows'];
 
       if(win == windows) {
         return m['linux']!;
@@ -48,8 +47,26 @@ class TimeZone {
     return null;
   }
 
+  static String? changeOsTimezoneName(String cur){
+    for(final m in _windowsTzToLinuxTz){
+      final win = m['windows'];
+      final linux = m['linux'];
+
+      if(cur == win) {
+        return linux;
+      }
+      else if(cur == linux) {
+        return win;
+      }
+    }
+
+    return null;
+  }
+
   static ({int dayLight, int nonDayLight})? getOffsetAsMillis(String timezone){
-    final res = getUtcOffsetsForTimezone(timezone);
+    var res = getUtcOffsetsForTimezone(timezone);
+
+    res ??= getUtcOffsetsForTimezone(changeOsTimezoneName(timezone)?? '');
 
     if(res == null){
       return null;

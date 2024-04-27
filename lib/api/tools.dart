@@ -39,7 +39,7 @@ class Tools {
   static Future<String?> selectDirectory(){
     return FilePicker.platform.getDirectoryPath();
   }
-  ///..... Youtube .....................................................................................
+  ///..... Youtube ..............................................................
   static bool isYoutubeSameUrl(String? link){
     return link != null &&
         (link.contains('youtube.')

@@ -1,6 +1,6 @@
 name: iris_tools
 description: iris tools Library.
-version: 0.3.5
+version: 0.3.8
 homepage: https://iris.ir
 
 publish_to: 'none'
@@ -22,11 +22,11 @@ dependencies:
   android_path_provider: ^0.3.0         # (android directory)
   mime: ^1.0.5
   url_launcher: ^6.2.6
-  dio: 5.4.2+1
+  dio: ^5.4.3+1
   http: ^1.2.1
-  connectivity_plus: ^6.0.2
+  connectivity_plus: ^6.0.3
   photo_view: ^0.15.0
-  file_picker: ^8.0.1
+  file_picker: ^8.0.3
   audioplayers: ^6.0.0
   video_player: ^2.8.6
   image: ^4.1.7                        # (crop, rotate) alter:https://pub.dev/packages/pic
