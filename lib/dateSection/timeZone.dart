@@ -140,7 +140,7 @@ class TimeZone {
       return  '-tz null-';
     }
 
-    return list[1];
+    return list[0];
   }
   ///===========================================================================
   static const Map<String, List<int>> _timezoneUTCOffsets = {
