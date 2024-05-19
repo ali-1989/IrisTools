@@ -47,7 +47,7 @@ class GregorianDate extends ADateStructure {
     }
 
     if (month == 2 && day > 28 && !isLeapYearThis(year)) {
-      throw ArgumentError('Err: parameters for GregorianDate() is invalid. Year (' + year.toString() + ') is not the leap. ');
+      throw ArgumentError('Err: parameters for GregorianDate() is invalid. Year ($year) is not the leap. ');
     }
 
     if (year > 0) {
@@ -159,7 +159,7 @@ class GregorianDate extends ADateStructure {
     final days = ADateStructure._getDateSection(_value!);
 
     if (days > 1099000) {
-      throw ArgumentError('Err: moveDay(), this date is bigger than 2500 years  [is ' + days.toString() + ' days now]. ');
+      throw ArgumentError('Err: moveDay(), this date is bigger than 2500 years  [is $days days now]. ');
     }
   }
 
@@ -1084,8 +1084,10 @@ class GregorianDate extends ADateStructure {
   }
 
   @override
-  GregorianDate changeTo(int year, int month, int day, int hour, int min, int sec, int mil, bool dayLight) {
-    _init(year, month, day, hour, min, sec, mil);
+  GregorianDate changeTo({int? year, int? month, int? day, int? hour, int? min, int? sec, int? mil}) {
+    _init(year?? getYear(), month?? getMonth(), day?? getDay(),
+        hour?? hoursOfToday(), min?? minutesOfToday(), sec?? secondsOfToday(), mil?? milliSecondsOfToday());
+
     _reset();
 
     return this;

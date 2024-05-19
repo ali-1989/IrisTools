@@ -32,7 +32,7 @@ class LunarHijriDate extends ADateStructure {
 
   void _init(int year, int month, int day, int hrs, int min, int sec, int millSec) {
     if (year == 0 || month < 1 || month > 12 || day < 1 || day > 31 || hrs < 0 || hrs > 23 || min < 0 || min > 59 || sec < 0 || sec > 59 || millSec < 0 || millSec > 999) {
-      throw ArgumentError('Err: Parameters for LunarHijriDate() is invalid. (Y/M/D ,' + year.toString() + '/' + month.toString() + '/' + day.toString() + ' ' + hrs.toString() + ':' + min.toString() + ':' + sec.toString() + '). ');
+      throw ArgumentError('Err: Parameters for LunarHijriDate() is invalid. (Y/M/D ,$year/$month/$day $hrs:$min:$sec). ');
     }
 
     //if(month > 30)
@@ -144,7 +144,7 @@ class LunarHijriDate extends ADateStructure {
     var days = ADateStructure._getDateSection(_value!);
 
     if ((days > 890000)) {
-      throw ArgumentError('Err: this date is bigger than 2500 years  [is ' + days.toString() + ' days now]. ');
+      throw ArgumentError('Err: this date is bigger than 2500 years  [is $days days now]. ');
     }
   }
 
@@ -1155,11 +1155,12 @@ class LunarHijriDate extends ADateStructure {
   }
 
   @override
-  LunarHijriDate changeTo(int year, int month, int day, int hour, int min, int sec, int mil, bool dayLight) {
-    _init(year, month, day, hour, min, sec, mil);
+  LunarHijriDate changeTo({int? year, int? month, int? day, int? hour, int? min, int? sec, int? mil}) {
+    _init(year?? getYear(), month?? getMonth(), day?? getDay(),
+        hour?? hoursOfToday(), min?? minutesOfToday(), sec?? secondsOfToday(), mil?? milliSecondsOfToday());
     _reset();
     return this;
   }
 }
-///==================================================================================================
+
 

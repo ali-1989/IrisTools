@@ -98,7 +98,7 @@ abstract class ADateStructure implements Comparable<ADateStructure> {
     return _useDST;
   }
 
-  void stUseDST(bool state){
+  void setUseDST(bool state){
     _useDST = state;
   }
 
@@ -879,7 +879,7 @@ abstract class ADateStructure implements Comparable<ADateStructure> {
 
   T clone<T extends ADateStructure>();
 
-  ADateStructure changeTo(int year, int month, int day, int hour, int min, int sec, int mil, bool dayLight);
+  ADateStructure changeTo({int? year, int? month, int? day, int? hour, int? min, int? sec, int? mil});
 
   bool isSame(ADateStructure other) {
     return getValue() == other.getValue();

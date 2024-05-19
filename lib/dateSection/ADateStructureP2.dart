@@ -1115,8 +1115,10 @@ class SolarHijriDate extends ADateStructure {
   }
 
   @override
-  SolarHijriDate changeTo(int year, int month, int day, int hour, int min, int sec, int mil, bool byDayLight) {
-    _init(year, month, day, hour, min, sec, mil);
+  SolarHijriDate changeTo({int? year, int? month, int? day, int? hour, int? min, int? sec, int? mil}) {
+    _init(year?? getYear(), month?? getMonth(), day?? getDay(),
+        hour?? hoursOfToday(), min?? minutesOfToday(), sec?? secondsOfToday(), mil?? milliSecondsOfToday());
+    //_init(year, month, day, hour, min, sec, mil);
     _reset();
     return this;
   }
