@@ -1,6 +1,6 @@
 import 'package:intl/intl.dart';
 import 'package:iris_tools/dateSection/dateFormatter/date_format.dart';
-import 'package:iris_tools/dateSection/timeZone.dart' as tz;
+import 'package:iris_tools/dateSection/time_zone.dart' as tz;
 
 /// note: .toUtc() not change [millisecondsSinceEpoch] value
 

@@ -20,7 +20,15 @@ class TimeZone {
       return res;
     }
 
-    return cTz;
+    for(final kv in _windowsTzToLinuxTz){
+      if(kv['linux'] == cTz){ // || kv['windows'] == cTz
+        return cTz;
+      }
+    }
+
+    final offset = DateTime.now().timeZoneOffset;
+
+    return getFirstTimeZoneByOffset(offset.inMilliseconds);
   }
 
   static String? linuxTzToWindowsTz(String linux){
@@ -124,7 +132,7 @@ class TimeZone {
 
   // (tehran & kabul) is same
   static String getFirstTimeZoneByOffset(int offsetMillis){
-    final list = getTimezoneNamesForOffset(offsetMillis);
+    final list = getTimezoneNamesForOffset(offsetMillis, offsetIsDayLight: false);
 
     if(list.isEmpty){
       return  '-tz null-';
@@ -134,7 +142,7 @@ class TimeZone {
   }
 
   static String getFirstTimeZoneByOffsetInDayLightPeriod(int offsetMillis){
-    final list = getTimezoneNamesForOffset(offsetMillis);
+    final list = getTimezoneNamesForOffset(offsetMillis, offsetIsDayLight: true);
 
     if(list.isEmpty){
       return  '-tz null-';

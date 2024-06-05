@@ -1,5 +1,5 @@
 import 'dart:core';
-import 'package:iris_tools/dateSection/timeZone.dart';
+import 'package:iris_tools/dateSection/time_zone.dart';
 
 part 'ADateStructureP1.dart';
 part 'ADateStructureP2.dart';
